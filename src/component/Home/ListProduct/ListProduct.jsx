@@ -1,29 +1,25 @@
-import React, { Fragment } from 'react'
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
-import PublicIcon from '@mui/icons-material/Public';
-import SellIcon from '@mui/icons-material/Sell';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import React from 'react'
+
 import "./ListProduct.sass"
 
 const ListProduct = (props) => {
   return (
     <div className="list-product-container">
         <table className="list-product-table">
-            <THead />
-            <TBody />
+            <THead array_header={props.array_header} />
+            <TBody arr_product={props.arr_product} />
         </table>
     </div>
   )
 }
 
 const THead= (props)=> {
-    const array_header= [{text: "Hotmail + Outlook (Để dễ mở khóa Hotmail Mọi người nên Download full info mail)", icon: false}, {text: "POP3", icon: <CheckBoxIcon />}, {text: "Live", icon: <HourglassBottomIcon />}, {text: "Quốc gia", icon: <PublicIcon />}, {text: "Giá", icon: <SellIcon />}, {text: "Số lượng", icon: <ShoppingCartIcon />}, {text: ""}]
+    
     return (
         <thead className="thead-container">
             <tr className="thead-container-tr">
                 {
-                    array_header.map((item, key) => <Th key={key} {...item} />)
+                    props.array_header.map((item, key) => <Th key={key} {...item} />)
                 }
             </tr>
         </thead>
@@ -43,31 +39,28 @@ const Th= (props) => {
 export default ListProduct
 
 const TBody= (props)=> {
+    
     return (
         <tbody className="tbody-container">
-          <Tr />
-          <Tr />
-          <Tr />
-          <Tr />
-          <Tr />
-          <Tr />
-          <Tr />
-          <Tr />
-          <Tr />
-          <Tr />
-          <Tr />          
+          {
+            props.arr_product.map((item, key)=> <Tr key={key} {...item} />)
+          }
         </tbody>
     ) 
 
 }
 
 const Tr= (props) => {
-    const array_body = [{icon: "https://res.cloudinary.com/dxkhlwfz3/image/upload/v1661891637/out_ir7w08.png", text: "Hotmail New"}, {text: "Đã bật"}, {text: "24-48 giờ"}, {icon: "https://res.cloudinary.com/dxkhlwfz3/image/upload/v1661891723/us.92d14a6a_aipblo.svg"}, {text: "50đ"}, {text: 13971}, {button: "Mua"}]
+    const array_body = props
     return (
         <tr className="tbody-container-tr">
-            {
-                array_body.map((item, key) => <Td key={key} {...item} />)
-            }
+            <Td icon={array_body.icon} text={array_body.text} />
+            <Td text={array_body.pop3} />
+            <Td text={array_body.live} />
+            <Td icon={array_body.flag} />
+            <Td text={array_body.cost} />
+            <Td text={array_body.cost} />
+            <Td button={array_body.button} />
         </tr>
     )
 }
