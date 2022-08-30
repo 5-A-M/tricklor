@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/tricklor/static/css/main.64358879.css",
+    "main.js": "/tricklor/static/js/main.c19d5ee5.js",
+    "static/js/787.2ecca1b9.chunk.js": "/tricklor/static/js/787.2ecca1b9.chunk.js",
+    "index.html": "/tricklor/index.html",
+    "main.64358879.css.map": "/tricklor/static/css/main.64358879.css.map",
+    "main.c19d5ee5.js.map": "/tricklor/static/js/main.c19d5ee5.js.map",
+    "787.2ecca1b9.chunk.js.map": "/tricklor/static/js/787.2ecca1b9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.64358879.css",
+    "static/js/main.c19d5ee5.js"
+  ]
+}
