@@ -2,5 +2,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.login .login__logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login .login__logo .login__logo__icon {
+  width: 24px;
+  height: 24px;
 }

@@ -1,9 +1,13 @@
 import React from 'react'
+import Left from './Left/Left'
+import "./Navigation.sass"
+import Right from './Right/Right'
 
-const Navigation = () => {
+const Navigation = (props) => {
   return (
-    <div>
-      navigation
+    <div className="navigation">
+      <Left />
+      <Right />
     </div>
   )
 }

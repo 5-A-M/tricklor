@@ -1,0 +1,88 @@
+.list-product-container
+    width: 100%
+    height: auto
+    border-radius: 10px
+    .list-product-table
+        width: 100%
+        display: flex
+        flex-direction: column
+        border-radius: 10px
+        overflow: hidden
+        .thead-container
+            min-width: 100%
+            display: flex
+            .thead-container-tr
+                justify-content: space-between
+                align-items: center
+                display: flex
+                width: 100%
+                .th-container
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    height: 54px
+                    &:not
+                        &:first-of-type                        
+                            display: flex
+                            justify-content: center
+                            align-items: center
+                            
+                            .th-container-span
+                                color: #1ca64d !important
+                    width: calc( 50% / 6 )
+                    &:first-of-type
+                        width: 50%
+                        display: flex
+                        justify-content: flex-start
+                    gap: 5px
+                    .th-container-p
+                        >svg
+                            color: #1ca64d
+                    .th-container-span
+                        font-weight: 600
+                        margin-bottom: 2px
+        .tbody-container-tr
+            justify-content: space-between
+            align-items: center
+            display: flex
+            width: 100%
+            .td-container
+                display: flex
+                justify-content: center
+                align-items: center
+                height: 54px
+                &:not
+                    &:first-of-type                        
+                        display: flex
+                        justify-content: center
+                        align-items: center
+                        .td-container-span
+                            color: #1ca64d !important
+                width: calc( 50% / 6 )
+                &:first-of-type
+                    width: 50%
+                    display: flex
+                    justify-content: flex-start
+                    margin-left: 8px
+                gap: 5px
+                .td-container-p
+                    >svg
+                        color: #1ca64d
+                .td-container-span
+                    font-weight: 600
+                    margin-bottom: 2px
+                .td-container-button
+                    padding: 10px 16px
+                    color: #fff
+                    background: #1ca64d
+                    border-radius: 10px
+                .td-container-img
+                    widht: 24px
+                    height: 24px
+                    object-fit: cover
+.list-product-table
+    tr
+        &:nth-child(odd)
+            background: rgba(255, 255, 255, 0.75)
+        &:nth-child(even)
+            background: rgba(255, 255, 255, 0.95)

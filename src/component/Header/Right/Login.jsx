@@ -6,8 +6,17 @@ const Login = (props) => {
   return (
     <div className="login">
         <div className="login__logo">
-          <PersonIcon name="person" />
+          <PersonIcon className="login__logo__icon" />
+          <Text />
         </div>
+    </div>
+  )
+}
+
+const Text = (props) => {
+  return (
+    <div className="text-right-login">
+      Đăng nhập
     </div>
   )
 }
