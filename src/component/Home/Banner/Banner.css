@@ -3,4 +3,35 @@
   height: 281px;
   background-size: cover;
   background-image: url("https://res.cloudinary.com/dxkhlwfz3/image/upload/v1661888110/v2_bnxtmt.jpg");
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.banner-home .sub-banner {
+  width: 220px;
+  height: 220px;
+  position: relative;
+  z-index: 3;
+}
+
+.banner-home .sub-banner .sub-banner-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.banner-home .banner-discount .banner-discount-title, .banner-home .banner-discount .banner-support-title, .banner-home .banner-support .banner-discount-title, .banner-home .banner-support .banner-support-title {
+  font-size: 32px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.banner-home .banner-discount .banner-item-content, .banner-home .banner-support .banner-item-content {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 20px;
 }
