@@ -6,7 +6,7 @@ const CheckAccount = (props) => {
   return (
     <div className="check-account-container">
         <BannerCheckAccount title={props.title} />
-        <MainCheckAccount />
+        <MainCheckAccount {...props} />
     </div>
   )
 }
@@ -30,7 +30,14 @@ const MainCheckAccount = (props) => {
     return (
         <div className="main-check-account-container-wrapper">
             <div className="main-check-account-container">
-                <TypingCheckAccount className="check-account-container-1" classNameTex={"check-account-textarea-1"} type={"clone"} amount={"0"} />
+                { 
+                    (props.is_gmail || props.is_get_mail) && 
+                    <TypingCheckAccount className="check-account-container-1" classNameTex={"check-account-textarea-1"} type={"gmail"} amount={"0"} />
+                }
+                {
+                    props.is_fb && 
+                    <TypingCheckAccount className="check-account-container-1" classNameTex={"check-account-textarea-1"} type={"clone"} amount={"0"} />
+                }
                 <Filter />
                 <div className="check-account-container-3">
                     <div className="check-account-container-sub-3-wrapper">
@@ -44,6 +51,15 @@ const MainCheckAccount = (props) => {
                             <TypingCheckAccount className="check-account-container-1 check-account-container-sub-6" classNameTex={"check-account-textarea-1"} type={"Die"} amount={"0"} />
                         </div>
                     </div>
+
+                    {
+                        props.is_gmail && 
+                        <div className="check-account-container-sub-3-wrapper">
+                            <div className='check-account-container-sub-3'>
+                                <TypingCheckAccount className="check-account-container-1 check-account-container-sub-7" classNameTex={"check-account-textarea-1"} type={"Unknown"} amount={"0"} />
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

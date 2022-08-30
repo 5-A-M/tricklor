@@ -19,3 +19,7 @@
 .menu-navigation .menu-navigation-navigation-link .menu-navigation-link .menu-navigation-navigation-link-text {
   font-weight: 600;
 }
+
+.active-link .menu-navigation-navigation-link-text {
+  color: #1fa64d !important;
+}
