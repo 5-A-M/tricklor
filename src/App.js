@@ -5,17 +5,21 @@ import Footer from "./component/Footer/Footer"
 import Home from "./component/Home/Home"
 import Navigation from "./component/Navigation/Navigation"
 import "./style.sass"
+import Menu from "./component/Menu/Menu"
 
 function App() {
   return (
     <Router>
       <Header />
       <Navigation />
+      <Menu />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/check_live_uid" element={<CheckAccount title={"Check Live Uid"} is_fb={true} />} />
         <Route path="/check_mail" element={<CheckAccount title={"Check Live HotMail - Gmail"} is_gmail={true} />} />
         <Route path="/get_code_mail" element={<CheckAccount title={"Get Code Email"} is_get_mail={true} />} />
+        <Route path="/account" />
+        <Route path="/recharge" />
       </Routes>
       <Footer />
     </Router>
