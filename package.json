@@ -2,6 +2,7 @@
   "name": "tricklor",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://5-A-M.github.io/tricklor",
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",

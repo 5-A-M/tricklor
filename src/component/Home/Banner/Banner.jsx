@@ -5,21 +5,20 @@ import CampaignIcon from '@mui/icons-material/Campaign';
 const Banner = (props) => {
   return (
     <div className="banner-home">
-      <SubBanner /> 
       <Discount {...props} />
       <Support {...props} />
     </div>
   )
 }
 
-const SubBanner = (props) => {
-    return (
-        <div className="sub-banner">
-            <img className="sub-banner-icon" alt='open' src={"https://res.cloudinary.com/dxkhlwfz3/image/upload/v1661895564/facebook-advertising.9544591b_pshumi.png"} />
-        </div>
-    )
+// const SubBanner = (props) => {
+//     return (
+//         <div className="sub-banner">
+//             <img className="sub-banner-icon" alt='open' src={"https://res.cloudinary.com/dxkhlwfz3/image/upload/v1661895564/facebook-advertising.9544591b_pshumi.png"} />
+//         </div>
+//     )
 
-}
+// }
 
 const Discount= (props) => {
     const array_discount= [{text: "Từ 0 đến 100k +30% giá trị thẻ nạp"}, {text: "Từ 500k + 50% giá trị thẻ nạp"}, {text: "Từ 2000k + 100% giá trị thẻ nạp"}, {text: "Tiền khuyến mãi chỉ mua được Mail (Hotmail + Outlook + Domain)"}]
