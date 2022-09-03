@@ -6,6 +6,8 @@ import Home from "./component/Home/Home"
 import Navigation from "./component/Navigation/Navigation"
 import "./style.sass"
 import Menu from "./component/Menu/Menu"
+import Account from "./component/Account/Account"
+import History from "./component/History/History"
 
 function App() {
   return (
@@ -18,8 +20,9 @@ function App() {
         <Route path="/check_live_uid" element={<CheckAccount title={"Check Live Uid"} is_fb={true} />} />
         <Route path="/check_mail" element={<CheckAccount title={"Check Live HotMail - Gmail"} is_gmail={true} />} />
         <Route path="/get_code_mail" element={<CheckAccount title={"Get Code Email"} is_get_mail={true} />} />
-        <Route path="/account" />
-        <Route path="/recharge" />
+        <Route path="/account/*" element={<Account is_account={true} />} />
+        <Route path="/recharge/*" element={<Account is_recharge={true} />} />
+        <Route path="/history" element={<History />} />
       </Routes>
       <Footer />
     </Router>

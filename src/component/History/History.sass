@@ -1,0 +1,47 @@
+.wrapper-history-transfer
+    width: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    .history-transfer
+        width: 100%
+        max-width: 1200px
+        background: hsla(0,0%,100%,.7)
+        min-height: 78vh
+        padding: 14px
+        .history-transfer-table
+            width: 100%
+            border: none
+            border-radius: 10px
+            *
+                border: none !important
+                border-collapse: collapse
+            .wrapper-history-transfer-header
+                background: #49b66e
+                width: 100%
+                tr
+                    border: none
+                    height: 50px
+                    background: #49b66e
+                    border-collapse: collapse
+                    th
+                        border-collapse: collapse
+                        border: none
+                        padding: 12px
+                        text-transform: capitalize
+                        color: #fff
+            tbody
+                width: 100%
+                tr
+                    height: 50px
+                    &:nth-child(even)
+                        background: #49b66e1c
+                    &:nth-child(odd)
+                        background: #fff
+                    td
+                        text-align: center
+                        padding: 12px
+                    .wrapper-history-transfer-header-td-2
+                        color: rgb(101,163,13)
+                    .wrapper-history-transfer-header-td-3
+                        color: #1fa64d
