@@ -6,8 +6,8 @@ import "./Contact.sass"
 const Contact = (props) => {
   return (
     <div className="contact">
-        <TemplateContact icon={<LocalPhoneIcon style={{color: "#1fa64d"}} />} content={"0382983233"} />
-        <TemplateContact icon={<MailIcon style={{color: "#1fa64d"}} />} content={"email@example.com"} />
+        <TemplateContact icon={<LocalPhoneIcon style={{color: "#1fa64d"}} />} content={props.hotline} />
+        <TemplateContact icon={<MailIcon style={{color: "#1fa64d"}} />} content={props.email} />
     </div>
   )
 }

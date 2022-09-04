@@ -25,8 +25,7 @@
                         &:first-of-type                        
                             display: flex
                             justify-content: center
-                            align-items: center
-                            
+                            align-items: center 
                             .th-container-span
                                 color: #1ca64d !important
                     width: calc( 50% / 6 )
@@ -87,3 +86,39 @@
             background: rgba(255, 255, 255, 0.75)
         &:nth-child(even)
             background: rgba(255, 255, 255, 0.95)
+.purchase-popup
+    width: 100%
+    height: 100%
+    position: fixed
+    top: 0
+    left: 0
+    background: rgba(255, 255, 255, 0.75)
+    display: flex
+    justify-content: center
+    align-items: center
+    .sub-purchase-popup
+        width: 100%
+        max-width: 450px
+        height: auto
+        background: #fff
+        border-radius: 10px
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px
+        padding: 10px
+        .title-purchase-popup
+            color: #1ca64d
+            font-weight: 600
+            font-size: 16px
+        .detail-purchase-detail
+            width: 100%
+            padding: 0 40px
+            .detail-purchase-detail-wrap
+                border-bottom: 1px solid #e7e7e7
+                width: 100%
+                display: flex
+                justify-content: space-between
+                align-items: center
+                height: 50px
+                margin-top: .5rem !important
+.inp-div-detail-purchase-detail
+        &::-webkit-inner-spin-button
+            -webkit-appearance: none

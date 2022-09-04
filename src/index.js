@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import "./hover-effect.sass"
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
+const App= lazy(()=> import("./App"))
+const Admin= lazy(()=> import("./Admin/Admin"))
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <Routes>
+        <Route path="/*" element={<Suspense fallback={<div></div>}><App /></Suspense>} />
+        <Route path="/admin/*" element={<Suspense fallback={<div></div>}><Admin /></Suspense>} />
+      </Routes>
+    </Router>
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

@@ -6,8 +6,8 @@ import "./Left.sass"
 const Left = (props) => {
   return (
     <div className="left-header">
-      <Lang />
-      <Contact />
+      <Lang {...props} />
+      <Contact {...props} />
     </div>
   )
 }

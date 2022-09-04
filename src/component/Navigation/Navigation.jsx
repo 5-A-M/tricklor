@@ -6,8 +6,8 @@ import Right from './Right/Right'
 const Navigation = (props) => {
   return (
     <div className="navigation">
-      <Left />
-      <Right />
+      <Left {...props} />
+      <Right {...props} />
     </div>
   )
 }

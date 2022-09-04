@@ -1,16 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Account from './Account'
 import Login from './Login'
 
 const Right = (props) => {
-  const [auth, setAuth]= useState(()=> true)
   return (
     <div className="header-right">
       {
-        auth=== true && <Account name={"giangpt"} price={0} promotion={0} />
+        props.login=== true && <Account name={props.data.account} price={props.data.balance} promotion={props.data.promotion} />
       }
       {
-        auth=== false && <Login />
+        props.login=== false && <Login />
       }
     </div>
   )

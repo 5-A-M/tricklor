@@ -4,7 +4,7 @@ import CampaignIcon from '@mui/icons-material/Campaign';
 
 const Banner = (props) => {
   return (
-    <div className="banner-home">
+    <div className="banner-home" style={{backgroundImage: `url(${props.banner})`}}>
       <Discount {...props} />
       <Support {...props} />
     </div>

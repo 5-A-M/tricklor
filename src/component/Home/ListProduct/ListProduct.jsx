@@ -1,4 +1,5 @@
-import React from 'react'
+import { useState } from 'react'
+import { CloseLoginComponent } from '../../Login/Login'
 
 import "./ListProduct.sass"
 
@@ -66,6 +67,7 @@ const Tr= (props) => {
 }
 
 const Td= (props)=> {
+    const [open, setOpen]= useState(()=> false)
     return (
         <td className="td-container">
             {
@@ -80,8 +82,53 @@ const Td= (props)=> {
             }
             {
                 props.button &&
-                <div className="td-container-button">{props.button}</div>
+                <div className="td-container-button"><button className="td-container-button-btn" onClick={()=> setOpen(prev=> !prev)} style={{width: "100%", height: "100%", border: "none", outline: "none", color: "#fff", fontSize: 18, background: "transparent", cursor: "pointer"}}>{props.button}</button>
+                    {
+                        open=== true && <PopupPurchase open={open} setOpen={setOpen} />
+                    }
+                </div>
             }
         </td>
+    )
+}
+
+const PopupPurchase= (props)=> {
+    
+    return (
+        <div className="purchase-popup">
+            <div className="sub-purchase-popup">
+                <div className="sub-close-purchase-popup" style={{display: "flex", justifyContent: "flex-end"}}>
+                    <CloseLoginComponent {...props} />
+                </div>
+                <div className="wrapper-purchase-popup" style={{width: "100%"}}>
+                    <Title title={"Sản phẩm: Hotmail NEW"} />
+                    <DetailPurchase left={"Số lượng"} />
+                    <DetailPurchase left={"Giá"} />
+                    <DetailPurchase left={"Số tiền"} />
+                </div>
+            </div>
+        </div>
+    )
+}
+
+const Title= (props)=> {
+    return (
+        <div className="title-purchase-popup">
+            {props.title}
+        </div>
+    )
+}
+
+const DetailPurchase= (props)=> {
+
+    return (
+        <div className="detail-purchase-detail">
+            <div className="detail-purchase-detail-wrap" style={{width: "100%"}}>
+                <strong className="strong-detail-purchase-detail" style={{color: "#000"}}>{props.left}</strong>
+                <div className="div-detail-purchase-detail">
+                    <input onChange={()=> {}} value={50} type="number" className="inp-div-detail-purchase-detail" style={{textAlign: "right", border: "none", outline: "none", fontSize: 18}} />
+                </div>
+            </div>
+        </div>
     )
 }
