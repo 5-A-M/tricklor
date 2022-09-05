@@ -174,7 +174,7 @@ const BtnExe= (props)=> {
     }
     return (
         <>
-            <div style={{margin: "8px", fontSize: 12, color: state=== true ? "green" : "red"}}>{message}</div>
+            D<div style={{margin: "8px", fontSize: 12, color: state=== true ? "green" : "red"}}>{message}</div>
             <div className="btn-exe">
                 <button onClick={()=> login()} className="button-btn-exe" style={{cursor: "pointer"}}>
                     Đăng nhập

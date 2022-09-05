@@ -21,6 +21,7 @@
     "react-scripts": "5.0.1",
     "sass": "^1.54.6",
     "styled-components": "^5.3.5",
+    "valid-url": "^1.0.9",
     "web-vitals": "^2.1.4",
     "yarn": "^1.22.19"
   },

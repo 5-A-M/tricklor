@@ -52,7 +52,7 @@ function App() {
         <Menu />
       }
       <Routes>
-        <Route path="/" element={<Home {...options} />} />
+        <Route path="/" element={<Home {...options} {...user?.data} />} />
         <Route path="/check_live_uid" element={<CheckAccount title={"Check Live Uid"} is_fb={true} />} />
         <Route path="/check_mail" element={<CheckAccount title={"Check Live HotMail - Gmail"} is_gmail={true} />} />
         <Route path="/get_code_mail" element={<CheckAccount title={"Get Code Email"} is_get_mail={true} />} />

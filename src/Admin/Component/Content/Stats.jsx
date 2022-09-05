@@ -9,9 +9,9 @@ const Stats = (props) => {
 export default Stats
 
 const A= (props)=> {
-    return (
-        <div className="stats-sum-of-recharge">
-            Tổng số tiền mà các thành viên đã nạp: <strong>50000đ</strong>
-        </div>
-    )
+  return (
+    <div className="stats-sum-of-recharge">
+        Tổng số tiền mà các thành viên đã nạp: <strong>50000đ</strong>
+    </div>
+  )
 }

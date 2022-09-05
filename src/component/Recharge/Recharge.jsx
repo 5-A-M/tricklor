@@ -62,6 +62,33 @@ const Pro2= (props)=> {
       <button className="button-payment-main">
         Thanh toán
       </button>
+
+    </div>
+  )
+}
+
+const PopupPayment= (props)=> {
+  return (
+    <div className="popup-payment-wrapper" style={{width: "100%", height: "100%", background: "rgba(255, 255, 255, 0.75)", position: "fixed", top: 0, left: 0, display: "flex", justifyContent: 'center', alignItems: "center"}}> 
+      <div className="popup-payment" style={{width: 800, height: "auto", borderRadius: 10, background: "#fff", boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"}}>
+        
+      </div>
+    </div>
+  )
+}
+
+const LeftPopup= (props)=> {
+  return (
+    <div className="left-popup-payment-wrapper" style={{width: 200, height: "auto"}}>
+      
+    </div>
+  )
+}
+
+const RightPopup= (props)=> {
+  return (
+    <div className="right-popup-payment-wrapper" style={{width: "calc(100% - 200px)", height: "auto"}}>
+
     </div>
   )
 }
