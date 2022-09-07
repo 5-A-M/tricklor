@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { Title } from '../Account/Account'
 import NumberFormat from 'react-number-format';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
@@ -12,6 +12,8 @@ import PaidIcon from '@mui/icons-material/Paid';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import CloseIcon from '@mui/icons-material/Close';
+import axios from 'axios';
+import Cookie from "js-cookie"
 
 export const Payment= (props)=> {
   return (
@@ -95,11 +97,30 @@ const Pro2= (props)=> {
 }
 
 const PopupPayment= (props)=> {
+  const [statePayment, setStatePayment]= useState(()=> {})
+  useEffect(()=> {
+    const intervalId= setInterval(async ()=> {
+      const res= await axios({
+        url: `${SERVER_URL}/check/payment`,
+        method: "post",
+        responseType: "json",
+        data: {
+          id_user: Cookie.get("uid"),
+          balance: props.data.balance
+        }
+      })
+      const result= await res.data
+      setStatePayment(()=> result)
+    }, 3000)
+    return ()=> {
+      clearInterval(intervalId)
+    }
+  }, [props.data.balance])
   return (
     <div className="popup-payment-wrapper" style={{width: "100%", height: "100%", background: "rgba(255, 255, 255, 0.75)", position: "fixed", top: 0, left: 0, display: "flex", justifyContent: 'center', alignItems: "center"}}> 
       <div className="popup-payment" style={{width: 800, height: "auto", borderRadius: 10, background: "#fff", boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px", overflow: "hidden", padding: 10, display: "flex", justifyContent: "space-between", position: "relative"}}>
         <div onClick={()=> props.setOpen(()=> false)} style={{display: "flex", justifyContent: "center", alignItems: "center", position: "absolute", right: 0, top: 0}}>
-          <CloseIcon style={{width: 32, height: 32}} />
+          <CloseIcon style={{width: 32, height: 32, cursor: "pointer"}} />
         </div>
         <LeftPopup {...props} />
         <RightPopup {...props} />
@@ -108,7 +129,7 @@ const PopupPayment= (props)=> {
   )
 }
 
-const LeftPopup= (props)=> {
+const LeftPopup= memo((props)=> {
   return (
     <div className="left-popup-payment-wrapper" style={{width: 300, height: "auto"}}>
       <img src={props.logo} alt="open" style={{width: "100%", height: 100}} />
@@ -135,7 +156,7 @@ const LeftPopup= (props)=> {
       </div>
     </div>
   )
-}
+})
 
 const WrapIcon= (props)=> {
   return (
