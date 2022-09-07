@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import AddService from './AddService'
 import "./Content.sass"
 import Member from './Member'
@@ -9,7 +9,7 @@ import UploadProduct from './UploadProduct'
 import X from './X'
 
 const Content = (props) => {
-  const array_route= [{path: "/pass_payment", element: <PassPayment />}, {path: "/members", element: <Member />}, {path: "/stats", element: <Stats />}, {path: "/settings", element: <X />}, {path: "/add_service", element: <AddService />}, {path: "/upload_product", element: <UploadProduct />}]
+  const array_route= [{path: "/pass_payment", element: <PassPayment />}, {path: "/members", element: <Member />}, {path: "/stats", element: <Stats />}, {path: "/settings", element: <X />}, {path: "/add_service", element: <AddService />}, {path: "/upload_product", element: <UploadProduct />}, {path: "/*", element: <Navigate replace={true} to={"/admin/settings"} />}]
   return (
     <div className="content-menu" style={{display: "flex", width: "calc(100% - 300px)", minHeight: "100%", padding: 10}}>
       <Routes>

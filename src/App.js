@@ -8,15 +8,26 @@ import "./style.sass"
 import Menu from "./component/Menu/Menu"
 import Account from "./component/Account/Account"
 import History from "./component/History/History"
-import { Fragment, useEffect, useState } from "react"
+import { createContext, Fragment, useEffect, useState } from "react"
 import axios from "axios"
 import { SERVER_URL } from "./config/config"
 import Cookie from "js-cookie"
 import NotFound from "./component/Notfound/NotFound"
+import { io } from "socket.io-client"
 
+export const SocketContext= createContext()
 function App() {
   const [user, setUser]= useState(()=> {})
   const [options, setOptions]= useState(()=> {})
+  const [socketState, setSocketState]= useState()
+  const [callAgain, setCallAgain]= useState(()=> false)
+  useEffect(()=> {
+    const socket= io(`${SERVER_URL}/`, {transports: ["websocket"]})
+    setSocketState(()=> socket)
+    return ()=> {
+      socket.close()
+    }
+  }, [])
   useEffect(()=> {
     (async()=> {
       const res= await axios({
@@ -31,7 +42,7 @@ function App() {
       const result= await res.data
       setUser(()=> result)
     })()
-  }, [])
+  }, [callAgain])
   useEffect(()=> {
     (async()=> {
       const res= await axios({
@@ -45,28 +56,30 @@ function App() {
   }, [])
   return (
     <Fragment>
-      <Header {...user} {...options} />
-      <Navigation {...options} />
-      {
-        user?.login=== true &&
-        <Menu />
-      }
-      <Routes>
-        <Route path="/" element={<Home {...options} {...user?.data} />} />
-        <Route path="/check_live_uid" element={<CheckAccount title={"Check Live Uid"} is_fb={true} />} />
-        <Route path="/check_mail" element={<CheckAccount title={"Check Live HotMail - Gmail"} is_gmail={true} />} />
-        <Route path="/get_code_mail" element={<CheckAccount title={"Get Code Email"} is_get_mail={true} />} />
-        <Route path="/*" element={<NotFound />} />
+      <SocketContext.Provider value={{socketState, setCallAgain}}>
+        <Header {...user} {...options} />
+        <Navigation {...options} />
         {
           user?.login=== true &&
-          <>
-            <Route path="/account/*" element={<Account is_account={true} {...user} />} />
-            <Route path="/recharge/*" element={<Account is_recharge={true} {...user} />} />
-            <Route path="/history" element={<History {...user} />} />
-          </>
+          <Menu />
         }
-      </Routes>
-      <Footer />
+        <Routes>
+          <Route path="/" element={<Home {...options} {...user?.data} />} />
+          <Route path="/check_live_uid" element={<CheckAccount title={"Check Live Uid"} is_fb={true} />} />
+          <Route path="/check_mail" element={<CheckAccount title={"Check Live HotMail - Gmail"} is_gmail={true} />} />
+          <Route path="/get_code_mail" element={<CheckAccount title={"Get Code Email"} is_get_mail={true} />} />
+          <Route path="/*" element={<NotFound />} />
+          {
+            user?.login=== true &&
+            <>
+              <Route path="/account/*" element={<Account is_account={true} {...user} />} />
+              <Route path="/recharge/*" element={<Account is_recharge={true} {...user} {...options} />} />
+              <Route path="/history" element={<History {...user} />} />
+            </>
+          }
+        </Routes>
+        <Footer />
+      </SocketContext.Provider>
     </Fragment>
   )
 }

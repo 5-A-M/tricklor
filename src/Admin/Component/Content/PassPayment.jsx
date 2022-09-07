@@ -14,7 +14,7 @@ const PassPayment = (props) => {
         method: "post", 
         responseType: "json",
         data: {
-            account, recharge
+          account, recharge
         }
     })
     const result= await res.data

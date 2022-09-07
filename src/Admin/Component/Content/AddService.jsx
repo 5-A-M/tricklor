@@ -124,30 +124,7 @@ const AddService = (props) => {
     setAdd2(() => false);
     return console.log(result);
   };
-  const deleteService1= async (id)=> {
-    const res= await axios({
-      url: `${SERVER_URL}/edit/delete/hotmail"`,
-      method: "post",
-      responseType: "json",
-      data: {
-        id
-      }
-    })
-    const result= await res.data
-    return console.log(result)
-  }
-  const deleteService2= async (id)=> {
-    const res= await axios({
-      url: `${SERVER_URL}/edit/delete/gmail"`,
-      method: "post",
-      responseType: "json",
-      data: {
-        id
-      }
-    })
-    const result= await res.data
-    return console.log(result)
-  }
+
   return (
     <Fragment>
       <div style={{ width: "100% " }}>
@@ -175,19 +152,7 @@ const AddService = (props) => {
             </thead>
             <tbody className="tbody-table-add-service">
               {data1?.data?.map((item, key) => (
-                <tr
-                  onMouseEnter={()=> console.log()}
-                  key={item._id}
-                  className="tr-table-add-service"
-                  style={{ border: "1px solid #fff" }}
-                >
-                  <td>{item.title}</td>
-                  <td>{item.pop3}</td>
-                  <td>{item.live}</td>
-                  <td><img src={item.nation} alt="flag" style={{width: 32, height: 24, objectFit: "cover"}} /></td>
-                  <td><NumberFormat thousandSeparator={true} value={item.price} displayType={"text"} suffix={"đ"} /></td>
-                  <td><NumberFormat thousandSeparator={true} value={item.amount} displayType={"text"} /></td>
-                </tr>
+                <Tr1 key={key} {...item} />
               ))}
               {add1 === true && (
                 <tr className="tr-table-add-service">
@@ -318,18 +283,7 @@ const AddService = (props) => {
             </thead>
             <tbody className="tbody-table-add-service">
               {data2?.data?.map((item, key) => (
-                <tr
-                  key={item._id}
-                  className="tr-table-add-service"
-                  style={{ border: "1px solid #fff" }}
-                >
-                  <td>{item.title}</td>
-                  <td>{item.pop3}</td>
-                  <td>{item.live}</td>
-                  <td>{item.nation}</td>
-                  <td><NumberFormat thousandSeparator={true} value={item.price} displayType={"text"} suffix={"đ"} /></td>
-                  <td><NumberFormat thousandSeparator={true} value={item.amount} displayType={"text"} /></td>
-                </tr>
+                <Tr2 key={key} {...item} />
               ))}
               {add2 === true && (
                 <tr className="tr-table-add-service">
@@ -437,3 +391,78 @@ const AddService = (props) => {
 };
 
 export default AddService;
+
+
+const Tr1= (props)=> {
+  const [openDelete1, setOpenDelete1]= useState(()=> false)
+  const deleteService1= async (id)=> {
+    const res= await axios({
+      url: `${SERVER_URL}/edit/delete/hotmail`,
+      method: "post",
+      responseType: "json",
+      data: {
+        id: props.id
+      }
+    })
+    const result= await res.data
+    return console.log(result)
+  }
+  return (
+    <tr
+      onMouseEnter={()=> setOpenDelete1(()=> true)}
+      onMouseLeave={()=> setOpenDelete1(()=> false)}
+      key={props._id}
+      className="tr-table-add-service"
+      style={{ border: "1px solid #fff", position: "relative" }}
+    >
+      <td>{props.title}</td>
+      <td>{props.pop3}</td>
+      <td>{props.live}</td>
+      <td><img src={props.nation} alt="flag" style={{width: 32, height: 24, objectFit: "cover"}} /></td>
+      <td><NumberFormat thousandSeparator={true} value={props.price} displayType={"text"} suffix={"đ"} /></td>
+      <td><NumberFormat thousandSeparator={true} value={props.amount} displayType={"text"} /></td>
+      {
+        openDelete1=== true && <div style={{height: "100%", position: 'absolute', top: 0, right: "100%"}}>
+          <button onClick={()=> deleteService1()} style={{padding: "0 16px", color: "#fff", background: "red", cursor: "pointer", height :"100%", border: 'none', outline: 'none', borderRadius: "80px"}}>Xóa</button>
+        </div>
+      }
+    </tr>
+  )
+}
+
+const Tr2= (props)=> {
+  const [openDelete1, setOpenDelete1]= useState(()=> false)
+  const deleteService1= async (id)=> {
+    const res= await axios({
+      url: `${SERVER_URL}/edit/delete/gmail`,
+      method: "post",
+      responseType: "json",
+      data: {
+        id: props.id
+      }
+    })
+    const result= await res.data
+    return console.log(result)
+  }
+  return (
+    <tr
+      onMouseEnter={()=> setOpenDelete1(()=> true)}
+      onMouseLeave={()=> setOpenDelete1(()=> false)}
+      key={props._id}
+      className="tr-table-add-service"
+      style={{ border: "1px solid #fff", position: "relative" }}
+    >
+      <td>{props.title}</td>
+      <td>{props.pop3}</td>
+      <td>{props.live}</td>
+      <td><img src={props.nation} alt="flag" style={{width: 32, height: 24, objectFit: "cover"}} /></td>
+      <td><NumberFormat thousandSeparator={true} value={props.price} displayType={"text"} suffix={"đ"} /></td>
+      <td><NumberFormat thousandSeparator={true} value={props.amount} displayType={"text"} /></td>
+      {
+        openDelete1=== true && <div style={{height: "100%", position: 'absolute', top: 0, right: "100%"}}>
+          <button onClick={()=> deleteService1()} style={{padding: "0 16px", color: "#fff", background: "red", cursor: "pointer", height :"100%", border: 'none', outline: 'none', borderRadius: "80px"}}>Xóa</button>
+        </div>
+      }
+    </tr>
+  )
+}

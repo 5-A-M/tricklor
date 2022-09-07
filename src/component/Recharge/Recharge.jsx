@@ -1,14 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Title } from '../Account/Account'
 import NumberFormat from 'react-number-format';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import "./Recharge.sass"
+// import axios from 'axios';
+import { SERVER_URL } from '../../config/config';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import PersonIcon from '@mui/icons-material/Person';
+import PaidIcon from '@mui/icons-material/Paid';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import CloseIcon from '@mui/icons-material/Close';
 
 export const Payment= (props)=> {
   return (
     <div className="payment" >
-      <Title info={<div>Nạp tiền thông qua ngân hàng <span style={{fontSize: 30}}>VIETCOMBANK</span></div>} />
-      <MainPayment />
+      <Title info={<div>Nạp tiền thông qua ngân hàng <span style={{fontSize: 30, textTransform: "uppercase"}}>{props?.name_bank}</span></div>} />
+      <MainPayment {...props} />
     </div>
   )
 }
@@ -17,8 +26,8 @@ export const Payment= (props)=> {
 const MainPayment= (props)=> {
   return (
     <div className="main-payment">
-      <LogoBanking logo={"https://dongvanfb.com/_nuxt/vcb-lg.b14cf53f.png"} />
-      <ProBanking />
+      <LogoBanking logo={props.logo_bank} />
+      <ProBanking {...props} />
     </div>
   )
 }
@@ -34,10 +43,11 @@ const LogoBanking= (props)=> {
 }
 
 const ProBanking= (props)=> {
+  const [amount, setAmount]= useState(0)
   return (
     <div className="pro-banking-main-payment">
-      <Pro1 />
-      <Pro2 />
+      <Pro1 setAmount={setAmount} />
+      <Pro2 {...props} setAmount={setAmount} amount={amount} />
       <PromotionTable />
       <ContactSupport />
     </div>
@@ -49,7 +59,7 @@ const Pro1= (props)=> {
     <div className="pro-1-banking-main-payment">
       <span className="pro-1-banking-main-payment-span">Nhập số tiền cần nạp: </span>
       <div className="pro-1-banking-main-payment-div">
-        <NumberFormat thousandSeparator={true} displayType={"input"} placeholder={"Nhập số tiền cần nạp"} className="pro-1-banking-main-payment-div-inp" />
+        <NumberFormat onValueChange={(e)=> props.setAmount(parseInt(e.value))} thousandSeparator={true} displayType={"input"} placeholder={"Nhập số tiền cần nạp"} className="pro-1-banking-main-payment-div-inp" />
         <div className="pro-1-banking-main-payment-div-div">VND</div>
       </div>
     </div>
@@ -57,12 +67,29 @@ const Pro1= (props)=> {
 }
 
 const Pro2= (props)=> {
+  // const preparePayment= async ()=> {
+  //   const res= await axios({
+  //     url: `${SERVER_URL}/create_payment_url`,
+  //     method: "post",
+  //     responseType: "json",
+  //     data: {
+  //       amount: props.amount,
+  //       bankCode: "MB",
+  //       orderDescription: "Nap tien"
+  //     }
+  //   })
+  //   const result= await res.data
+  //   return console.log(result)
+  // }
+  const [open, setOpen]= useState(()=> false)
   return (
-    <div className="button-payment">
-      <button className="button-payment-main">
+    <div className="button-payment" style={{position: "relative"}}>
+      <button disabled={parseInt(props.amount) <=0 || isNaN(props.amount) ? true : false} style={{opacity: parseInt(props.amount) <=0 || isNaN(props.amount) ? 0.5 : 1, cursor: parseInt(props.amount) <=0 || isNaN(props.amount) ? "not-allowed" : "pointer"}} title={parseInt(props.amount) <= 0 || isNaN(props.amount) ? "Vui lòng nhập giá tiền hợp lệ" : "Thanh toán"} onClick={()=> setOpen((prev)=> !prev)} className="button-payment-main">
         Thanh toán
       </button>
-
+      {
+        open=== true && <PopupPayment setOpen={setOpen} {...props} />
+      }
     </div>
   )
 }
@@ -70,8 +97,12 @@ const Pro2= (props)=> {
 const PopupPayment= (props)=> {
   return (
     <div className="popup-payment-wrapper" style={{width: "100%", height: "100%", background: "rgba(255, 255, 255, 0.75)", position: "fixed", top: 0, left: 0, display: "flex", justifyContent: 'center', alignItems: "center"}}> 
-      <div className="popup-payment" style={{width: 800, height: "auto", borderRadius: 10, background: "#fff", boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"}}>
-        
+      <div className="popup-payment" style={{width: 800, height: "auto", borderRadius: 10, background: "#fff", boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px", overflow: "hidden", padding: 10, display: "flex", justifyContent: "space-between", position: "relative"}}>
+        <div onClick={()=> props.setOpen(()=> false)} style={{display: "flex", justifyContent: "center", alignItems: "center", position: "absolute", right: 0, top: 0}}>
+          <CloseIcon style={{width: 32, height: 32}} />
+        </div>
+        <LeftPopup {...props} />
+        <RightPopup {...props} />
       </div>
     </div>
   )
@@ -79,16 +110,46 @@ const PopupPayment= (props)=> {
 
 const LeftPopup= (props)=> {
   return (
-    <div className="left-popup-payment-wrapper" style={{width: 200, height: "auto"}}>
-      
+    <div className="left-popup-payment-wrapper" style={{width: 300, height: "auto"}}>
+      <img src={props.logo} alt="open" style={{width: "100%", height: 100}} />
+      <div className="" style={{ margin: "16px 0"}}>
+        <strong style={{fontSize: 20, fontWeight: 600, textTransform: "uppercase", textAlign: "center"}}>Thông tin nạp tiền</strong>
+      </div>
+      <div style={{padding: "16px 0",width: "100%", paddingBottom: "5px", borderBottom: "1px solid #e7e7e7", display: "flex", alignItems: "center", gap: 10}}>
+        <WrapIcon icon={<AccountBalanceIcon style={{color: "#04a468"}}/>} /><div>Ngân hàng: <strong >{props.name_bank}</strong></div>
+      </div>
+      <div style={{padding: "16px 0",width: "100%", paddingBottom: "5px", borderBottom: "1px solid #e7e7e7", display: "flex", alignItems: "center", gap: 10}}>
+        <WrapIcon icon={<CreditCardIcon style={{color: "#04a468"}}/>} /><div>Số tài khoản: <strong >{props.bank_account}</strong></div>
+      </div>
+      <div style={{padding: "16px 0",width: "100%", paddingBottom: "5px", borderBottom: "1px solid #e7e7e7", display: "flex", alignItems: "center", gap: 10}}>
+        <WrapIcon icon={<PersonIcon style={{color: "#04a468"}}/>} /><div>Chủ tài khoản: <strong >{props.name_bank_account}</strong></div>
+      </div>
+      <div style={{padding: "16px 0",width: "100%", paddingBottom: "5px", borderBottom: "1px solid #e7e7e7", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap"}}>
+        <WrapIcon icon={<PaidIcon style={{color: "#04a468"}}/>} /><div>Số tiền cần thanh toán: <strong ><NumberFormat thousandSeparator={true} suffix={"đ"} value={props.amount} displayType={"text"} /></strong></div>
+      </div>
+      <div style={{padding: "16px 0",width: "100%", paddingBottom: "5px", borderBottom: "1px solid #e7e7e7", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap"}}>
+        <WrapIcon icon={<ChatBubbleIcon style={{color: "#04a468"}}/>} /><div>Nội dung chuyển khoản: <strong >{props.data.account}</strong></div>
+      </div>
+      <div style={{padding: "16px 0",width: "100%", paddingBottom: "5px", borderBottom: "1px solid #e7e7e7", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap"}}>
+        <WrapIcon icon={<NotificationsIcon style={{color: "#04a468"}}/>} /><div>Trạng thái: <strong >Đang chờ thanh toán</strong></div>
+      </div>
     </div>
+  )
+}
+
+const WrapIcon= (props)=> {
+  return (
+    <div style={{width: 16, height: 16, display: "flex", justifyContent: "center", alignItems: "center"}}>{props.icon}</div>
   )
 }
 
 const RightPopup= (props)=> {
   return (
-    <div className="right-popup-payment-wrapper" style={{width: "calc(100% - 200px)", height: "auto"}}>
-
+    <div className="right-popup-payment-wrapper" style={{width: "calc(100% - 300px)", height: "auto"}}>
+      <div className={""} style={{fontSize: 24, fontWeight: 600, textAlign: "center"}}>Quét mã Qr để thanh toán</div>
+      <div style={{margin: "16px 0"}}>
+        <img src={`https://img.vietqr.io/image/${props.name_bank}-${props.bank_account}-compact2.jpg?accountName=${props.name_bank_account}&amount=${props.amount}&addInfo=${props.data.account}`} alt="open" />
+      </div>
     </div>
   )
 }

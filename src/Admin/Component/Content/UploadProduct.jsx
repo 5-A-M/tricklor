@@ -68,7 +68,6 @@ const UploadProduct = (props) => {
       <br />
       <div style={{ position: "relative" }}>
         <input
-        
           onChange={(e) => handleFile(e)}
           type="file"
           title={""}

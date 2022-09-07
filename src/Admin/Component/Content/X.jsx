@@ -24,6 +24,8 @@ const X = (props) => {
   const [bankAccount, setBankAccount]= useState(()=> "")
   const [nameBankAccount, setNameBankAccount]= useState(()=> "")
   const [bank, setBank]= useState(()=> "")
+  const [logoBank, setLogoBank]= useState(()=> "")
+  const [nameBank, setNameBank]= useState(()=> "")
   const [message, setMessage]= useState(()=> "")
   const [state, setState]= useState(()=> false)
   useEffect(()=> {
@@ -35,13 +37,14 @@ const X = (props) => {
     setBank(()=> data?.name_bank)
     setBankAccount(()=> data?.bank_account)
     setNameBankAccount(()=> data?.name_bank_account)
+    
   }, [data])
   const update_admin_option= async ()=> {
     const res= await axios({
         url: `${SERVER_URL}/update/admin_option`,
         method: "post",
         data: {
-            title, banner, logo, hotline, email, bank, nameBankAccount, bankAccount
+            title, banner, logo, hotline, email, bank, nameBankAccount, bankAccount, logoBank, nameBank
         },
         responseType: "json"
     })
@@ -66,7 +69,7 @@ const X = (props) => {
         <CommonX title={"Email: "} content={email} onChange={setEmail} />
         <CommonX title={"Số tài khoản: "} content={bankAccount} onChange={setBankAccount} />
         <CommonX title={"Chủ tài khoản: "} content={nameBankAccount} onChange={setNameBankAccount} />
-        <CommonX title={"Ngân hàng: "} content={bank} onChange={setBank} is_bank={true} />
+        <CommonX title={"Ngân hàng: "} content={bank} onChange={setBank} onChange2={setLogoBank} is_bank={true} onChange3={setNameBank} />
         <div className="message-update-success" style={{margin: "16px 0", fontSize: 14, color: state=== true ? "green" : "red"}}>{message}</div>
         <div className="settings-admin-button" style={{marginTop: 16, display: "flex", justifyContent: "center", alignItems: 'center'}}>
             <button onClick={()=> update_admin_option()} className="settings-admin-button-main" style={{width: 200, height: 40, borderRadius: 80, fontSize: 18, fontWeight: 600, background: "#2e89ff", color: "#fff", border: "none", outline: "none", cursor: "pointer"}}>Cập nhật</button>
@@ -561,16 +564,21 @@ const Content1= (props)=> {
         logo: "https://api.vietqr.io/img/COOPBANK.16fc2602.png",
         vietqr: 0
     }], [])
+    const findLogo= (e)=> {
+        const a= array_bank.filter(item=> item.code === e.target.value)
+        props.onChange2(()=> a?.[0]?.logo)
+        props.onChange3(()=> a?.[0]?.short_name)
+    }
     return (
         <div className="component-settings-admin-content" style={{height: 50, maxWidth: "100%", width: "100%", textOverflow: "ellipsis", overflow: "hidden", border: "1px solid #e7e7e7", display: "flex", alignItems: 'center', padding: 5}}>
             {
                 props.is_bank !== true && <input onChange={(e)=> props.onChange(e.target.value)} type="text" className="component-settings-admin-content-x" style={{width: "100%", height: "100%", border: "none", outline: "none", background: "transparent", color: "#fff", fontSize: 18}} value={props.content} />
             }
             {
-                props.is_bank=== true && <select value={props.value} onChange={(e)=> props.onChange(e.target.value)} className="select-bank" style={{width: "100%", height: "100%", color: "#fff", background: "transparent", border: "none", outline: "none", fontSize: 18}}>
+                props.is_bank=== true && <select value={props.value} onChange={(e)=> {props.onChange(e.target.value);findLogo(e)}} className="select-bank" style={{width: "100%", height: "100%", color: "#fff", background: "transparent", border: "none", outline: "none", fontSize: 18}}>
                     {
-                        array_bank.map((item, key)=> <option key={item.id} className="option-bank" value={item.code} style={{color: "#000"}}>
-                            <img src={item.logo} alt="open" className="option-bank-img" style={{width: 24, aspectRatio: "831 / 311"}} /><span style={{color: "#000"}}>{item.name}</span>
+                        array_bank.map((item, key)=> <option key={item.id} className="option-bank" value={item.code} data-logo={item.logo} style={{color: "#000"}}>
+                            <img src={item.logo} alt="open" className="option-bank-img" style={{width: 24, aspectRatio: "831 / 311"}} /><span style={{color: "#000"}}>{item.name} ({item.code})</span>
                         </option>)
                     }
                 </select>

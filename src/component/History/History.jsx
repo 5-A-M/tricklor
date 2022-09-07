@@ -1,13 +1,33 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { SERVER_URL } from '../../config/config'
+import Cookie from "js-cookie"
 import "./History.sass"
+import NumberFormat from 'react-number-format'
+import moment from "moment"
 
 const History = (props) => {
+  const [history, setHistory]= useState(()=> [])
+  useEffect(()=> {
+    (async()=> {
+        const res= await axios({
+            url: `${SERVER_URL}/history`,
+            method: "get",
+            responseType: "json",
+            params: {
+                id_user: Cookie.get("uid")
+            }
+        })
+        const result= await res.data
+        setHistory(()=> result.data)
+    })()
+  }, [])
   return (
     <div className="wrapper-history-transfer">
         <div className="history-transfer">
             <table className="history-transfer-table" cellSpacing={0}   >
                 <Header />
-                <Body />
+                <Body history={history} />
             </table>
         </div>
     </div>
@@ -31,22 +51,18 @@ const Header= (props)=> {
 const Body= (props)=> {
     return (
         <tbody className="wrapper-history-transfer-body">
+            {
+                props?.history?.map((item, key)=> <tr key={item.code_receipt}>
+                <td>{item.code_receipt}</td>
+                <td className="wrapper-history-transfer-header-td-2" style={{color: parseInt(item.amount) < 0 ? "red" : "#1fa64d"}}><NumberFormat thousandSeparator={true} displayType={"text"} value={item.amount} suffix={"đ"} /></td>
+                <td className="wrapper-history-transfer-header-td-3">{item.state=== true ? "Thành công" : "Thất bại"}</td>
+                <td>{item.note}</td>
+                <td>{moment(item.time).format("YYYY-MM-DD HH:mm:ss")}</td>
+            </tr>)
+            }
+           
             <tr>
-                <td>AYAPZRDB5N</td>
-                <td className="wrapper-history-transfer-header-td-2">1.000đ</td>
-                <td className="wrapper-history-transfer-header-td-3">Thành công</td>
-                <td>Nạp tiền qua VIETCOMBANK</td>
-                <td>2022-09-03 21:14:08</td>
-            </tr>
-            <tr>
-                <td>AYAPZRDB5N</td>
-                <td className="wrapper-history-transfer-header-td-2">1.000đ</td>
-                <td className="wrapper-history-transfer-header-td-3">Thành công</td>
-                <td>Nạp tiền qua VIETCOMBANK</td>
-                <td>2022-09-03 21:14:08</td>
-            </tr>
-            <tr>
-                <td><section style={{float: "left", fontSize: 16, fontWeight: 600}}>Tổng: 2 Giao dịch</section></td>
+                <td><section style={{float: "left", fontSize: 16, fontWeight: 600}}>Tổng: {props?.history?.length} Giao dịch</section></td>
                 <td className="wrapper-history-transfer-header-td-2"></td>
                 <td className="wrapper-history-transfer-header-td-3"></td>
                 <td></td>

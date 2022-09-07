@@ -21,7 +21,7 @@ const Account = (props) => {
 
 const Left= (props)=> {
   const array_link_account= [{text: "Thông tin cá nhân", icon: <PersonIcon />, link: "/info"}, {text: "Two-Factor Authentication (2FA)", icon: <LockIcon />, link: "/2fa"}, {text: "Đổi mật khẩu", icon: <VpnKeyIcon />, link: "/change_password"}]
-  const array_link_recharge= [{text: "VIETCOMBANK", icon: "https://dongvanfb.com/_nuxt/vcb.144038a5.png", link: "/channel_1", typeIcon: "img"}]
+  const array_link_recharge= [{text: props.name_bank, icon: "https://dongvanfb.com/_nuxt/vcb.144038a5.png", link: "/channel_1", typeIcon: "img"}]
   return (
     <div className="left-side-account">
 
