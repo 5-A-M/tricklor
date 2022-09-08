@@ -4,8 +4,10 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import "./hover-effect.sass"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
+import "./responsive.sass"
 const App= lazy(()=> import("./App"))
 const Admin= lazy(()=> import("./Admin/Admin"))
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

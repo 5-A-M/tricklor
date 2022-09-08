@@ -170,6 +170,7 @@ const RightPopup= (props)=> {
       <div className={""} style={{fontSize: 24, fontWeight: 600, textAlign: "center"}}>Quét mã Qr để thanh toán</div>
       <div style={{margin: "16px 0"}}>
         <img src={`https://img.vietqr.io/image/${props.name_bank}-${props.bank_account}-compact2.jpg?accountName=${props.name_bank_account}&amount=${props.amount}&addInfo=${props.data.account}`} alt="open" />
+      
       </div>
     </div>
   )
