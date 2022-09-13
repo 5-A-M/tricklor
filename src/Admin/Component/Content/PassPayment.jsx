@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios"
 import { SERVER_URL } from "../../../config/config";
 import { Button } from "@mui/material";
+import Cookie from "js-cookie"
 
 const PassPayment = (props) => {
   const [account, setAccount]= useState(()=> "")
@@ -12,13 +13,14 @@ const PassPayment = (props) => {
   const [checkAccount, setCheckAccount]= useState(()=> false)
   const [message1, setMessage1]= useState(()=> "")
   const [balanceUser, setBalanceUser]= useState(()=> 0)
+  const [idUser, setIdUser]= useState(()=> "")
   const rechargeManual= async ()=> {
     const res= await axios({
       url: `${SERVER_URL}/recharge/manual`,
       method: "post", 
       responseType: "json",
       data: {
-        account, recharge, balance: balanceUser
+        account, recharge, balance: balanceUser, id_user: idUser
       }
     })
     const result= await res.data
@@ -51,7 +53,8 @@ const PassPayment = (props) => {
     if(result.exist=== true) {
       setMessage1(()=> "")
       setCheckAccount(()=> true)
-      setBalanceUser(()=> parseInt(result.data))
+      setBalanceUser(()=> parseInt(result?.data?.balance))
+      setIdUser(()=> (result?.data?.id_user))
     }
     else {
       setCheckAccount(()=> false)

@@ -5,6 +5,10 @@ import Cookie from "js-cookie"
 import "./History.sass"
 import NumberFormat from 'react-number-format'
 import moment from "moment"
+import { Button } from '@mui/material'
+import { lazy } from 'react'
+
+const DetailOrder= lazy(()=> import("./DetailOrder"))
 
 const History = (props) => {
   const [history, setHistory]= useState(()=> [])
@@ -43,12 +47,17 @@ const Header= (props)=> {
                 <th>trạng thái</th>
                 <th>ghi chú</th>
                 <th>ngày</th>
+                <th></th>
             </tr>
         </thead>
     )
 }
 
 const Body= (props)=> {
+    const [open, setOpen]= useState(()=> false)
+    const handleClose= ()=> {
+        setOpen(()=> false)
+    }
     return (
         <tbody className="wrapper-history-transfer-body">
             {
@@ -58,9 +67,10 @@ const Body= (props)=> {
                 <td className="wrapper-history-transfer-header-td-3">{item.state=== true ? "Thành công" : "Thất bại"}</td>
                 <td>{item.note}</td>
                 <td>{moment(item.time).format("YYYY-MM-DD HH:mm:ss")}</td>
+                <td><Button onClick={()=> setOpen(()=> true)} variant={"contained"}>Chi tiết</Button></td>
             </tr>)
             }
-           
+            <DetailOrder open={open} handleClose={handleClose} />
             <tr>
                 <td><section style={{float: "left", fontSize: 16, fontWeight: 600}}>Tổng: {props?.history?.length} Giao dịch</section></td>
                 <td className="wrapper-history-transfer-header-td-2"></td>
@@ -68,8 +78,12 @@ const Body= (props)=> {
                 <td></td>
                 <td><section style={{width: 32, height: 32, background: "#49b66e", display: "flex", justifyContent: 'center', alignItems: "center", color: "#fff", float: "right"}}>1</section></td>
             </tr>
+            
         </tbody>
     )
 }
 
+
+
 export default History
+

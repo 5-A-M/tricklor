@@ -5,10 +5,12 @@ import Right from './Right/Right'
 
 const Header = (props) => {
   return (
+  <div className="wrapper-header">
     <div className="header">
       <Left {...props} />
       <Right {...props} />
     </div>
+  </div>
   )
 }
 

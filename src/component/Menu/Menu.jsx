@@ -22,7 +22,7 @@ const ComponentLink= (props)=> {
     const logout= ()=> {
         Cookie.remove("sid")
         Cookie.remove("uid")
-        window.location.reload()
+        window.location.href= window.location.origin
     }
     return (
         <>  

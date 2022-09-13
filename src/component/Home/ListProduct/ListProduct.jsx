@@ -68,7 +68,7 @@ const Tr= (props) => {
             <Td icon={array_body.nation} text={!validUrl.isUri(array_body.nation) ? true : false} />
             <Td text={array_body.price} />
             <Td text={array_body.amount} />
-            <Td balance={props.balance} promotion={props.promotion} button={"Mua"} price={parseInt(array_body.price.replace("đ", ""))} name={array_body.title} />
+            <Td balance={props?.balance} promotion={props?.promotion} button={"Mua"} price={parseInt(array_body?.price?.replace("đ", ""))} name={array_body?.title} />
         </tr>
     )
 }

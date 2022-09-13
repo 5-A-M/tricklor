@@ -1,6 +1,7 @@
 import { Button, TextField } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { SERVER_URL } from "../config/config";
 import "./Admin.sass";
 import Content from "./Component/Content/Content";
@@ -9,6 +10,9 @@ import Menu from "./Component/Menu/Menu";
 const Admin = (props) => {
   return (
     <div className="admin-page">
+      <Helmet>
+        <title>Admin</title>
+      </Helmet>
       {sessionStorage.getItem("ld") === "true" ? (
         <>
           <Menu />

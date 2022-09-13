@@ -5,9 +5,11 @@ import Right from './Right/Right'
 
 const Navigation = (props) => {
   return (
-    <div className="navigation">
-      <Left {...props} />
-      <Right {...props} />
+    <div className="wrapper-navigation" style={{width: "100%", display: "flex", justifyContent: 'center', alignItems: "center"}}>
+      <div className="navigation">
+        <Left {...props} />
+        <Right {...props} />
+      </div>
     </div>
   )
 }

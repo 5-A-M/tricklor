@@ -48,7 +48,7 @@ const Home = (props) => {
       });
       const result = await res.data;
       return setData1(() => result.data);
-    }, 3000);
+    }, 5000);
     return () => {
       clearInterval(intervalId);
     };
@@ -61,9 +61,9 @@ const Home = (props) => {
         method: "get",
         responseType: "json",
       });
-      const result = await res.data;
-      return setData2(() => result.data);
-    }, 3000);
+      const result2 = await res.data;
+      return setData2(() => result2.data);
+    }, 5000);
     return () => {
       clearInterval(intervalId);
     };
@@ -78,7 +78,6 @@ const Home = (props) => {
         <ListProduct
           balance={props.balance}
           promotion={props.promotion}
-
           array_header={[
             {
               text: "Hotmail + Outlook (Để dễ mở khóa Hotmail Mọi người nên Download full info mail)",

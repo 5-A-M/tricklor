@@ -6,6 +6,7 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import UploadIcon from '@mui/icons-material/Upload';
+import DangerousIcon from '@mui/icons-material/Dangerous';
 import "./Menu.sass"
 
 const Menu = (props) => {
@@ -14,7 +15,8 @@ const Menu = (props) => {
     {text: "Thành viên", icon: <PersonOutlineOutlinedIcon />, link: "/members"},
     {text: "Thống kê", icon: <BarChartOutlinedIcon />, link: "/stats"},
     {text: "Thêm dịch vụ", icon: <AddIcon />, link: "/add_service"},
-    {text: "Đăng sản phẩm", icon: <UploadIcon />, link: "/upload_product"}
+    {text: "Đăng sản phẩm", icon: <UploadIcon />, link: "/upload_product"},
+    {text: "Danger zone", icon: <DangerousIcon />, link: "/danger_zone"}
     ]
   return (
     <div className="menu-admin" style={{width: 300, height: "100%"}}>

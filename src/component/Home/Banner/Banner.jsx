@@ -1,14 +1,28 @@
-import React from 'react'
+import React, { Fragment, useState } from 'react'
 import "./Banner.sass"
 import CampaignIcon from '@mui/icons-material/Campaign';
 
 const Banner = (props) => {
   return (
-    <div className="banner-home" style={{backgroundImage: `url(${props.banner})`}}>
-      <Discount {...props} />
-      <Support {...props} />
-    </div>
+    <Fragment>        
+        <div className="banner-home" style={{position: "relative"}}>
+        <PhoneyBackground src={props.banner} />
+        <Discount {...props} />
+        <Support {...props} />
+        </div>
+    </Fragment>
   )
+}
+
+const PhoneyBackground= (props)=> {
+    const [status, setStatus]= useState(()=> false)
+    return (
+        <div className={"phoney-background"} style={{position: "absolute", width: "100%", height: "100%", top: 0, left: 0}}>
+            {
+               <img alt={"open"} src={props.src} onLoad={()=> setStatus(()=> true)} style={{width: "100%", height: "100%", objectFit: "cover", display: status=== true ? "block" : "none"}} />
+            }
+        </div>
+    )
 }
 
 // const SubBanner = (props) => {

@@ -124,23 +124,27 @@ const AddService = (props) => {
     setAdd2(() => false);
     return console.log(result);
   };
+  const [addColumn1, setAddColumn1]= useState(()=> false)
+  const [addColumn2, setAddColumn2]= useState(()=> false)
 
   return (
     <Fragment>
       <div style={{ width: "100% " }}>
         <div className="add-service" style={{ width: "100%" }}>
           <div style={{ fontSize: 20, margin: "16px 0" }}>
-            Dịch vụ Hotmail + Outlook
           </div>
+            Dịch vụ Hotmail + Outlook
+            {/* &nbsp;<span style={{padding: "10px 30px", borderRadius: 80, color: "#fff", background: "#2e89ff", cursor: "pointer"}}>Xóa</span> */}
           <table
             cellSpacing={0}
             className="table-add-service"
             style={{ width: "100%", border: "1px solid #fff" }}
           >
-            <thead className="thead-table-add-service">
+            <thead className="thead-table-add-service" onMouseEnter={()=> setAddColumn1(()=> true)} onMouseLeave={()=> setAddColumn1(()=> false)}>
               <tr
                 className="tr-table-add-service"
                 style={{ border: "1px solid #fff" }}
+
               >
                 <th>Hotmail + Outlook</th>
                 <th>Pop3</th>
@@ -268,10 +272,10 @@ const AddService = (props) => {
             className="table-add-service"
             style={{ width: "100%", border: "1px solid #fff" }}
           >
-            <thead className="thead-table-add-service">
+            <thead className="thead-table-add-service" onMouseEnter={()=> setAddColumn2(()=> true)} onMouseLeave={()=> setAddColumn2(()=> false)}>
               <tr
                 className="tr-table-add-service"
-                style={{ border: "1px solid #fff" }}
+                style={{ border: "1px solid #fff", position: "relative" }}
               >
                 <th>Gmail</th>
                 <th>Pop3</th>
@@ -279,6 +283,9 @@ const AddService = (props) => {
                 <th>Quốc gia</th>
                 <th>Giá</th>
                 <th>Số lượng</th>
+                {
+                  addColumn2=== true && <div style={{position: "absolute", right: "100%", top: 0, color: "#fff", background: "#2e89ff", padding: "0 10px", borderRadius: 80, cursor: "pointer", whiteSpace: "nowrap", height: "100%"}}>Thêm cột</div>
+                }
               </tr>
             </thead>
             <tbody className="tbody-table-add-service">
@@ -384,6 +391,11 @@ const AddService = (props) => {
             </button>
           )}
         </div>
+        <br />
+        <br />
+        <br />
+
+        <AddItem />
       </div>
       <Alert duration={3000} message={"Cập nhật thành công"} open={alert} />
     </Fragment>
@@ -422,8 +434,9 @@ const Tr1= (props)=> {
       <td><NumberFormat thousandSeparator={true} value={props.price} displayType={"text"} suffix={"đ"} /></td>
       <td><NumberFormat thousandSeparator={true} value={props.amount} displayType={"text"} /></td>
       {
-        openDelete1=== true && <div style={{height: "100%", position: 'absolute', top: 0, right: "100%"}}>
+        openDelete1=== true && <div style={{height: "100%", position: 'absolute', top: 0, right: "100%", display: "flex", justifyContent: "center", alignItems: 'center', gap: 16}}>
           <button onClick={()=> deleteService1()} style={{padding: "0 16px", color: "#fff", background: "red", cursor: "pointer", height :"100%", border: 'none', outline: 'none', borderRadius: "80px"}}>Xóa</button>
+          {/* <button onClick={()=> deleteService1()} style={{padding: "0 16px", color: "#fff", background: "#2e89ff", cursor: "pointer", height :"100%", border: 'none', outline: 'none', borderRadius: "80px", whiteSpace: 'nowrap'}}>Thêm cột</button> */}
         </div>
       }
     </tr>
@@ -458,11 +471,30 @@ const Tr2= (props)=> {
       <td><img src={props.nation} alt="flag" style={{width: 32, height: 24, objectFit: "cover"}} /></td>
       <td><NumberFormat thousandSeparator={true} value={props.price} displayType={"text"} suffix={"đ"} /></td>
       <td><NumberFormat thousandSeparator={true} value={props.amount} displayType={"text"} /></td>
+      
       {
-        openDelete1=== true && <div style={{height: "100%", position: 'absolute', top: 0, right: "100%"}}>
+        openDelete1=== true && <div style={{height: "100%", position: 'absolute', top: 0, right: "100%", display: "flex", justifyContent: "center", alignItems: 'center'}}>
           <button onClick={()=> deleteService1()} style={{padding: "0 16px", color: "#fff", background: "red", cursor: "pointer", height :"100%", border: 'none', outline: 'none', borderRadius: "80px"}}>Xóa</button>
+          {/* <button onClick={()=> deleteService1()} style={{padding: "0 16px", color: "#fff", background: "#2e89ff", cursor: "pointer", height :"100%", border: 'none', outline: 'none', borderRadius: "80px", whiteSpace: 'nowrap'}}>Thêm cột</button> */}
         </div>
       }
     </tr>
+  )
+}
+
+const AddItem= (props)=> {
+  const [open, setOpen]= useState(()=> false)
+  return (
+    <div style={{width: "100%"}}>
+      <button onClick={()=> setOpen((prev)=> !prev)} style={{padding: "10px 30px", backgroundColor: "#2e89ff", borderRadius: 80, fontWeight: 600, color: "#fff", cursor: "pointer"}}>{open=== false ? "Thêm dịch vụ" : "hủy"}</button>
+      <br />
+      <br />
+      <br />
+      {
+        open=== true && <div>
+          <div>Nhập dịch vụ:&nbsp;&nbsp;<input type="text" placeholder="Nhập dịch vụ VD: Clone Facebook" style={{height: 40, fontSize: 18, width: 400}}/></div>
+        </div>
+      }
+    </div>
   )
 }
