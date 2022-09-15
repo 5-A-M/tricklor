@@ -15,13 +15,13 @@ import { io } from "socket.io-client"
 import BackgroundSide from "./BackgroundSide/BackgroundSide"
 import { Helmet } from "react-helmet-async"
 import { lazy, Suspense } from "react"
-// import Auth from "./Auth/Auth"
+import Auth from "./Auth/Auth"
 import VerifyEmail from "./VerifyEmail/VerifyEmail"
 const CheckAccount= lazy(()=> import("./component/CheckAccount/CheckAccount"))
 const NotificationAdmin= lazy(()=> import("./NotificationAdmin/NotificationAdmin"))
 const Account= lazy(()=> import("./component/Account/Account"))
 const History= lazy(()=> import("./component/History/History"))
-const Auth= lazy(()=> import("./Auth/Auth"))
+// const Auth= lazy(()=> import("./Auth/Auth"))
 
 export const SocketContext= createContext()
 function App() {
@@ -85,7 +85,7 @@ function App() {
           <Route path="/check_mail" element={<Suspense fallback={<></>}><CheckAccount title={"Check Live HotMail - Gmail"} is_gmail={true} /></Suspense>} />
           <Route path="/get_code_mail" element={<Suspense fallback={<></>}><CheckAccount title={"Get Code Email"} is_get_mail={true} /></Suspense>} />
           <Route path="/*" element={<Suspense fallback={<></>}><NotFound /></Suspense>} />
-          <Route path="/auth" element={<Auth {...user} />} />
+          <Route path="/auth" element={<Auth socketState={socketState} {...user} />} />
           {
             user?.login=== true &&
             <>
