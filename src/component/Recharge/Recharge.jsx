@@ -14,6 +14,9 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import Cookie from "js-cookie"
+import NotesIcon from '@mui/icons-material/Notes';
+import { CircularProgress } from '@mui/material';
+import DoneIcon from '@mui/icons-material/Done';
 
 export const Payment= (props)=> {
   return (
@@ -97,25 +100,43 @@ const Pro2= (props)=> {
 }
 
 const PopupPayment= (props)=> {
+  useEffect(()=> {
+    const timeoutId= setTimeout(()=> {
+      props.setOpen(()=> false)
+    }, 1000 * 600)
+    return ()=> {
+      clearTimeout(timeoutId)
+    }
+  }, [])
   const [statePayment, setStatePayment]= useState(()=> {})
   useEffect(()=> {
-    const intervalId= setInterval(async ()=> {
-      const res= await axios({
-        url: `${SERVER_URL}/check/payment`,
-        method: "post",
-        responseType: "json",
-        data: {
-          id_user: Cookie.get("uid"),
-          balance: props.data.balance
+    if(statePayment.status=== false) {
+      const intervalId= setInterval(async ()=> {
+        const res= await axios({
+          url: `${SERVER_URL}/check/payment`,
+          method: "post",
+          responseType: "json",
+          data: {
+            id_user: Cookie.get("uid"),
+            balance: parseInt(props.data.balance),
+            content: props.data.account,
+            recharge: parseInt(props?.amount)
+          }
+        })
+        const result= await res.data
+        if(result.state=== true ) {
+          setTimeout(()=> {
+            props.setOpen(()=> false)
+          }, 3000)
         }
-      })
-      const result= await res.data
-      setStatePayment(()=> result)
-    }, 3000)
-    return ()=> {
-      clearInterval(intervalId)
+        setStatePayment(()=> result)
+      }, 3000)
+      return ()=> {
+        clearInterval(intervalId)
+      }
     }
-  }, [props.data.balance])
+    
+  }, [props.data.balance, props.data.account, props?.amount])
   return (
     <div className="popup-payment-wrapper" style={{width: "100%", height: "100%", background: "rgba(255, 255, 255, 0.75)", position: "fixed", top: 0, left: 0, display: "flex", justifyContent: 'center', alignItems: "center"}}> 
       <div className="popup-payment" style={{width: 800, height: "auto", borderRadius: 10, background: "#fff", boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px", overflow: "hidden", padding: 10, display: "flex", justifyContent: "space-between", position: "relative"}}>
@@ -147,12 +168,25 @@ const LeftPopup= memo((props)=> {
       </div>
       <div style={{padding: "16px 0",width: "100%", paddingBottom: "5px", borderBottom: "1px solid #e7e7e7", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap"}}>
         <WrapIcon icon={<PaidIcon style={{color: "#04a468"}}/>} /><div>Số tiền cần thanh toán: <strong ><NumberFormat thousandSeparator={true} suffix={"đ"} value={props.amount} displayType={"text"} /></strong></div>
-      </div>
+      </div>      
+        <div style={{padding: "16px 0",width: "100%", paddingBottom: "5px", borderBottom: "1px solid #e7e7e7", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap"}}>
+          <WrapIcon icon={<ChatBubbleIcon style={{color: "#04a468"}}/>} /><div>Nội dung chuyển khoản: <strong >{props.data.account}</strong></div>
+        </div>
+      
+      {
+        props?.statePayment?.status=== false &&
+        <div style={{padding: "16px 0",width: "100%", paddingBottom: "5px", borderBottom: "1px solid #e7e7e7", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap"}}>
+          <WrapIcon icon={<NotificationsIcon style={{color: "#04a468"}}/>} /><div>Trạng thái: <strong ><CircularProgress style={{width: 14, height: 14}} /> Đang chờ thanh toán</strong></div>
+        </div>
+      }
+      {
+        props?.statePayment?.status=== true &&
+        <div style={{padding: "16px 0",width: "100%", paddingBottom: "5px", borderBottom: "1px solid #e7e7e7", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap"}}>
+          <WrapIcon icon={<NotificationsIcon style={{color: "#04a468"}}/>} /><div>Trạng thái: <strong ><DoneIcon style={{width: 14, height: 14}} /> Thanh toán thành công</strong></div>
+        </div>
+      }
       <div style={{padding: "16px 0",width: "100%", paddingBottom: "5px", borderBottom: "1px solid #e7e7e7", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap"}}>
-        <WrapIcon icon={<ChatBubbleIcon style={{color: "#04a468"}}/>} /><div>Nội dung chuyển khoản: <strong >{props.data.account}</strong></div>
-      </div>
-      <div style={{padding: "16px 0",width: "100%", paddingBottom: "5px", borderBottom: "1px solid #e7e7e7", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap"}}>
-        <WrapIcon icon={<NotificationsIcon style={{color: "#04a468"}}/>} /><div>Trạng thái: <strong >Đang chờ thanh toán</strong></div>
+        <WrapIcon icon={<NotesIcon style={{color: "#04a468"}} />} /><div>Note: <strong style={{wordBreak: "break-word"}}>Popup tự động tắt khi giao dịch thành công hoặc sẽ sau 10 phút nếu giao dịch chưa phản hồi</strong><br /><div><strong>Nếu bạn chưa đã thanh toán nhưng không nhận được xu vui lòng liên hệ admin để được hỗ trợ ( có thể chụp thêm bill ) </strong></div></div>
       </div>
     </div>
   )
@@ -170,7 +204,6 @@ const RightPopup= (props)=> {
       <div className={""} style={{fontSize: 24, fontWeight: 600, textAlign: "center"}}>Quét mã Qr để thanh toán</div>
       <div style={{margin: "16px 0"}}>
         <img src={`https://img.vietqr.io/image/${props.name_bank}-${props.bank_account}-compact2.jpg?accountName=${props.name_bank_account}&amount=${props.amount}&addInfo=${props.data.account}`} alt="open" />
-      
       </div>
     </div>
   )

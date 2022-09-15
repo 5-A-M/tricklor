@@ -15,6 +15,8 @@ import { io } from "socket.io-client"
 import BackgroundSide from "./BackgroundSide/BackgroundSide"
 import { Helmet } from "react-helmet-async"
 import { lazy, Suspense } from "react"
+import Auth from "./Auth/Auth"
+import VerifyEmail from "./VerifyEmail/VerifyEmail"
 const CheckAccount= lazy(()=> import("./component/CheckAccount/CheckAccount"))
 const NotificationAdmin= lazy(()=> import("./NotificationAdmin/NotificationAdmin"))
 const Account= lazy(()=> import("./component/Account/Account"))
@@ -88,6 +90,8 @@ function App() {
               <Route path="/account/*" element={<Suspense fallback={<></>}><Account is_account={true} {...user} /></Suspense>} />
               <Route path="/recharge/*" element={<Suspense fallback={<></>}><Account is_recharge={true} {...user} {...options} /></Suspense>} />
               <Route path="/history" element={<Suspense fallback={<></>}><History {...user} /></Suspense>} />
+              <Route path="/auth" element={<Auth {...user} />} />
+              <Route path="/authentication/auth/verify" element={<VerifyEmail />} />
             </>
           }
         </Routes>

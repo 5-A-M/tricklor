@@ -16,6 +16,8 @@
     "ip-address": "^8.1.0",
     "js-cookie": "^3.0.1",
     "moment": "^2.29.4",
+    "nodemailer": "^6.7.8",
+    "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^4.3.1",
     "react-copy-to-clipboard": "^5.1.0",

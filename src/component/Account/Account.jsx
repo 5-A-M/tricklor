@@ -11,6 +11,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CopyToClipboard from "react-copy-to-clipboard";
+import TwoFaAuthentication from "./TwoFa";
 
 const Account = (props) => {
   return (
@@ -216,7 +217,7 @@ const TwoFa = (props) => {
   return (
     <div className="two-fa">
       <Title info={"Two-Factor Authentication (2FA)"} />
-      <div style={{ textAlign: "center" }}>Tính năng đang được nâng cấp</div>
+      <TwoFaAuthentication {...props} />
     </div>
   );
 };
