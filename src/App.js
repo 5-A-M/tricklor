@@ -15,12 +15,13 @@ import { io } from "socket.io-client"
 import BackgroundSide from "./BackgroundSide/BackgroundSide"
 import { Helmet } from "react-helmet-async"
 import { lazy, Suspense } from "react"
-import Auth from "./Auth/Auth"
+// import Auth from "./Auth/Auth"
 import VerifyEmail from "./VerifyEmail/VerifyEmail"
 const CheckAccount= lazy(()=> import("./component/CheckAccount/CheckAccount"))
 const NotificationAdmin= lazy(()=> import("./NotificationAdmin/NotificationAdmin"))
 const Account= lazy(()=> import("./component/Account/Account"))
 const History= lazy(()=> import("./component/History/History"))
+const Auth= lazy(()=> import("./Auth/Auth"))
 
 export const SocketContext= createContext()
 function App() {

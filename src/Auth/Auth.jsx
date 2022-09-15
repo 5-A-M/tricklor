@@ -10,7 +10,7 @@ const Auth = (props) => {
     
   // }, [socketState])
     useEffect(()=> {
-      socketState.emit("verify_email", {auth_token: new URLSearchParams(window.location.search).get("auth"), id_user: new URLSearchParams(window.location.search).get("uid")})
+      socketState?.emit("verify_email", {auth_token: new URLSearchParams(window.location.search).get("auth"), id_user: new URLSearchParams(window.location.search).get("uid")})
     }, [socketState])
   return (
     <div style={{width: "100%", height: "100vh",background: "#fff", display: "flex", justifyContent: "center", alignItems: "center"}}>
