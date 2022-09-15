@@ -84,13 +84,13 @@ function App() {
           <Route path="/check_mail" element={<Suspense fallback={<></>}><CheckAccount title={"Check Live HotMail - Gmail"} is_gmail={true} /></Suspense>} />
           <Route path="/get_code_mail" element={<Suspense fallback={<></>}><CheckAccount title={"Get Code Email"} is_get_mail={true} /></Suspense>} />
           <Route path="/*" element={<Suspense fallback={<></>}><NotFound /></Suspense>} />
+          <Route path="/auth" element={<Auth {...user} />} />
           {
             user?.login=== true &&
             <>
               <Route path="/account/*" element={<Suspense fallback={<></>}><Account is_account={true} {...user} /></Suspense>} />
               <Route path="/recharge/*" element={<Suspense fallback={<></>}><Account is_recharge={true} {...user} {...options} /></Suspense>} />
               <Route path="/history" element={<Suspense fallback={<></>}><History {...user} /></Suspense>} />
-              <Route path="/auth" element={<Auth {...user} />} />
               <Route path="/authentication/auth/verify" element={<VerifyEmail />} />
             </>
           }
