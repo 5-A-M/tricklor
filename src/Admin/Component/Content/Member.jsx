@@ -51,18 +51,18 @@ const ComponentMember= (props)=> {
   }
   return (
     <div className="component-member" style={{width: "100%", marginBottom: 30, paddingBottom: 16, borderBottom: "1px solid #e7e7e7"}}>
-      <div>Tài khoản: <strong><input type="text"value={props.account} style={{fontSize: 18}} /></strong></div>
+      <div className="component-member-1">Tài khoản: <strong className="component-member-1aa"><input className="component-member-1as" type="text"value={props.account} style={{fontSize: 18}} /></strong></div>
       <br />
-      <div>Số tiền: <strong><input type="text"value={props.balance} style={{fontSize: 18}} /></strong></div>
+      <div className="component-member-2">Số tiền: <strong className="component-member-1ds"><input className="component-member-1et" type="text"value={props.balance} style={{fontSize: 18}} /></strong></div>
       <br />
-      <div>Email: <strong><input type="text"value={props.email} style={{fontSize: 18}} /></strong></div>
+      <div className="component-member-3">Email: <strong className="component-member-1gs"><input className="component-member-1er" type="text"value={props.email} style={{fontSize: 18}} /></strong></div>
       <br />
-      <div>Đặt lại mật khẩu: </div>
-      <div style={{display: "flex", alignItems: "center", gap: 10}}>
-        <input onChange={(e)=> setPassword(e.target.value)} type="text" placeholder="Nhập mật khẩu mới" style={{fontSize: 18}} />
-        <Button onClick={()=> resetPassword()} variant={"contained"}>Đặt lại</Button>
+      <div className="component-member-4">Đặt lại mật khẩu: </div>
+      <div className="component-member-5" style={{display: "flex", alignItems: "center", gap: 10}}>
+        <input className="component-member-1x" onChange={(e)=> setPassword(e.target.value)} type="text" placeholder="Nhập mật khẩu mới" style={{fontSize: 18}} />
+        <Button className="component-member-1y" onClick={()=> resetPassword()} variant={"contained"}>Đặt lại</Button>
       </div>
-      <Alert duration={2500} message={message} open={ok} />
+      <Alert className="component-member-1aa" duration={2500} message={message} open={ok} />
     </div>
   )
 }

@@ -18,6 +18,7 @@ import { lazy, Suspense } from "react"
 import Auth from "./Auth/Auth"
 import VerifyEmail from "./VerifyEmail/VerifyEmail"
 import LoginOauth2 from "./LoginOauth2/LoginOauth2"
+import nProgress from "nprogress"
 const CheckAccount= lazy(()=> import("./component/CheckAccount/CheckAccount"))
 const NotificationAdmin= lazy(()=> import("./NotificationAdmin/NotificationAdmin"))
 const Account= lazy(()=> import("./component/Account/Account"))
@@ -39,6 +40,7 @@ function App() {
   }, [])
   useEffect(()=> {
     (async()=> {
+      nProgress.start()
       const res= await axios({
         url: `${SERVER_URL}/`,
         method: "post",
@@ -48,6 +50,7 @@ function App() {
         },
         responseType: "json"
       })
+      nProgress.done()
       const result= await res.data
       setUser(()=> result)
     })()

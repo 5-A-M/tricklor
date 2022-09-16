@@ -7,6 +7,7 @@ import NumberFormat from 'react-number-format'
 import moment from "moment"
 import { Button } from '@mui/material'
 import { lazy } from 'react'
+import nProgress from 'nprogress'
 
 const DetailOrder= lazy(()=> import("./DetailOrder"))
 
@@ -14,6 +15,7 @@ const History = (props) => {
   const [history, setHistory]= useState(()=> [])
   useEffect(()=> {
     (async()=> {
+        nProgress.start()
         const res= await axios({
             url: `${SERVER_URL}/history`,
             method: "get",
@@ -23,6 +25,7 @@ const History = (props) => {
             }
         })
         const result= await res.data
+        nProgress.done()
         setHistory(()=> result.data)
     })()
   }, [])

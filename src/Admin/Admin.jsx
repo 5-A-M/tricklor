@@ -6,6 +6,7 @@ import { SERVER_URL } from "../config/config";
 import "./Admin.sass";
 import Content from "./Component/Content/Content";
 import Menu from "./Component/Menu/Menu";
+import "./responsive.sass"
 
 const Admin = (props) => {
   return (
