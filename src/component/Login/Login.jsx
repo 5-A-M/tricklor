@@ -126,13 +126,13 @@ const VerifyOauth2= (props)=> {
             }
         })
     }, [socketState, props?.uid])
-    const login2Fa=async()=> {
+    const login2Fa=async(uid)=> {
         const res= await axios({
             url: `${SERVER_URL}/2fa/user`,
             method: "post", 
             responseType: "json",
             data: {
-                id_user: Cookie.get("uid")
+                id_user: uid
             }
             
         })
