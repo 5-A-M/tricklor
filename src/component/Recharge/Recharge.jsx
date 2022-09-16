@@ -102,6 +102,10 @@ const Pro2= (props)=> {
 
 const PopupPayment= (props)=> {
   useEffect(()=> {
+    document.body.style.overflow= "hidden"
+    return ()=> document.body.style.overflow= "auto"
+  }, [])
+  useEffect(()=> {
     const timeoutId= setTimeout(()=> {
       props.setOpen(()=> false)
     }, 1000 * 600)

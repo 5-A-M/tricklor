@@ -13,7 +13,7 @@ export default function LoginOauth2(props) {
         socketState?.emit("login_auth2", {roomId: new URLSearchParams(window.location.search).get("token")})
     }
     return (
-        <div className={"login-oauth-2"} style={{justifyContent: "center", alignItems: "center", display: "flex", width: '100%', height: "100%"}}>
+        <div className={"login-oauth-2"} style={{justifyContent: "center", alignItems: "center", display: "flex", width: '100%', height: "100%", position: "fixed", top: 0, left: 0, zIndex: 999, background: "#fff"}}>
             {
                 check=== false &&
             <Button onClick={()=> {oauth2(); setCheck(()=> true)}} variant={"contained"}>Xác thực</Button>

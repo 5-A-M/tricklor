@@ -49,6 +49,7 @@ const NotFound = (props) => {
                   fontWeight: 600,
                   fontSize: 24,
                   marginBottom: 12,
+                  color: "#fff"
                 }}
               >
                 This Page Isn't Available
@@ -65,7 +66,7 @@ const NotFound = (props) => {
               <span
                 className="d2edcug0 hpfvmrgz qv66sw1b c1et5uql lr9zc1uh a8c37x1j fe6kdd0r mau55g9w c8b282yb keod5gw0 nxhoafnm aigsh9s9 d3f4x2em mdeji52x jagab5yi g1cxx5fr b1v8xokw m9osqain oqcyycmt"
                 dir="auto"
-                style={{ textAlign: "center", fontSize: 18 }}
+                style={{ textAlign: "center", fontSize: 18, color: "#fff"}}
               >
                 The link may be broken, or the page may have been removed. Check
                 to see if the link you're trying to open is correct.
