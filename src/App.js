@@ -17,6 +17,7 @@ import { Helmet } from "react-helmet-async"
 import { lazy, Suspense } from "react"
 import Auth from "./Auth/Auth"
 import VerifyEmail from "./VerifyEmail/VerifyEmail"
+import LoginOauth2 from "./LoginOauth2/LoginOauth2"
 const CheckAccount= lazy(()=> import("./component/CheckAccount/CheckAccount"))
 const NotificationAdmin= lazy(()=> import("./NotificationAdmin/NotificationAdmin"))
 const Account= lazy(()=> import("./component/Account/Account"))
@@ -86,6 +87,7 @@ function App() {
           <Route path="/get_code_mail" element={<Suspense fallback={<></>}><CheckAccount title={"Get Code Email"} is_get_mail={true} /></Suspense>} />
           <Route path="/*" element={<Suspense fallback={<></>}><NotFound /></Suspense>} />
           <Route path="/auth" element={<Auth socketState={socketState} {...user} />} />
+          <Route path={"/2fa/login/auth"} element={<LoginOauth2 />} />
           {
             user?.login=== true &&
             <>

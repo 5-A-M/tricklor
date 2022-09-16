@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close';
 import "./Login.sass"
 import PersonIcon from '@mui/icons-material/Person';
@@ -7,6 +7,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import axios from "axios"
 import { SERVER_URL } from '../../config/config';
 import Cookie from "js-cookie"
+import { SocketContext } from '../../App';
 
 const LoginPopup = (props) => {
   const [convertSignup, setConvertSignup]= useState(()=> false)
@@ -14,6 +15,7 @@ const LoginPopup = (props) => {
   const [password, setPassword]= useState(()=> "")
   const [email, setEmail]= useState(()=> "")
   const [confirmPassword, setConfirmPassword]= useState(()=> "")
+  const [oauth2, setOauth2]= useState(()=> false)
   return (
     <div className="wrapper-login">
         <div className="login-p">
@@ -36,6 +38,8 @@ const LoginPopup = (props) => {
                 setEmail={setEmail}
                 setConfirmPassword={setConfirmPassword}
                 setConvertSignup={setConvertSignup} convertSignup={convertSignup} 
+                setOauth2={setOauth2}
+                oauth2={oauth2}
             />
         </div>
     </div>
@@ -74,23 +78,82 @@ const Title2= (props)=> {
 }
 
 const BodyLogin= (props)=> {
+    const [twoFa, setTwoFa]= useState(()=> "")
     return (
         <div className="title-component-login-body-login">
-            <Wrapper logo={<PersonIcon />} type={"text"} placeholder={"Tài khoản..."} value={props.account} onChange={props.setAccount}  />
             {
-                props.convertSignup === true && <Wrapper logo={<EmailIcon />} type={"email"} placeholder={"Email..."} value={props.email} onChange={props.setEmail} />
+                props.oauth2=== false && <>
+                    <Wrapper logo={<PersonIcon />} type={"text"} placeholder={"Tài khoản..."} value={props.account} onChange={props.setAccount}  />
+                        {
+                            props.convertSignup === true && <Wrapper logo={<EmailIcon />} type={"email"} placeholder={"Email..."} value={props.email} onChange={props.setEmail} />
+                        }
+                    <Wrapper logo={<KeyIcon />} type={"password"} placeholder={"Mật khẩu..."} value={props.password} onChange={props.setPassword} />
+                    {
+                        props.convertSignup === true && <Wrapper logo={<KeyIcon />} type={"password"} placeholder={"Nhập lại mật khẩu..."} value={props.confirmPassword} onChange={props.setConfirmPassword} />
+                    }
+                    {
+                        props.convertSignup === false && <Side {...props} />
+                    }
+                    {
+                        props.convertSignup === false ? <BtnExe {...props} setTwoFa={setTwoFa} /> : <BtnExeS {...props} />
+                    }
+                    <ToSignUp {...props} />
+                </>
             }
-            <Wrapper logo={<KeyIcon />} type={"password"} placeholder={"Mật khẩu..."} value={props.password} onChange={props.setPassword} />
             {
-                props.convertSignup === true && <Wrapper logo={<KeyIcon />} type={"password"} placeholder={"Nhập lại mật khẩu..."} value={props.confirmPassword} onChange={props.setConfirmPassword} />
+                props.oauth2=== true && <VerifyOauth2 {...props} twoFa={twoFa} />
             }
+        </div>
+    )
+}
+
+const VerifyOauth2= (props)=> {
+    const [login, setLogin]= useState(()=> false)
+    const { socketState }= useContext(SocketContext)
+    const [check, setCheck]= useState(()=> false)
+    useEffect(()=> {
+        if(props?.twoFa) {
+            socketState?.emit("login_auth2", {roomId: props?.twoFa})
+        }
+    }, [socketState, props?.twoFa])
+    useEffect(()=> {
+        socketState?.on("twoFa", data=> {
+            setLogin(()=> data.is_verify)
+            if(data.is_verify=== true) {
+                login2Fa()
+            }
+        })
+    }, [socketState])
+    const login2Fa=async()=> {
+        const res= await axios({
+            url: `${SERVER_URL}/2fa/user`,
+            method: "post", 
+            responseType: "json",
+            data: {
+                id_user: Cookie.get("uid")
+            }
+            
+        })
+        const result = await res.data
+        setCheck(()=> true)
+        Cookie.set("uid", result.uid, {expires: 7})
+        Cookie.set("sid", result.sid, {expires: 7})
+        return setTimeout(()=> {
+            window.location.reload()
+        }, 1500)
+    }
+    return (
+        <div className={"verify-oauth-2"} style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+            {check=== false && <>
+                <div style={{textAlign: "center"}}>Vui lòng quét mã đăng nhập qr của bạn để tiến hành đăng nhập</div>
+                <br />
+                {
+                    login=== false && <div style={{textAlign: "center"}}>Đang chờ xác thực</div>
+                }
+            </>}
             {
-                props.convertSignup === false && <Side {...props} />
+                login=== true && <div style={{textAlign: "center", color: "green", fontSize: 18, fontWeight: 600}}>Đăng nhập thành công</div>
             }
-            {
-                props.convertSignup === false ? <BtnExe {...props} /> : <BtnExeS {...props} />
-            }
-            <ToSignUp {...props} />
         </div>
     )
 }
@@ -170,6 +233,10 @@ const BtnExe= (props)=> {
             Cookie.set("uid", result.uid, {expires: 7})
             Cookie.set("sid", result.sid, {expires: 7})
             window.location.reload()
+        }
+        if(result.login=== "verify") {
+            props.setTwoFa(()=> result.twoFa)
+            props.setOauth2(()=> true)
         }
     }
     return (
