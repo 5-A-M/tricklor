@@ -18,6 +18,23 @@
     .header
         height: auto !important
         flex-direction: column !important
+    .popup-payment
+        flex-direction: column-reverse !important
+        .left-popup-payment-wrapper
+            width: 100% !important
+            img
+                object-fit: contain
+        .right-popup-payment-wrapper
+            width: 100% !important
+            >div
+                display: flex
+                justify-content: center
+                align-items: center
+    .popup-payment-wrapper
+        display: block !important
+        overflow: auto
+        .popup-payment
+            width: 100% !important
 @media screen and ( max-width: 768px )
     .tool-check
         flex-direction: column !important
@@ -26,17 +43,107 @@
         height: 135px !important
         width: 100% !important
         margin: 0 !important
+        padding: 10px !important
         .tool-check-icon-check
             height: 68px !important
         >div
             height: 135px !important
+    .account-page
+        flex-direction: column
+        justify-content: flex-start !important
+        .left-side-account
+            width: 100% !important
+            max-width: 100% !important
+        .right-side-account
+            width: 100% !important
+            max-width: 100% !important
 @media screen and ( max-width: 625px )
     .th-container-p
         display: none !important
     .list-product-table
         * 
             font-size: 14px !important
+    .left-header
+        flex-direction: column !important
+        width: 100% !important
+    .history-transfer
+        padding: 0 !important
+        overflow-x: auto
+    .list-product-container
+        overflow-x: auto
 @media screen and ( max-width: 450px )
     .list-product-table
         * 
             font-size: 12px !important
+    .navigation
+        flex-direction: column
+        align-items: flex-start !important
+        gap: 10px
+    .contact
+        flex-direction: column
+        width: 100%
+        align-items: flex-start !important
+    .lang
+        justify-content: flex-start !important
+        width: 100%
+    .header-right
+        width: 100% 
+        .login
+            justify-content: flex-start !important
+    .banner-discount, .banner-support
+        *
+            font-size: 14px !important
+    .title-component-login-body-login
+        padding: 0 !important
+    .header
+        gap: 10px
+    .banner-item-content
+        white-space: nowrap
+        overflow: hidden
+        text-overflow: ellipsis
+    .account-menu
+        align-items: flex-start !important
+        flex-direction: column !important
+    .detail-infomation-account
+        width: 100% !important
+    .component-detail-info-account
+        flex-direction: column
+        height: auto !important
+        align-items: flex-start !important
+        gap: 10px
+        .right-component-detail-info
+            input
+                text-align: left !important
+    .menu-navigation
+        flex-direction: column
+        width: 100% !important
+        align-items: flex-start !important
+        >div
+            width: 100% !important
+        .menu-navigation-navigation-link
+            justify-content: flex-start !important
+    .title-common
+        padding: 0 !important
+    .wrapper-main-change-password
+        width: 100% !important
+        .main-change-password
+            width: 100% !important
+    .wrap-qr-code
+        canvas
+            width: 100% !important
+            height: 100% !important
+    .main-payment
+        flex-direction: column !important
+        .pro-banking-main-payment
+            width: 100% !important
+    .right-side-account
+        padding: 25px 5px !important
+@media screen and ( max-width: 280px )
+    .component-detail-info-account
+        &::last-of-type
+            .right-component-detail-info
+                flex-direction: column !important
+    .text-promotion
+        white-space: nowrap
+        overflow: hidden
+        text-overflow: ellipsis

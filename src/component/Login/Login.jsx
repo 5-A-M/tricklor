@@ -8,6 +8,7 @@ import axios from "axios"
 import { SERVER_URL } from '../../config/config';
 import Cookie from "js-cookie"
 import { SocketContext } from '../../App';
+import { useCallback } from 'react';
 
 const LoginPopup = (props) => {
   const [convertSignup, setConvertSignup]= useState(()=> false)
@@ -80,15 +81,17 @@ const Title2= (props)=> {
 const BodyLogin= (props)=> {
     const [twoFa, setTwoFa]= useState(()=> "")
     const [uid, setUid]= useState(()=> "")
+    const [enterLogin, setEnterLogin]= useState(()=> false)
     return (
         <div className="title-component-login-body-login">
             {
                 props.oauth2=== false && <>
-                    <Wrapper logo={<PersonIcon />} type={"text"} placeholder={"Tài khoản..."} value={props.account} onChange={props.setAccount}  />
+                    <Wrapper setEnterLogin={setEnterLogin} logo={<PersonIcon />} type={"text"} placeholder={"Tài khoản..."} value={props.account} onChange={props.setAccount}  />
                         {
                             props.convertSignup === true && <Wrapper logo={<EmailIcon />} type={"email"} placeholder={"Email..."} value={props.email} onChange={props.setEmail} />
                         }
-                    <Wrapper logo={<KeyIcon />} type={"password"} placeholder={"Mật khẩu..."} value={props.password} onChange={props.setPassword} />
+                    <Wrapper setEnterLogin={setEnterLogin} logo={<KeyIcon />} type={"password"} placeholder={"Mật khẩu..."} value={props.password} onChange={props.setPassword} />
+                    
                     {
                         props.convertSignup === true && <Wrapper logo={<KeyIcon />} type={"password"} placeholder={"Nhập lại mật khẩu..."} value={props.confirmPassword} onChange={props.setConfirmPassword} />
                     }
@@ -96,7 +99,7 @@ const BodyLogin= (props)=> {
                         props.convertSignup === false && <Side {...props} />
                     }
                     {
-                        props.convertSignup === false ? <BtnExe {...props} setUid={setUid} setTwoFa={setTwoFa} /> : <BtnExeS {...props} />
+                        props.convertSignup === false ? <BtnExe enterLogin={enterLogin} {...props} setUid={setUid} setTwoFa={setTwoFa} /> : <BtnExeS {...props} />
                     }
                     <ToSignUp {...props} />
                 </>
@@ -171,7 +174,7 @@ const Logo= (props)=> {
 const Inp= (props)=> {
     return (
         <div className="title-component-inp-container">
-            <input value={props.value} onChange={(e)=> props.onChange(e.target.value)} type={props.type} className="inp-title-component" placeholder={props.placeholder} autoComplete="off" />
+            <input onKeyUp={(e)=> e.key=== "enter" && props?.setEnterLogin(()=> true)} value={props.value} onChange={(e)=> props.onChange(e.target.value)} type={props.type} className="inp-title-component" placeholder={props.placeholder} autoComplete="off" />
         </div>
     )
 }
@@ -218,7 +221,9 @@ const ForgotPassword= (props)=> {
 const BtnExe= (props)=> {
     const [message, setMessage]= useState(()=> "")
     const [state, setState]= useState(()=> false)
-    const login= async ()=> {
+    const [loading, setLoading]= useState(()=> false)
+    const login= useCallback(async ()=> {
+        setLoading(()=> true)
         const res= await axios({
             url: `${SERVER_URL}/login`,
             method: "post",
@@ -228,6 +233,7 @@ const BtnExe= (props)=> {
             },
             responseType: "json"
         })
+        setLoading(()=> false)
         const result= await res.data
         setMessage(()=> result.message)
         setState(()=> result.login)
@@ -241,13 +247,20 @@ const BtnExe= (props)=> {
             props.setUid(()=> result.uid)
             props.setOauth2(()=> true)
         }
-    }
+    }, [props])
+    useEffect(()=> {
+        if(props?.enterLogin=== true) {
+            login()
+            props?.setEnterLogin(()=> false)
+        }
+    }, [login, props])
+    
     return (
         <>
             <div style={{margin: "8px", fontSize: 12, color: state=== true ? "green" : "red"}}>{message}</div>
             <div className="btn-exe">
-                <button onClick={()=> login()} className="button-btn-exe" style={{cursor: "pointer"}}>
-                    Đăng nhập
+                <button disabled={loading=== true ? true : false} onClick={()=> login()} className="button-btn-exe" style={{cursor: loading=== true ? "not-allowed" : "pointer", opacity: loading=== true ? 0.5 : 1}}>
+                    {loading=== false ? "Đăng nhập" : "Đang đăng nhập"}
                 </button>
             </div>
         </>

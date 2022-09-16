@@ -15,8 +15,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import Cookie from "js-cookie"
 import NotesIcon from '@mui/icons-material/Notes';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Dialog, DialogContent, DialogContentText } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
+import Transition from '../../ThirdParty/Transition';
 
 export const Payment= (props)=> {
   return (
@@ -108,9 +109,9 @@ const PopupPayment= (props)=> {
       clearTimeout(timeoutId)
     }
   }, [])
-  const [statePayment, setStatePayment]= useState(()=> {})
+  const [statePayment, setStatePayment]= useState(()=>( {status: false}))
   useEffect(()=> {
-    if(statePayment.status=== false) {
+    if(statePayment?.status=== false) {
       const intervalId= setInterval(async ()=> {
         const res= await axios({
           url: `${SERVER_URL}/check/payment`,
@@ -124,26 +125,27 @@ const PopupPayment= (props)=> {
           }
         })
         const result= await res.data
-        if(result.state=== true ) {
-          setTimeout(()=> {
-            props.setOpen(()=> false)
-          }, 3000)
-        }
         setStatePayment(()=> result)
       }, 3000)
+      
       return ()=> {
         clearInterval(intervalId)
       }
     }
+    if(statePayment?.status=== true ) {
+      setTimeout(()=> {
+        props.setOpen(()=> false)
+      }, 3000)
+    }
     
-  }, [props.data.balance, props.data.account, props?.amount])
+  }, [props.data.balance, props.data.account, props?.amount, statePayment, props])
   return (
     <div className="popup-payment-wrapper" style={{width: "100%", height: "100%", background: "rgba(255, 255, 255, 0.75)", position: "fixed", top: 0, left: 0, display: "flex", justifyContent: 'center', alignItems: "center"}}> 
       <div className="popup-payment" style={{width: 800, height: "auto", borderRadius: 10, background: "#fff", boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px", overflow: "hidden", padding: 10, display: "flex", justifyContent: "space-between", position: "relative"}}>
         <div onClick={()=> props.setOpen(()=> false)} style={{display: "flex", justifyContent: "center", alignItems: "center", position: "absolute", right: 0, top: 0}}>
           <CloseIcon style={{width: 32, height: 32, cursor: "pointer"}} />
         </div>
-        <LeftPopup {...props} />
+        <LeftPopup {...props} statePayment={statePayment} />
         <RightPopup {...props} />
       </div>
     </div>
@@ -181,9 +183,12 @@ const LeftPopup= memo((props)=> {
       }
       {
         props?.statePayment?.status=== true &&
-        <div style={{padding: "16px 0",width: "100%", paddingBottom: "5px", borderBottom: "1px solid #e7e7e7", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap"}}>
-          <WrapIcon icon={<NotificationsIcon style={{color: "#04a468"}}/>} /><div>Trạng thái: <strong ><DoneIcon style={{width: 14, height: 14}} /> Thanh toán thành công</strong></div>
-        </div>
+        <>
+          <div style={{padding: "16px 0",width: "100%", paddingBottom: "5px", borderBottom: "1px solid #e7e7e7", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap"}}>
+            <WrapIcon icon={<NotificationsIcon style={{color: "#04a468"}}/>} /><div>Trạng thái: <strong ><DoneIcon style={{width: 14, height: 14}} /> Thanh toán thành công</strong></div>
+            <AlertPaymentSuccess open={props?.statePayment?.status} />
+          </div>
+        </>
       }
       <div style={{padding: "16px 0",width: "100%", paddingBottom: "5px", borderBottom: "1px solid #e7e7e7", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap"}}>
         <WrapIcon icon={<NotesIcon style={{color: "#04a468"}} />} /><div>Note: <strong style={{wordBreak: "break-word"}}>Popup tự động tắt khi giao dịch thành công hoặc sẽ sau 10 phút nếu giao dịch chưa phản hồi</strong><br /><div><strong>Nếu bạn chưa đã thanh toán nhưng không nhận được xu vui lòng liên hệ admin để được hỗ trợ ( có thể chụp thêm bill ) </strong></div></div>
@@ -251,5 +256,22 @@ const ContactSupport1= (props)=> {
     <div className="contact-support-1">
       {props.content}
     </div>
+  )
+}
+
+const AlertPaymentSuccess= (props)=> {
+  return (
+    <Dialog
+        open={props.open}
+        TransitionComponent={Transition}
+        keepMounted
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Thanh toán thành công
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
   )
 }
