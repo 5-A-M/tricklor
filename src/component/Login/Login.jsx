@@ -79,6 +79,7 @@ const Title2= (props)=> {
 
 const BodyLogin= (props)=> {
     const [twoFa, setTwoFa]= useState(()=> "")
+    const [uid, setUid]= useState(()=> "")
     return (
         <div className="title-component-login-body-login">
             {
@@ -95,13 +96,13 @@ const BodyLogin= (props)=> {
                         props.convertSignup === false && <Side {...props} />
                     }
                     {
-                        props.convertSignup === false ? <BtnExe {...props} setTwoFa={setTwoFa} /> : <BtnExeS {...props} />
+                        props.convertSignup === false ? <BtnExe {...props} setUid={setUid} setTwoFa={setTwoFa} /> : <BtnExeS {...props} />
                     }
                     <ToSignUp {...props} />
                 </>
             }
             {
-                props.oauth2=== true && <VerifyOauth2 {...props} twoFa={twoFa} />
+                props.oauth2=== true && <VerifyOauth2 {...props} twoFa={twoFa} uid={uid} />
             }
         </div>
     )
@@ -119,11 +120,12 @@ const VerifyOauth2= (props)=> {
     useEffect(()=> {
         socketState?.on("twoFa", data=> {
             setLogin(()=> data.is_verify)
+            
             if(data.is_verify=== true) {
-                login2Fa()
+                login2Fa(props?.uid)
             }
         })
-    }, [socketState])
+    }, [socketState, props?.uid])
     const login2Fa=async()=> {
         const res= await axios({
             url: `${SERVER_URL}/2fa/user`,
@@ -236,6 +238,7 @@ const BtnExe= (props)=> {
         }
         if(result.login=== "verify") {
             props.setTwoFa(()=> result.twoFa)
+            props.setUid(()=> result.uid)
             props.setOauth2(()=> true)
         }
     }
