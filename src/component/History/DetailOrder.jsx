@@ -4,12 +4,11 @@ import moment from 'moment'
 import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
-import { v4 } from 'uuid'
+// import { v4 } from 'uuid'
 import { SERVER_URL } from '../../config/config'
 
 const DetailOrder = (props) => {
   const [data, setData]= useState(()=> {})
-  const [file, setFile]= useState(()=> "")
   useEffect(()=> {
     if(props?.id_order) {
         (async()=> {
@@ -27,28 +26,12 @@ const DetailOrder = (props) => {
   }, [props.id_order])
 
   const toTextFile= async()=> {
-    // const res= await axios({
-    //     url: `${SERVER_URL}/render/text`,
-    //     method: "post",
-    //     headers: {
-    //         'Content-type':'application/octet-stream'
-    //     },
-    //     data: {
-    //         account: data.account,
-    //         password: data.password
-    //     },
-    //     // responseType:
-    // })
-    // const result= await res.data
-    // // return setFile(()=> result.file)
-    
-    // console.log(result)
     const element = document.createElement("a");
     const file = new Blob([`Tài khoản: ${data.account}\nMật khẩu: ${data.password}`], {
       type: "text/plain"
     });
     element.href = URL.createObjectURL(file);
-    element.download = `${v4()}.txt`;
+    element.download = `${data.code_receipt}.txt`;
     document.body.appendChild(element);
     element.click();
   }
