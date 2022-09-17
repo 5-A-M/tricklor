@@ -1,23 +1,28 @@
 import React from 'react'
 import SumofRecharge from '../Chart/SumofRecharge'
+import SumofSubscribe from '../Chart/SumofSubscribe'
+import History from '../History/History'
 
 const Stats = (props) => {
   return (
     <div className="stats-all" style={{width: "100%"}}>
-      <div className="brief-all-recharge"><A /></div>
+      
       <div className={"wrap-all-recharge"}>
         <SumofRecharge />
       </div>
+      <br />
+      <br />
+      <div className={"wrap-all-recharge"}>
+        <SumofSubscribe />
+      </div>
+      <br />
+      <br />
+      <History />
     </div>
   )
 }
 
 export default Stats
 
-const A= (props)=> {
-  return (
-    <div className="stats-sum-of-recharge">
-      Tổng số tiền mà các thành viên đã nạp: <strong>50000đ</strong>
-    </div>
-  )
-}
+
+

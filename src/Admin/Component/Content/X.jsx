@@ -30,6 +30,7 @@ const X = (props) => {
   const [colorCode, setColorCode]= useState(()=> "")
   const [backgroundWeb, setBackgroundWeb]= useState(()=> "")
   const [message, setMessage]= useState(()=> "")
+  const [apiPayment, setApiPayment]= useState(()=> "")
   const [state, setState]= useState(()=> false)
 
   useEffect(()=> {
@@ -44,13 +45,14 @@ const X = (props) => {
     setNotificationAdmin(()=> data?.notification_admin)
     setColorCode(()=> data?.color_code)
     setBackgroundWeb(()=> data?.background_web)
+    setApiPayment(()=> data?.api_payment)
   }, [data])
   const update_admin_option= async ()=> {
     const res= await axios({
         url: `${SERVER_URL}/update/admin_option`,
         method: "post",
         data: {
-            title, banner, logo, hotline, email, bank, nameBankAccount, bankAccount, logoBank, nameBank, notificationAdmin, colorCode, backgroundWeb
+            title, banner, logo, hotline, email, bank, nameBankAccount, bankAccount, logoBank, nameBank, notificationAdmin, colorCode, backgroundWeb, apiPayment
         },
         responseType: "json"
     })
@@ -78,6 +80,8 @@ const X = (props) => {
         <CommonX title={"Ngân hàng: "} content={bank} onChange={setBank} onChange2={setLogoBank} is_bank={true} onChange3={setNameBank} />
         <CommonX title={<div>Màu sắc trang web (Chú ý là nhập mã hex bạn có thể chọn màu trên trang web này: <span onClick={()=> window.open("https://imagecolorpicker.com/", "_blank")} style={{color: "#2e89ff", cursor: "pointer"}}>click</span>)</div>} content={colorCode} onChange={setColorCode} />
         <CommonX title={"Thông báo từ admin"} content={notificationAdmin} onChange={setNotificationAdmin} />
+        <CommonX title={"Api payment"} content={apiPayment} onChange={setApiPayment} />
+        
         <div className="message-update-success" style={{margin: "16px 0", fontSize: 14, color: state=== true ? "green" : "red"}}>{message}</div>
         <div className="settings-admin-button" style={{marginTop: 16, display: "flex", justifyContent: "center", alignItems: 'center'}}>
             <button onClick={()=> update_admin_option()} className="settings-admin-button-main" style={{width: 200, height: 40, borderRadius: 80, fontSize: 18, fontWeight: 600, background: "#2e89ff", color: "#fff", border: "none", outline: "none", cursor: "pointer"}}>Cập nhật</button>

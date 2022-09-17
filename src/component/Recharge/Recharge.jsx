@@ -125,7 +125,8 @@ const PopupPayment= (props)=> {
             id_user: Cookie.get("uid"),
             balance: parseInt(props.data.balance),
             content: props.data.account,
-            recharge: parseInt(props?.amount)
+            recharge: parseInt(props?.amount),
+            api_payment: props?.api_payment
           }
         })
         const result= await res.data

@@ -91,7 +91,7 @@ const Td= (props)=> {
                 props.button &&
                 <div className="td-container-button"><button className="td-container-button-btn" onClick={()=> setOpen(prev=> !prev)} style={{width: "100%", height: "100%", border: "none", outline: "none", color: "#fff", fontSize: 18, background: "transparent", cursor: "pointer"}}>{props.button}</button>
                     {
-                        open=== true && <PopupPurchase balance={props.balance} promotion={props.promotion} price={props.price} open={open} setOpen={setOpen} />
+                        open=== true && props.balance >= 0 && <PopupPurchase balance={props.balance} promotion={props.promotion} price={props.price} open={open} setOpen={setOpen} />
                     }
                 </div>
             }

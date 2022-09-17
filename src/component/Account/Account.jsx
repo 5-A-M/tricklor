@@ -217,7 +217,14 @@ const TwoFa = (props) => {
   return (
     <div className="two-fa">
       <Title info={"Two-Factor Authentication (2FA)"} />
-      <TwoFaAuthentication {...props} />
+      {
+        props?.oauth2=== false &&
+        <TwoFaAuthentication {...props} />
+      }
+      {
+        props?.oauth2=== true &&
+        <div style={{textAlign: "center", margin: "16px 0"}}>Bạn đã xác thực 2fa</div>
+      }
     </div>
   );
 };

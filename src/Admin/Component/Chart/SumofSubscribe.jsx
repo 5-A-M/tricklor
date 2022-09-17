@@ -35,7 +35,7 @@ export const options = {
     },
     title: {
       display: true,
-      text: 'Tổng tiền mà các thành viên đã nạp trong 7 ngày qua',
+      text: 'Lượng người đăng ký trong 7 ngày qua',
       color: "#fff",
       fontSize: 20
     },
@@ -74,7 +74,7 @@ export const data = {
   datasets: [
     {
       fill: true,
-      label: 'Số tiền',
+      label: 'Số lượt đăng ký',
       data: [1, 2, 3, 4 ,5],
       borderColor: '#fff',
       backgroundColor: 'rgba(53, 162, 235, 0.5)',
@@ -83,7 +83,7 @@ export const data = {
   ],
 };
 
-export default function SumofRecharge() {
+export default function SumofSubscribe() {
   const [dt, setDt]= useState(()=> [])
   const [sum, setSum]= useState(()=> 0)
   const data = useMemo(()=> ({
@@ -91,7 +91,7 @@ export default function SumofRecharge() {
     datasets: [
       {
         fill: true,
-        label: 'Số tiền',
+        label: 'Lượt đăng ký',
         data: dt,
         borderColor: '#fff',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
@@ -102,7 +102,7 @@ export default function SumofRecharge() {
   useEffect(()=> {
     (async()=> {
       const res= await axios({
-        url: `${SERVER_URL}/stats/sum/profit`,
+        url: `${SERVER_URL}/stats/sum/subscribe`,
         method: "post",
         responseType: "json"
       })
@@ -116,13 +116,14 @@ export default function SumofRecharge() {
       <div className="brief-all-recharge"><A sum={sum} /></div>
       <Line options={options} data={data} />
     </>
-  );
+  )
 }
 
 const A= (props)=> {
-  return (
-    <div className="stats-sum-of-recharge">
-      Tổng số tiền mà các thành viên đã nạp: <strong>{props?.sum}đ</strong>
-    </div>
-  )
-}
+    return (
+      <div className="stats-sum-of-recharge">
+        Tổng số lượt đăng ký: <strong>{props?.sum}</strong>
+      </div>
+    )
+  }
+  
