@@ -86,7 +86,7 @@ const Tr= (props) => {
             <Td icon={array_body.nation} text={!validUrl.isUri(array_body.nation) ? true : false} />
             <Td text={array_body.price} />
             <Td text={amount} />
-            <Td balance={props?.balance} promotion={props?.promotion} button={"Mua"} price={parseInt(array_body?.price?.replace("đ", ""))} name={array_body?.title} />
+            <Td amount={amount} setAmount={setAmount} balance={props?.balance} promotion={props?.promotion} button={"Mua"} price={parseInt(array_body?.price?.replace("đ", ""))} name={array_body?.title} />
         </tr>
     )
 }
@@ -109,7 +109,7 @@ const Td= (props)=> {
                 props.button &&
                 <div className="td-container-button"><button className="td-container-button-btn" onClick={()=> setOpen(prev=> !prev)} style={{width: "100%", height: "100%", border: "none", outline: "none", color: "#fff", fontSize: 18, background: "transparent", cursor: "pointer"}}>{props.button}</button>
                     {
-                        open=== true && props.balance >= 0 && <PopupPurchase balance={props.balance} promotion={props.promotion} price={props.price} open={open} setOpen={setOpen} />
+                        open=== true && props.balance >= 0 && <PopupPurchase setAmount={props.setAmount} amount={props.amount} balance={props.balance} promotion={props.promotion} price={props.price} open={open} setOpen={setOpen} />
                     }
                 </div>
             }
@@ -124,7 +124,7 @@ const PopupPurchase= (props)=> {
     const [successBox, setSuccessBox]= useState(()=> false)
     const [order, setOrder]= useState(()=> {})
     const [loading, setLoading]= useState(()=> false)
-    const { setCallAgain }= useContext(SocketContext)
+    const { setCallAgain, socketState }= useContext(SocketContext)
     const [disabled, setDisabled]= useState(()=> false)
     const purchaseAccount= async ()=> {
         setDisabled(()=> true)
@@ -141,6 +141,7 @@ const PopupPurchase= (props)=> {
         })
         const result= await res.data
         if(result.purchase=== true) {
+            updateAmount()
             setOrder(()=> result)
             setOpen(()=> true)
             setMessage(()=> "Mua tài khoản thành công")
@@ -173,7 +174,13 @@ const PopupPurchase= (props)=> {
         element.download = `${order.code_bill}.txt`;
         document.body.appendChild(element);
         element.click();
-      }
+    }
+    const updateAmount= ()=> {
+        socketState.emit("update_amount", {amount: props.amount})
+        socketState.on("update_amount_from_server", (data)=> {
+            props.setAmount(()=> data.amount)
+        })
+    }
     return (
         <div className="purchase-popup">
             <div className="sub-purchase-popup">

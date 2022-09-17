@@ -18,6 +18,8 @@ import NotesIcon from '@mui/icons-material/Notes';
 import { CircularProgress, Dialog, DialogContent, DialogContentText } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
 import Transition from '../../ThirdParty/Transition';
+import { useContext } from 'react';
+import { SocketContext } from '../../App';
 
 export const Payment= (props)=> {
   return (
@@ -101,6 +103,7 @@ const Pro2= (props)=> {
 }
 
 const PopupPayment= (props)=> {
+  const { setCallAgain }= useContext(SocketContext)
   useEffect(()=> {
     document.body.style.overflow= "hidden"
     return ()=> document.body.style.overflow= "auto"
@@ -138,12 +141,13 @@ const PopupPayment= (props)=> {
       }
     }
     if(statePayment?.status=== true ) {
+      setCallAgain(prev=> !prev)
       setTimeout(()=> {
         props.setOpen(()=> false)
       }, 3000)
     }
     
-  }, [props.data.balance, props.data.account, props?.amount, statePayment, props])
+  }, [props.data.balance, props.data.account, props?.amount, statePayment, props, setCallAgain])
   return (
     <div className="popup-payment-wrapper" style={{width: "100%", height: "100%", background: "rgba(255, 255, 255, 0.75)", position: "fixed", top: 0, left: 0, display: "flex", justifyContent: 'center', alignItems: "center"}}> 
       <div className="popup-payment" style={{width: 800, height: "auto", borderRadius: 10, background: "#fff", boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px", overflow: "hidden", padding: 10, display: "flex", justifyContent: "space-between", position: "relative"}}>
