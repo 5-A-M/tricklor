@@ -118,6 +118,7 @@ const Td= (props)=> {
 }
 
 const PopupPurchase= (props)=> {
+    
     const [open, setOpen]= useState(()=> false)
     const [message, setMessage]= useState(()=> "")
     const [amount, setAmount]= useState(()=> 1)
@@ -126,6 +127,13 @@ const PopupPurchase= (props)=> {
     const [loading, setLoading]= useState(()=> false)
     const { setCallAgain, socketState }= useContext(SocketContext)
     const [disabled, setDisabled]= useState(()=> false)
+    useEffect(()=> {
+        if(props && socketState) {
+            socketState.on("update_amount_from_server", (data)=> {
+                props.setAmount(()=> data.amount)
+            })
+        }
+    }, [props, socketState])
     const purchaseAccount= async ()=> {
         setDisabled(()=> true)
         const res= await axios({
@@ -177,9 +185,6 @@ const PopupPurchase= (props)=> {
     }
     const updateAmount= ()=> {
         socketState.emit("update_amount", {amount: props.amount})
-        socketState.on("update_amount_from_server", (data)=> {
-            props.setAmount(()=> data.amount)
-        })
     }
     return (
         <div className="purchase-popup">
