@@ -9,6 +9,7 @@ import axios from 'axios'
 import { SERVER_URL } from '../../../config/config'
 import Alert from '../../../Admin/Component/Alert/Alert'
 import { SocketContext } from '../../../App'
+import { useEffect } from 'react'
 
 const ListProduct = (props) => {
   return (
@@ -60,6 +61,23 @@ const TBody= (props)=> {
 
 const Tr= (props) => {
     const array_body = props
+    const [amount, setAmount]= useState(()=> 0)
+    useEffect(()=> {
+        (async()=> {
+            if(array_body) {
+                const res= await axios({
+                    url: `${SERVER_URL}/get/amount/product`,
+                    method: "get",
+                    params: {
+                        title: array_body.title
+                    },
+                    responseType: "json"
+                })
+                const result= await res.data
+                return setAmount(()=> result.amount)
+            }
+        })()
+    }, [array_body])
     return (
         <tr className="tbody-container-tr">
             <Td icon={array_body.icon} text={array_body.title} />
@@ -67,7 +85,7 @@ const Tr= (props) => {
             <Td text={array_body.live} />
             <Td icon={array_body.nation} text={!validUrl.isUri(array_body.nation) ? true : false} />
             <Td text={array_body.price} />
-            <Td text={array_body.amount} />
+            <Td text={amount} />
             <Td balance={props?.balance} promotion={props?.promotion} button={"Mua"} price={parseInt(array_body?.price?.replace("đ", ""))} name={array_body?.title} />
         </tr>
     )
@@ -132,7 +150,7 @@ const PopupPurchase= (props)=> {
                 setMessage(()=> "")
                 setOpen(()=> false)
                 setSuccessBox(()=> true)
-            }, 2500)
+            }, 1500)
         }
         else {
             setOpen(()=> true)
@@ -140,10 +158,20 @@ const PopupPurchase= (props)=> {
             setTimeout(()=> {
                 setMessage(()=> "")
                 setOpen(()=> false)
-            }, 2500)
+            }, 1500)
         }
         return console.log(result)
     }
+    const toTextFile= async()=> {
+        const element = document.createElement("a");
+        const file = new Blob([`Tài khoản: ${order.data.account}\nMật khẩu: ${order.data.password}`], {
+          type: "text/plain"
+        });
+        element.href = URL.createObjectURL(file);
+        element.download = `${order.code_bill}.txt`;
+        document.body.appendChild(element);
+        element.click();
+      }
     return (
         <div className="purchase-popup">
             <div className="sub-purchase-popup">
@@ -175,6 +203,10 @@ const PopupPurchase= (props)=> {
                         <br />
                         <div style={{color: "#000", margin: "8px 0"}}>Tài khoản: {order.data.account}</div>
                         <div style={{color: "#000", margin: "8px 0"}}>Mật khẩu: {order.data.password}</div>
+                        <br />
+                        <div style={{width: "100%", direction: "rtl"}}>
+                            <Button onClick={()=> toTextFile()} variant={"contained"}>Tải file text</Button>
+                        </div>
                     </div>
                 }
             </div>
