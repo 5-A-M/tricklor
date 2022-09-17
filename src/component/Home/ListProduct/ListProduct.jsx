@@ -125,7 +125,9 @@ const PopupPurchase= (props)=> {
     const [order, setOrder]= useState(()=> {})
     const [loading, setLoading]= useState(()=> false)
     const { setCallAgain }= useContext(SocketContext)
+    const [disabled, setDisabled]= useState(()=> false)
     const purchaseAccount= async ()=> {
+        setDisabled(()=> true)
         const res= await axios({
             url: `${SERVER_URL}/buy/account`,
             method: "post", 
@@ -160,7 +162,7 @@ const PopupPurchase= (props)=> {
                 setOpen(()=> false)
             }, 1500)
         }
-        return console.log(result)
+        return result
     }
     const toTextFile= async()=> {
         const element = document.createElement("a");
@@ -185,7 +187,7 @@ const PopupPurchase= (props)=> {
                     <DetailPurchase left={"Số tiền"} value={parseInt(amount) * parseInt(props.price)} readOnly={true} />
                     <br />
                     <div onClick={()=> purchaseAccount()} style={{display: "flex", justifyContent: 'center', width: "100%"}}>
-                        <Button variant="contained">Mua</Button>
+                        <Button disabled={disabled} variant="contained">Mua</Button>
                     </div>
                 </div>}
                 {
