@@ -48,7 +48,7 @@ const Home = (props) => {
       });
       const result = await res.data;
       return setData1(() => result.data);
-    }, 5000);
+    }, 8000);
     return () => {
       clearInterval(intervalId);
     };
@@ -63,7 +63,7 @@ const Home = (props) => {
       });
       const result2 = await res.data;
       return setData2(() => result2.data);
-    }, 5000);
+    }, 8000);
     return () => {
       clearInterval(intervalId);
     };

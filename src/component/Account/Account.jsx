@@ -11,7 +11,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CopyToClipboard from "react-copy-to-clipboard";
+import ApiIcon from '@mui/icons-material/Api';
 import TwoFaAuthentication from "./TwoFa";
+import ApiDocument from "./ApiDocument";
 
 const Account = (props) => {
   return (
@@ -33,6 +35,7 @@ const Left = (props) => {
       link: "/2fa",
     },
     { text: "Đổi mật khẩu", icon: <VpnKeyIcon />, link: "/change_password" },
+    {text: "Tài liệu Api", icon: <ApiIcon />, link: "/api_document"}
   ];
   const array_link_recharge = [
     {
@@ -108,6 +111,7 @@ const Right = (props) => {
             path="/change_password"
             element={<ChangePassword {...props} />}
           />
+          <Route path={"/api_document/*"} element={<ApiDocument {...props} />} />
         </Routes>
       )}
       {props.is_recharge === true && (
