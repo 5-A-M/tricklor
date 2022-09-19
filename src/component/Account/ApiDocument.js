@@ -45,8 +45,17 @@ const CheckBalance= (props)=> {
             <br />
             <ApiInstruction api={"GET https://626.vn/api/user/balance?apiKey=<Your_api_key>"} />
             <br />
-            <ExampleApi request={<div style={{width: "100%", borderRadius: 10, padding: 10, background: "#f2f0f5"}}><div style={{margin: "8px 0"}}>Request</div><div>GET 'https://api.dongvanfb.com/user/account_type?apikey=36458879248967a36'</div></div>}
-                response={<div style={{width: "100%", borderRadius: 10, padding: 10, background: "#f2f0f5"}}><div style={{margin: "8px 0"}}>Response</div><div>GET 'https://api.dongvanfb.com/user/account_type?apikey=36458879248967a36'</div></div>}
+            <ExampleApi request={<div style={{width: "100%", borderRadius: 10, padding: 10, background: "#f2f0f5"}}><div style={{margin: "8px 0"}}>Request</div><div>GET 'https://626.vn/api/user/balance?apikey=36458879248967a36'</div></div>}
+                response={<div style={{width: "100%", borderRadius: 10, padding: 10, background: "#f2f0f5"}}><div style={{margin: "8px 0"}}>Response</div><div>
+                    {
+                        `{
+                            "error_code": 200,\n
+                            "status": true,\n
+                            "message": "",\n
+                            "balance": 700000\n
+                        }` 
+                    }
+                    </div></div>}
             />
         </div>
     )
@@ -57,10 +66,29 @@ const BuyMail= (props)=> {
         <div className="link-to-buy-mail" style={{padding: "10px 0"}}>
             <TitleApi title={"Buy mail"} />
             <br />
-            <ApiInstruction api={"GET https://626.vn/api/user/account_type?apikey=<Your_api_key>"} />
+            <ApiInstruction api={"GET https://626.vn/api/user/buy?apikey=<Your_api_key>&account_type=<ACCOUNT_TYPE>"} />
             <br />
-            <ExampleApi request={<div style={{width: "100%", borderRadius: 10, padding: 10, background: "#f2f0f5"}}><div style={{margin: "8px 0"}}>Request</div><div>GET 'https://api.dongvanfb.com/user/account_type?apikey=36458879248967a36'</div></div>}
-                response={<div style={{width: "100%", borderRadius: 10, padding: 10, background: "#f2f0f5"}}><div style={{margin: "8px 0"}}>Response</div><div>GET 'https://api.dongvanfb.com/user/account_type?apikey=36458879248967a36'</div></div>} />
+            <ExampleApi request={<div style={{width: "100%", borderRadius: 10, padding: 10, background: "#f2f0f5"}}><div style={{margin: "8px 0"}}>Request</div><div>GET 'https://626.vn/api/user/buy?apikey=36458879248967a36&account_type=hotmail'</div></div>}
+                response={<div style={{width: "100%", borderRadius: 10, padding: 10, background: "#f2f0f5"}}><div style={{margin: "8px 0"}}>Response</div><div>
+                    {
+                        <>
+                            <div>{`{`}</div>
+                                <div>"error_code": 200,</div>
+                                <div>"status": true,</div>
+                                <div>"message": "Buy Success!",</div>
+                                <div>"data": {`{`}</div>
+                                    <div>"code_receipt": "UKPEYXP4KQ",</div>
+                                    <div>"account_type": "Hotmail",</div>
+                                    <div>"price": 50,</div>
+                                    <div>"balance": 665966,</div>
+                                    <div>"data": {`{`}</div>
+                                       <div> "account": "vickieadriana@hotmail.com,</div>
+                                        <div>"password": kmxX8gr9k</div>
+                                    <div>{`}`}</div>
+                                <div>{`}`}</div>
+                        </>
+                    }
+                    </div></div>} />
         </div>
     )
 }

@@ -19,6 +19,8 @@ import Auth from "./Auth/Auth"
 import VerifyEmail from "./VerifyEmail/VerifyEmail"
 import LoginOauth2 from "./LoginOauth2/LoginOauth2"
 import nProgress from "nprogress"
+import CheckBalance from "./Api/CheckBalance"
+import BuyService from "./Api/BuyService"
 const CheckAccount= lazy(()=> import("./component/CheckAccount/CheckAccount"))
 const NotificationAdmin= lazy(()=> import("./NotificationAdmin/NotificationAdmin"))
 const Account= lazy(()=> import("./component/Account/Account"))
@@ -91,6 +93,8 @@ function App() {
           <Route path="/*" element={<Suspense fallback={<></>}><NotFound /></Suspense>} />
           <Route path="/auth" element={<Auth socketState={socketState} {...user} />} />
           <Route path={"/2fa/login/auth"} element={<LoginOauth2 />} />
+          <Route path={"/api/user/buy"} element={<BuyService />} />
+          <Route path={"/api/user/balance"} element={<CheckBalance />} />
           {
             user?.login=== true &&
             <>

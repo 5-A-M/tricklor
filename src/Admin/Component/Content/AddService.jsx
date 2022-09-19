@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { Fragment, useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import { SERVER_URL } from "../../../config/config";
+import AddServiceComponent from "../../AddServiceComponent/AddServiceComponent";
+import LoadNewService from "../../LoadNewService/LoadNewService";
 import Alert from "../Alert/Alert";
 
 const AddService = (props) => {
@@ -64,7 +66,7 @@ const AddService = (props) => {
 
   const [add1, setAdd1] = useState(() => false);
   const [add2, setAdd2] = useState(() => false);
-  const [{ a1, a2, a3, a4, a5, a6 }, setA] = useState(() => ({
+  const [{ a1, a2, a3, a4, a5 }, setA] = useState(() => ({
     a1: "",
     a2: "",
     a3: "",
@@ -72,7 +74,7 @@ const AddService = (props) => {
     a5: "",
     a6: "",
   }));
-  const [{ b1, b2, b3, b4, b5, b6 }, setB] = useState(() => ({
+  const [{ b1, b2, b3, b4, b5 }, setB] = useState(() => ({
     b1: "",
     b2: "",
     b3: "",
@@ -91,7 +93,6 @@ const AddService = (props) => {
         a3,
         a4,
         a5,
-        a6,
       },
     });
     const result = await res.data;
@@ -113,7 +114,6 @@ const AddService = (props) => {
         b3,
         b4,
         b5,
-        b6,
       },
     });
     const result = await res.data;
@@ -132,8 +132,8 @@ const AddService = (props) => {
       <div style={{ width: "100% " }}>
         <div className="add-service" style={{ width: "100%" }}>
           <div style={{ fontSize: 20, margin: "16px 0" }}>
-          </div>
             Dịch vụ Hotmail + Outlook
+          </div>
             {/* &nbsp;<span style={{padding: "10px 30px", borderRadius: 80, color: "#fff", background: "#2e89ff", cursor: "pointer"}}>Xóa</span> */}
           <table
             cellSpacing={0}
@@ -151,7 +151,6 @@ const AddService = (props) => {
                 <th>Live</th>
                 <th>Quốc gia</th>
                 <th>Giá</th>
-                <th>Số lượng</th>
               </tr>
             </thead>
             <tbody className="tbody-table-add-service">
@@ -200,15 +199,6 @@ const AddService = (props) => {
                     <input
                       onChange={(e) =>
                         setA((prev) => ({ ...prev, a5: e.target.value }))
-                      }
-                      type="text"
-                      style={{ fontSize: 16 }}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      onChange={(e) =>
-                        setA((prev) => ({ ...prev, a6: e.target.value }))
                       }
                       type="text"
                       style={{ fontSize: 16 }}
@@ -265,6 +255,10 @@ const AddService = (props) => {
         {/*  */}
         {/*  */}
         {/*  */}
+        {/* 
+         */}
+         {/*  */}
+         {/*  */}
         <div className="add-service" style={{ width: "100%" }}>
           <div style={{ fontSize: 20, margin: "16px 0" }}>Dịch vụ Gmail</div>
           <table
@@ -282,10 +276,9 @@ const AddService = (props) => {
                 <th>Live</th>
                 <th>Quốc gia</th>
                 <th>Giá</th>
-                <th>Số lượng</th>
-                {
+                {/* {
                   addColumn2=== true && <div style={{position: "absolute", right: "100%", top: 0, color: "#fff", background: "#2e89ff", padding: "0 10px", borderRadius: 80, cursor: "pointer", whiteSpace: "nowrap", height: "100%"}}>Thêm cột</div>
-                }
+                } */}
               </tr>
             </thead>
             <tbody className="tbody-table-add-service">
@@ -339,15 +332,6 @@ const AddService = (props) => {
                       style={{ fontSize: 16 }}
                     />
                   </td>
-                  <td>
-                    <input
-                      onChange={(e) =>
-                        setB((prev) => ({ ...prev, b6: e.target.value }))
-                      }
-                      type="text"
-                      style={{ fontSize: 16 }}
-                    />
-                  </td>
                 </tr>
               )}
             </tbody>
@@ -368,7 +352,7 @@ const AddService = (props) => {
             }}
             className="btn-add-server-hotmail-outlook"
           >
-            {add2 === false ? "Thêm dịch vụ Hotmail + Outlook" : "Hủy"}
+            {add2 === false ? "Thêm dịch vụ Gmail" : "Hủy"}
           </button>
           &nbsp;&nbsp;&nbsp;&nbsp;
           {add2 === true && (
@@ -392,6 +376,8 @@ const AddService = (props) => {
           )}
         </div>
         <br />
+        <br />
+        <LoadNewService />
         <br />
         <br />
 
@@ -432,7 +418,6 @@ const Tr1= (props)=> {
       <td>{props.live}</td>
       <td><img src={props.nation} alt="flag" style={{width: 32, height: 24, objectFit: "cover"}} /></td>
       <td><NumberFormat thousandSeparator={true} value={props.price} displayType={"text"} suffix={"đ"} /></td>
-      <td><NumberFormat thousandSeparator={true} value={props.amount} displayType={"text"} /></td>
       {
         openDelete1=== true && <div style={{height: "100%", position: 'absolute', top: 0, right: "100%", display: "flex", justifyContent: "center", alignItems: 'center', gap: 16}}>
           <button onClick={()=> deleteService1()} style={{padding: "0 16px", color: "#fff", background: "red", cursor: "pointer", height :"100%", border: 'none', outline: 'none', borderRadius: "80px"}}>Xóa</button>
@@ -470,7 +455,6 @@ const Tr2= (props)=> {
       <td>{props.live}</td>
       <td><img src={props.nation} alt="flag" style={{width: 32, height: 24, objectFit: "cover"}} /></td>
       <td><NumberFormat thousandSeparator={true} value={props.price} displayType={"text"} suffix={"đ"} /></td>
-      <td><NumberFormat thousandSeparator={true} value={props.amount} displayType={"text"} /></td>
       
       {
         openDelete1=== true && <div style={{height: "100%", position: 'absolute', top: 0, right: "100%", display: "flex", justifyContent: "center", alignItems: 'center'}}>
@@ -490,11 +474,7 @@ const AddItem= (props)=> {
       <br />
       <br />
       <br />
-      {
-        open=== true && <div>
-          <div>Nhập dịch vụ:&nbsp;&nbsp;<input type="text" placeholder="Nhập dịch vụ VD: Clone Facebook" style={{height: 40, fontSize: 18, width: 400}}/></div>
-        </div>
-      }
+      <AddServiceComponent open={open} setOpen={setOpen} />
     </div>
   )
 }

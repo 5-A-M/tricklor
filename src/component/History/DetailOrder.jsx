@@ -85,3 +85,59 @@ export default DetailOrder
 const Transition = React.memo(React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 }));
+
+export const DetailStats1= (props)=> {
+    const toTextFile= async()=> {
+      const element = document.createElement("a");
+      const file = new Blob([`Tài khoản: ${props.account}\nMật khẩu: ${props.password}`], {
+        type: "text/plain"
+      });
+      element.href = URL.createObjectURL(file);
+      element.download = `${props.code_stats}.txt`;
+      document.body.appendChild(element);
+      element.click();
+    }
+    return (
+      <>
+          <Dialog
+              open={props.open}
+              TransitionComponent={Transition}
+              keepMounted
+              onClose={props.handleClose}
+              aria-describedby="alert-dialog-slide-description"
+              className="dialog-"
+          >
+              <DialogTitle>{"Chi tiết đơn hàng"}</DialogTitle>
+              <DialogContent style={{width: 600}}>
+                  <DialogContentText id="alert-dialog-slide-description">
+                      {
+                          props?.account && <div>Tài khoản: <strong>{props?.account}</strong></div>
+                      }
+                      <br />
+                      {
+                          props?.password && <div>Mật khẩu: <strong>{props?.password}</strong></div>
+                      }
+                      <br />
+                      {
+                          props?.amount && <div>Giá: <strong>{props?.amount}</strong></div>
+                      }
+                      <br />
+                      {
+                          props?.date && <div>Đã tạo: <strong>{props.date}</strong></div>
+                      }
+                      {
+                         (props && Object?.values(props)?.length <= 0 && <div style={{textAlign: "center"}}>Không có thông tin về đơn hàng này</div>)
+                      }
+                  </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                  {
+                      props?.account &&
+                      <Button variant={"contained"} onClick={()=> {toTextFile();props.handleClose()}}>Tải file text</Button>
+                  } 
+                  <Button onClick={props.handleClose}>Đóng</Button>
+              </DialogActions>
+          </Dialog>
+      </>
+    )
+}

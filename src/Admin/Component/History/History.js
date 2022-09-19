@@ -1,9 +1,13 @@
+import { Button } from '@mui/material'
 import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { SERVER_URL } from '../../../config/config'
+import { useInView } from "react-intersection-observer"
+import { DetailStats1 } from '../../../component/History/DetailOrder'
 
 const History = (props) => {
+
   const [history, setHistory]= useState(()=> [])
   useEffect(()=> {
     (async()=> {
@@ -12,7 +16,7 @@ const History = (props) => {
             method: "post",
             responseType: "json"
         })
-        const result= await res.data
+        const result= await res.data.data
         return setHistory(()=> result)
     })()
   }, [])
@@ -32,14 +36,19 @@ const History = (props) => {
                     </tr>
                 </thead>
                 <tbody className="tbody-table-of-history-ad">
-                    <tr className="tr-tbody-table-of-history-ad">
-                        <td style={{textAlign: "center"}}>Mã hóa đơn</td>
-                        <td style={{textAlign: "center"}}>Tên tài khoản</td>
-                        <td style={{textAlign: "center"}}>Số tiền</td>
-                        <td style={{textAlign: "center"}}>tdời gian</td>
-                        <td style={{textAlign: "center"}}>Trạng tdái</td>
-                        <td style={{textAlign: "center"}}>Chi tiết</td>
-                    </tr>
+                    {
+                        history?.map((item, key)=> <tr key={key} className="tr-tbody-table-of-history-ad">
+                        <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.code_stats}</td>
+                        <td style={{textAlign: "center", border: "1px solid #fff"}}><NameAccount id_user={item.id_user} /></td>
+                        <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.amount}</td>
+                        <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.date}</td>
+                        <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.state=== true ? <span style={{color: "green"}}>Thành công</span> : <span style={{color: "red"}}>Thất bại</span>}</td>
+                        <td style={{textAlign: "center", border: "1px solid #fff"}}>
+                            <DetailStats {...item} account={item.info.account} password={item.info.password || item.password} code_stats={item.code_stats} />
+                        </td>
+                    </tr>)
+                    }
+                
                 </tbody>
             </table>
         </div>
@@ -48,3 +57,41 @@ const History = (props) => {
 }
 
 export default History
+
+const NameAccount= (props)=> {
+    const { ref, inView }= useInView()
+    const [data, setData]= useState(()=> "")
+    useEffect(()=> {
+        if(props && inView=== true) {
+
+            (async()=> {
+                const res= await axios({
+                    url: `${SERVER_URL}/get/account`,
+                    method: "get",
+                    params: {
+                        id_user: props?.id_user
+                    },
+                    responseType: "json"
+                })
+                const result= await res.data
+                return setData(()=> result.account)
+            })()
+        }
+    })
+    return (
+        <span ref={ref}>{data}</span>
+    )
+}
+
+const DetailStats= (props)=> {
+    const [open, setOpen]= useState(()=> false)
+    const handleClose= ()=> {
+        setOpen(()=> false)
+    }
+    return (
+        <>
+            <Button onClick={()=> setOpen(()=> true)} variant={"contained"}>Chi tiết</Button>
+            <DetailStats1 {...props} open={open} handleClose={handleClose} />
+        </>
+    )
+}
