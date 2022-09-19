@@ -20,9 +20,35 @@ const History = (props) => {
         return setHistory(()=> result)
     })()
   }, [])
+  const [search, setSearch]= useState(()=> "")
+  const [dataSearch, setDataSearch]= useState(()=> [])
+  const [isSearch, setIsSearch]= useState(()=> false)
+  const searchReceipt= async ()=> {
+    const res= await axios({
+        url: `${SERVER_URL}/find/history`,
+        method: "get",
+        params: {
+            search
+        },
+        responseType: "json"
+    })
+    setIsSearch(()=> true)
+    const result= await res.data
+    return setDataSearch(()=> result.search)
+  }
   return (
     <div>
         <div style={{margin: "16px 0", fontSize: 20, fontWeight: 600}}>Lịch sử nạp của thành viên</div>
+        <div>Tìm kiếm đơn hàng bằng mã hóa đơn</div>
+        <div style={{margin: "16px 0", display: "flex", alignItems: "center", gap: 16}}>
+            <input onChange={(e)=> {
+                if(e.target.value.length <=0 ) {
+                    setIsSearch(()=> false)
+                }
+                setSearch(e.target.value)
+            }} placeholder={"Nhập mã hóa đơn"} type="text" style={{height: 50, borderRadius: 80, outlineColor: "#2e89ff", fontSize: 18, maxWidth: 600, width: "100%", padding: 10}} />
+            {search.length > 0 && <Button onClick={()=> searchReceipt()} variant={"contained"} style={{borderRadius: 80, height: 50}}>Tìm kiếm</Button>}
+        </div>
         <div className="w-table-of-history-ad" style={{width: "100%", overflowX: "auto"}}>
             <table cellSpacing={0} className="table-of-history-ad" style={{width: "100%"}}>
                 <thead className="thead-table-of-history-ad" >
@@ -37,7 +63,19 @@ const History = (props) => {
                 </thead>
                 <tbody className="tbody-table-of-history-ad">
                     {
-                        history?.map((item, key)=> <tr key={key} className="tr-tbody-table-of-history-ad">
+                        isSearch=== false && history?.map((item, key)=> <tr key={key} className="tr-tbody-table-of-history-ad">
+                        <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.code_stats}</td>
+                        <td style={{textAlign: "center", border: "1px solid #fff"}}><NameAccount id_user={item.id_user} /></td>
+                        <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.amount}</td>
+                        <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.date}</td>
+                        <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.state=== true ? <span style={{color: "green"}}>Thành công</span> : <span style={{color: "red"}}>Thất bại</span>}</td>
+                        <td style={{textAlign: "center", border: "1px solid #fff"}}>
+                            <DetailStats {...item} account={item.info.account} password={item.info.password || item.password} code_stats={item.code_stats} />
+                        </td>
+                    </tr>)
+                    }
+                    {
+                        isSearch=== true && dataSearch?.map((item, key)=> <tr key={key} className="tr-tbody-table-of-history-ad">
                         <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.code_stats}</td>
                         <td style={{textAlign: "center", border: "1px solid #fff"}}><NameAccount id_user={item.id_user} /></td>
                         <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.amount}</td>
