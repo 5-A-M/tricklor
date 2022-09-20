@@ -67,6 +67,21 @@ const EachService= (props)=> {
         window.location.reload()
         return console.log(result)
     }
+    
+    const deleteService= async ()=> {
+        const res= await axios({
+            url: `${SERVER_URL}/delete/a/service`,
+            method: "post",
+            responseType: "json",
+            data: {
+                id_delete: props.id_service
+            }
+        })
+        const result= await res.data
+        window.location.reload()
+        return console.log(result)
+    }
+    const [dX, setDX]= useState(()=> false)
     return (
         <div className={"wrap-load-new-service"}>
                 <div style={{ fontSize: 20, margin: "16px 0" }}>{props?.title}</div>
@@ -77,11 +92,16 @@ const EachService= (props)=> {
                 >
                     <thead className="thead-table-add-service" >
                         <tr
+                            onMouseEnter={()=> setDX(()=> true)}
+                            onMouseLeave={()=> setDX(()=> false)}
                             className="tr-table-add-service"
                             style={{ border: "1px solid #fff", position: "relative" }}
                         >
                             {
                                 props?.menu?.map((item, key)=> <th key={key}>{item}</th>)
+                            }
+                            {
+                                dX=== true && <th><Button onClick={()=> deleteService()} variant={"contained"}>Xóa dịch vụ</Button></th>
                             }
                         </tr>
                     </thead>
@@ -149,7 +169,7 @@ const EachService= (props)=> {
                 }}
                 className="btn-add-server-hotmail-outlook"
                 >
-                Lưu
+                    Lưu
                 </button>)}
             </div>
     )
@@ -167,6 +187,7 @@ const DetailTr= (props)=> {
             responseType: "json"
         })
         const result= await res.data
+        window.location.reload()
         return console.log(result)
     }
     return (

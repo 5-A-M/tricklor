@@ -15,8 +15,14 @@ const ListProduct = (props) => {
   return (
     <div className="list-product-container">
         <table className="list-product-table">
-            <THead array_header={props.array_header} />
-            <TBody promotion={props.promotion} balance={props.balance} arr_product={props.arr_product} />
+            
+            {
+                props.is_new=== true ? <THeadNew array_header={props.array_header} /> : <THead array_header={props.array_header} />
+            }
+            {
+                props.is_new=== true ? <TBodyNew {...props} promotion={props.promotion} balance={props.balance} arr_product={props.arr_product} /> : <TBody promotion={props.promotion} balance={props.balance} arr_product={props.arr_product} />
+            }
+            
         </table>
     </div>
   )
@@ -35,11 +41,26 @@ const THead= (props)=> {
     )
 }
 
+const THeadNew= (props)=> {
+    return (
+        <thead className="thead-container">
+            <tr className="thead-container-tr">
+                {
+                    props.array_header.map((item, key) => <Th key={key} text={item} />)
+                }
+                <Th />
+            </tr>
+        </thead>
+    )
+}
+
 const Th= (props) => {
     return (
         <th className="th-container">
             <p className="th-container-p">{props.icon}</p>
             <span className="th-container-span">{props.text}</span>
+            {/* <span className="th-container-span">{props}</span> */}
+
         </th>   
     )
 }
@@ -58,6 +79,33 @@ const TBody= (props)=> {
     ) 
 
 }
+
+const TBodyNew= (props)=> {
+    const [data, setData]= useState(()=> [])
+    useEffect(()=> {
+        if(props) {
+            (async()=> {
+                const res= await axios({
+                    url: `${SERVER_URL}/get/c/service/detail`,
+                    method: "get",
+                    responseType: "json",
+                    params: {
+                        id_service: props.id_service
+                    }
+                })
+                const result= await res.data
+                return setData(()=> result.data)
+            })()
+        }
+    }, [props])
+    return (
+        <tbody className="tbody-container">
+          {
+            data && data?.map((item, key)=> <Tr is_new={true} promotion={props.promotion} balance={props.balance} key={key} {...item} />)
+          }
+        </tbody>
+    )
+}   
 
 const Tr= (props) => {
     const array_body = props
@@ -80,13 +128,25 @@ const Tr= (props) => {
     }, [array_body])
     return (
         <tr className="tbody-container-tr">
-            <Td icon={array_body.icon} text={array_body.title} />
-            <Td text={array_body.pop3} />
-            <Td text={array_body.live} />
-            <Td icon={array_body.nation} text={!validUrl.isUri(array_body.nation) ? true : false} />
-            <Td text={array_body.price} />
-            <Td text={amount} />
-            <Td amount={amount} setAmount={setAmount} balance={props?.balance} promotion={props?.promotion} button={"Mua"} price={parseInt(array_body?.price?.replace("đ", ""))} name={array_body?.title} />
+            {
+                !props.is_new=== true && <>
+                    <Td icon={array_body.icon} text={array_body.title} />
+                    <Td text={array_body.pop3} />
+                    <Td text={array_body.live} />
+                    <Td icon={array_body.nation} text={!validUrl.isUri(array_body.nation) ? true : false} />
+                    <Td text={array_body.price} />
+                    <Td text={amount} />
+                    <Td amount={amount} setAmount={setAmount} balance={props?.balance} promotion={props?.promotion} button={"Mua"} price={parseInt(array_body?.price?.replace("đ", ""))} name={array_body?.title} />
+                </>
+            }
+            {
+                props.is_new=== true && <>
+                    {
+                        props?.menu?.map((item, key)=> <Td key={key} text={item} />)
+                    }
+                    <Td amount={props.amount} setAmount={setAmount} balance={props?.balance} promotion={props?.promotion} button={"Mua"} price={parseInt(array_body?.price?.replace("đ", ""))} name={array_body?.title} />
+                </>
+            }
         </tr>
     )
 }

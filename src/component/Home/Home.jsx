@@ -108,9 +108,43 @@ const Home = (props) => {
           ]}
           arr_product={data2}
         />
+        <br />
+        <WrapX 
+          balance={props.balance}
+          promotion={props.promotion}
+           />
       </div>
     </div>
   );
 };
 
 export default Home;
+
+
+const WrapX= (props)=> {
+  const [data1, setData1]= useState(()=> [])
+  useEffect(()=> {
+    (async()=> {
+      const res= await axios({
+        url: `${SERVER_URL}/get/c/service`,
+        method: "get",
+        responseType: "json",
+      })
+      const result= await res.data
+      return setData1(()=> result.data)
+    })()
+  }, [])
+  return (
+    <div style={{width: "100%"}}>
+      {
+        data1 && data1?.map((item, key)=> <ListProduct
+        {...item}
+        key={key} is_new={true}
+        balance={props.balance}
+        promotion={props.promotion}
+        array_header={item.menu}
+        />)
+      }
+    </div>
+  )
+}
