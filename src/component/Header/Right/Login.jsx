@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import PersonIcon from '@mui/icons-material/Person';
 import "./Login.sass"
 import LoginPopup from '../../Login/Login';
+import { SocketContext } from '../../../App';
 
 const Login = (props) => {
   return (
@@ -15,12 +16,12 @@ const Login = (props) => {
 }
 
 const Text = (props) => {
-  const [open, setOpen]= useState(()=> false)
+  const {openLogin, setOpenLogin}= useContext(SocketContext)
   return (
     <div className="text-right-login">
-      <div className="text-right-login-login" onClick={()=> setOpen(prev=> !prev)}>Đăng nhập</div>
+      <div className="text-right-login-login" onClick={()=> setOpenLogin(()=> true)}>Đăng nhập</div>
       {
-        open=== true && <LoginPopup setOpen={setOpen} open={open} />
+        openLogin=== true && <LoginPopup setOpen={setOpenLogin} open={openLogin} />
       }
     </div>
   )

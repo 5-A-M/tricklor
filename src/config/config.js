@@ -1,2 +1,2 @@
-export const SERVER_URL = "https://tricklor-server.herokuapp.com";
+export const SERVER_URL = "http://localhost:4000";
 // https://tricklor-server.herokuapp.com

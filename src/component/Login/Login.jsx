@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { memo, useContext, useEffect, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close';
 import "./Login.sass"
 import PersonIcon from '@mui/icons-material/Person';
@@ -18,9 +18,9 @@ const LoginPopup = (props) => {
   const [confirmPassword, setConfirmPassword]= useState(()=> "")
   const [oauth2, setOauth2]= useState(()=> false)
   return (
-    <div className="wrapper-login">
+    <div className="wrapper-login" style={{zIndex: 99}}>
         <div className="login-p">
-            <CloseLoginComponent setOpen={props.setOpen} />
+            <CloseLoginComponent {...props} setOpen={props.setOpen} />
             {
                 convertSignup=== true &&
                 <Title title1={"Đăng ký"} title2={"Bạn cần đăng ký để sử dụng dịch vụ"} />
@@ -47,7 +47,7 @@ const LoginPopup = (props) => {
   )
 }
 
-export const CloseLoginComponent= (props)=> {
+export const CloseLoginComponent= memo((props)=> {
     return (
         <div className="close-login-component">
             <div className="close-login-icon" onClick={()=> props.setOpen(()=> false)}>
@@ -55,7 +55,8 @@ export const CloseLoginComponent= (props)=> {
             </div>
         </div>
     )
-}
+})
+
 
 const Title= (props)=> {
     return (

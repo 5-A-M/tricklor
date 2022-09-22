@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Banner from "./Banner/Banner";
 import HeaderHome from "./HeaderHome/HeaderHome";
 import "./Home.sass";
@@ -37,36 +37,6 @@ const Home = (props) => {
       const result = await res.data;
       return setData2(() => result.data);
     })();
-  }, []);
-
-  useEffect(() => {
-    const intervalId = setInterval(async () => {
-      const res = await axios({
-        url: `${SERVER_URL}/edit/get/hotmail`,
-        method: "get",
-        responseType: "json",
-      });
-      const result = await res.data;
-      return setData1(() => result.data);
-    }, 8000);
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
-
-  useEffect(() => {
-    const intervalId = setInterval(async () => {
-      const res = await axios({
-        url: `${SERVER_URL}/edit/get/gmail`,
-        method: "get",
-        responseType: "json",
-      });
-      const result2 = await res.data;
-      return setData2(() => result2.data);
-    }, 8000);
-    return () => {
-      clearInterval(intervalId);
-    };
   }, []);
 
   return (
@@ -135,16 +105,23 @@ const WrapX= (props)=> {
     })()
   }, [])
   return (
+   <>
     <div style={{width: "100%"}}>
-      {
-        data1 && data1?.map((item, key)=> <ListProduct
-        {...item}
-        key={key} is_new={true}
-        balance={props.balance}
-        promotion={props.promotion}
-        array_header={item.menu}
-        />)
-      }
-    </div>
+        {
+          data1 && data1?.map((item, key)=> <Fragment key={key}>
+            <ListProduct
+            {...item}
+            key={key} is_new={true}
+            balance={props.balance}
+            promotion={props.promotion}
+            array_header={item.menu}
+            />
+            <br />
+          </Fragment>)
+        }
+        
+      </div>
+      <br />
+    </>
   )
 }

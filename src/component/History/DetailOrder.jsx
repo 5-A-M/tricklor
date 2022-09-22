@@ -49,14 +49,6 @@ const DetailOrder = (props) => {
             <DialogContent style={{width: 600}}>
                 <DialogContentText id="alert-dialog-slide-description">
                     {
-                        data?.account && <div>Tài khoản: <strong>{data?.account}</strong></div>
-                    }
-                    <br />
-                    {
-                        data?.password && <div>Mật khẩu: <strong>{data?.password}</strong></div>
-                    }
-                    <br />
-                    {
                         data?.cost && <div>Giá: <strong>{data?.cost}</strong></div>
                     }
                     <br />
@@ -66,6 +58,11 @@ const DetailOrder = (props) => {
                     {
                        (data && Object?.values(data)?.length <= 0 && <div style={{textAlign: "center"}}>Không có thông tin về đơn hàng này</div>)
                     }
+                    <div style={{ color: "#000", margin: "8px 0", maxHeight: 300, overflow: "auto"}}>
+                    {
+                      data?.data?.map((item, key)=> <div className={"list-account-password"} key={key}>{item.account}|{item.password}</div>)
+                    }
+                  </div>
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

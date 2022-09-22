@@ -19,3 +19,6 @@ code {
   background-position: center center;
   background-size: cover;
 }
+.list-product-container .list-product-table .tbody-container-tr .td-container .td-container-button {
+  color: #000 !important;
+}

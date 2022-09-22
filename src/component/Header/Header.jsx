@@ -1,4 +1,5 @@
 import React from 'react'
+import { memo } from 'react'
 import "./Header.sass"
 import Left from './Left/Left'
 import Right from './Right/Right'
@@ -14,4 +15,4 @@ const Header = (props) => {
   )
 }
 
-export default Header
+export default memo(Header)

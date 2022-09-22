@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import Left from './Left/Left'
 import "./Navigation.sass"
 import Right from './Right/Right'
@@ -14,4 +14,4 @@ const Navigation = (props) => {
   )
 }
 
-export default Navigation
+export default memo(Navigation)

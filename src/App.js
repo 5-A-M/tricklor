@@ -25,7 +25,6 @@ const CheckAccount= lazy(()=> import("./component/CheckAccount/CheckAccount"))
 const NotificationAdmin= lazy(()=> import("./NotificationAdmin/NotificationAdmin"))
 const Account= lazy(()=> import("./component/Account/Account"))
 const History= lazy(()=> import("./component/History/History"))
-// const Auth= lazy(()=> import("./Auth/Auth"))
 
 export const SocketContext= createContext()
 function App() {
@@ -33,6 +32,7 @@ function App() {
   const [options, setOptions]= useState(()=> {})
   const [socketState, setSocketState]= useState()
   const [callAgain, setCallAgain]= useState(()=> false)
+  const [openLogin, setOpenLogin]= useState(()=> false)
   useEffect(()=> {
     const socket= io(`${SERVER_URL}/`, {transports: ["websocket"]})
     setSocketState(()=> socket)
@@ -74,7 +74,7 @@ function App() {
         <link rel="icon" type="image/x-icon" href={options?.logo} />
         <title>{options?.title ? options?.title : "Loading...."}</title>
       </Helmet>
-      <SocketContext.Provider value={{socketState, setCallAgain}}>
+      <SocketContext.Provider value={{socketState, setCallAgain, openLogin, setOpenLogin}}>
         <Header {...user} {...options} />
         <Navigation {...options} />
         {
