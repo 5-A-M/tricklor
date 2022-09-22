@@ -63,12 +63,14 @@ const ProBanking= (props)=> {
 }
 
 const Pro1= (props)=> {
+  const { color_code }= useContext(SocketContext)
+
   return (
     <div className="pro-1-banking-main-payment">
-      <span className="pro-1-banking-main-payment-span">Nhập số tiền cần nạp: </span>
+      <span className="pro-1-banking-main-payment-span" style={{color: color_code}}>Nhập số tiền cần nạp: </span>
       <div className="pro-1-banking-main-payment-div">
         <NumberFormat onValueChange={(e)=> props.setAmount(parseInt(e.value))} thousandSeparator={true} displayType={"input"} placeholder={"Nhập số tiền cần nạp"} className="pro-1-banking-main-payment-div-inp" />
-        <div className="pro-1-banking-main-payment-div-div">VND</div>
+        <div className="pro-1-banking-main-payment-div-div" style={{background: color_code}}>VND</div>
       </div>
     </div>
   )
@@ -90,9 +92,11 @@ const Pro2= (props)=> {
   //   return console.log(result)
   // }
   const [open, setOpen]= useState(()=> false)
+  const { color_code }= useContext(SocketContext)
+
   return (
     <div className="button-payment" style={{position: "relative"}}>
-      <button disabled={parseInt(props.amount) <=0 || isNaN(props.amount) ? true : false} style={{opacity: parseInt(props.amount) <=0 || isNaN(props.amount) ? 0.5 : 1, cursor: parseInt(props.amount) <=0 || isNaN(props.amount) ? "not-allowed" : "pointer"}} title={parseInt(props.amount) <= 0 || isNaN(props.amount) ? "Vui lòng nhập giá tiền hợp lệ" : "Thanh toán"} onClick={()=> setOpen((prev)=> !prev)} className="button-payment-main">
+      <button disabled={parseInt(props.amount) <=0 || isNaN(props.amount) ? true : false} style={{opacity: parseInt(props.amount) <=0 || isNaN(props.amount) ? 0.5 : 1, cursor: parseInt(props.amount) <=0 || isNaN(props.amount) ? "not-allowed" : "pointer", background: color_code}} title={parseInt(props.amount) <= 0 || isNaN(props.amount) ? "Vui lòng nhập giá tiền hợp lệ" : "Thanh toán"} onClick={()=> setOpen((prev)=> !prev)} className="button-payment-main">
         Thanh toán
       </button>
       {
@@ -225,7 +229,7 @@ const RightPopup= (props)=> {
 
 const PromotionTable= (props)=> {
   return (
-    <div className="promotion-table">
+    <div className="promotion-table" style={{opacity: 0}}>
       <div className="promotion-table-title">Khuyến mãi nạp tiền</div>
       <ListPromotion speaker={<VolumeUpIcon style={{color: "#007c30"}} />} text={"Từ 0 đến 100k + 30% giá trị thẻ nạp"} />
     </div>
@@ -261,8 +265,10 @@ export const ContactSupport= (props)=> {
 }
 
 const ContactSupport1= (props)=> {
+  const { color_code }= useContext(SocketContext)
+  
   return (
-    <div className="contact-support-1">
+    <div className="contact-support-1" style={{color: color_code}}>
       {props.content}
     </div>
   )

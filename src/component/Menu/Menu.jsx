@@ -6,9 +6,12 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import HistoryIcon from '@mui/icons-material/History';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Cookie from "js-cookie"
+import { useContext } from "react";
+import { SocketContext } from "../../App";
 
 const Menu = (props) => { 
-  const array_link= [{text: "Trang chủ", link: "/", icon: <HomeIcon />, is_link: true}, {text: "Thông tin cá nhân", link: "/account", icon: <AccountBoxIcon />, is_link: true}, {text: "Nạp tiền", link: "/recharge", icon: <PaymentIcon />, is_link: true}, {text: "Lịch sử giao dịch", link: "/history", icon: <HistoryIcon />, is_link: true}, {text: "Đăng xuất", icon: <LogoutIcon />}]
+  const { color_code }= useContext(SocketContext)
+  const array_link= [{text: "Trang chủ", link: "/", icon: <HomeIcon style={{color: color_code}} />, is_link: true}, {text: "Thông tin cá nhân", link: "/account", icon: <AccountBoxIcon style={{color: color_code}} />, is_link: true}, {text: "Nạp tiền", link: "/recharge", icon: <PaymentIcon style={{color: color_code}} />, is_link: true}, {text: "Lịch sử giao dịch", link: "/history", icon: <HistoryIcon style={{color: color_code}} />, is_link: true}, {text: "Đăng xuất", icon: <LogoutIcon style={{color: color_code}} />}]
   return (
     <div className="menu-login">
         {

@@ -8,7 +8,7 @@ const Login = (props) => {
   return (
     <div className="login">
       <div className="login__logo">
-        <PersonIcon className="login__logo__icon" />
+        
         <Text />
       </div>
     </div>
@@ -16,10 +16,10 @@ const Login = (props) => {
 }
 
 const Text = (props) => {
-  const {openLogin, setOpenLogin}= useContext(SocketContext)
+  const {openLogin, setOpenLogin, color_code}= useContext(SocketContext)
   return (
     <div className="text-right-login">
-      <div className="text-right-login-login" onClick={()=> setOpenLogin(()=> true)}>Đăng nhập</div>
+      <div style={{display: "flex", justifyContent: 'center', alignItems: "center"}} className="text-right-login-login" onClick={()=> setOpenLogin(()=> true)}><PersonIcon style={{color: color_code}} className="login__logo__icon" /><span>Đăng nhập</span></div>
       {
         openLogin=== true && <LoginPopup setOpen={setOpenLogin} open={openLogin} />
       }

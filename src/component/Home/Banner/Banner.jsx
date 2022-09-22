@@ -7,8 +7,6 @@ const Banner = (props) => {
     <Fragment>        
         <div className="banner-home" style={{position: "relative"}}>
         <PhoneyBackground src={props.banner} />
-        <Discount {...props} />
-        <Support {...props} />
         </div>
     </Fragment>
   )
@@ -34,7 +32,7 @@ const PhoneyBackground= (props)=> {
 
 // }
 
-const Discount= (props) => {
+export const Discount= (props) => {
     const array_discount= [{text: "Từ 0 đến 100k +30% giá trị thẻ nạp"}, {text: "Từ 500k + 50% giá trị thẻ nạp"}, {text: "Từ 2000k + 100% giá trị thẻ nạp"}, {text: "Tiền khuyến mãi chỉ mua được Mail (Hotmail + Outlook + Domain)"}]
     return (
         <div className="banner-discount">
@@ -46,7 +44,7 @@ const Discount= (props) => {
     )
 }
 
-const Support= (props)=> {
+export const Support= (props)=> {
     const array_support= [{text: "Group Zalo nhận thông báo quan trọng"}, {text: "Video HD sử dụng Tool Check Live"}, {text: "Mọi thắc mắc vui lòng liên hệ Zalo"}]
     return (
         <div className="banner-support">

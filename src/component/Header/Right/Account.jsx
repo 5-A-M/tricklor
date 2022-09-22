@@ -1,6 +1,8 @@
 import "./Account.sass"
 import PersonIcon from '@mui/icons-material/Person';
 import { Link } from "react-router-dom"
+import { SocketContext } from "../../../App";
+import { useContext } from "react";
 
 const Account =(props)=> {
     return (
@@ -15,12 +17,13 @@ const Account =(props)=> {
 }
 
 const Name= (props)=> {
+    const { color_code }= useContext(SocketContext)
     return (
         <div className="name-account-menu">
             <div className="wrapper-name-account-menu-icon">
                 <PersonIcon />
             </div>
-            <div className="main-name-account-menu-icon">{props.name}</div>
+            <div className="main-name-account-menu-icon" style={{color: color_code}}>{props.name}</div>
         </div>
     )
 }

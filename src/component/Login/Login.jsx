@@ -68,12 +68,16 @@ const Title= (props)=> {
 }
 
 const Title1= (props)=> {
+    const { color_code }= useContext(SocketContext)
+
     return (
-        <div className="title-component-login-title-1"><h5 className="title-component-login-title-1-heading">{props.title1}</h5></div> 
+        <div className="title-component-login-title-1"><h5 className="title-component-login-title-1-heading" style={{color: color_code}}>{props.title1}</h5></div> 
     )
 }
 
 const Title2= (props)=> {
+    const { color_code }= useContext(SocketContext)
+    
     return (
         <div className="title-component-login-title-2">{props.title2}</div> 
     )
@@ -212,9 +216,10 @@ const SaveAccount= (props)=> {
 }
 
 const ForgotPassword= (props)=> {
+    const { color_code }= useContext(SocketContext)
     return (
         <div className="forgot-password">
-            <span className="span-forgot-password">Quên mật khẩu</span>
+            <span style={{color: color_code}} className="span-forgot-password">Quên mật khẩu</span>
         </div>
     )
 }
@@ -255,12 +260,12 @@ const BtnExe= (props)=> {
             props?.setEnterLogin(()=> false)
         }
     }, [login, props])
-    
+    const { color_code }= useContext(SocketContext)
     return (
         <>
             <div style={{margin: "8px", fontSize: 12, color: state=== true ? "green" : "red"}}>{message}</div>
             <div className="btn-exe">
-                <button disabled={loading=== true ? true : false} onClick={()=> login()} className="button-btn-exe" style={{cursor: loading=== true ? "not-allowed" : "pointer", opacity: loading=== true ? 0.5 : 1}}>
+                <button disabled={loading=== true ? true : false} onClick={()=> login()} className="button-btn-exe" style={{cursor: loading=== true ? "not-allowed" : "pointer", opacity: loading=== true ? 0.5 : 1, background: color_code}}>
                     {loading=== false ? "Đăng nhập" : "Đang đăng nhập"}
                 </button>
             </div>
@@ -290,11 +295,12 @@ const BtnExeS= (props)=> {
             }
         }, 1000)
     }
+    const { color_code }= useContext(SocketContext)
     return (
         <>
             <div style={{margin: "8px", fontSize: 12, color: state=== true ? "green" : "red"}}>{message}</div>
             <div className="btn-exe">
-                <button onClick={()=> signup()} className="button-btn-exe" style={{cursor: "pointer"}}>
+                <button onClick={()=> signup()} className="button-btn-exe" style={{cursor: "pointer", background: color_code}}>
                     Đăng ký
                 </button>
             </div>
@@ -303,18 +309,19 @@ const BtnExeS= (props)=> {
 }
 
 const ToSignUp= (props)=> {
+    const { color_code }= useContext(SocketContext)
     return (
         <div className="to-sign-up">
             {  
                 props.convertSignup=== false &&
                 <>
-                    <span className="span-to-sign-up">Chưa có tài khoản ? </span> <strong onClick={()=> {props.setConvertSignup(prev=> !prev);props.setAccount(()=> "");props.setPassword(()=> "");props.setEmail(()=> ""); props.setConfirmPassword(()=> "")}} className="strong-to-sign-up">Đăng ký ngay</strong>
+                    <span className="span-to-sign-up">Chưa có tài khoản ? </span> <strong onClick={()=> {props.setConvertSignup(prev=> !prev);props.setAccount(()=> "");props.setPassword(()=> "");props.setEmail(()=> ""); props.setConfirmPassword(()=> "")}} className="strong-to-sign-up" style={{color: color_code}}>Đăng ký ngay</strong>
                 </>
             }
             {
                 props.convertSignup=== true &&
                 <>
-                    <span className="span-to-sign-up">Đã có tài khoản ? </span> <strong onClick={()=> {props.setConvertSignup(prev=> !prev);props.setAccount(()=> "");props.setPassword(()=> "");props.setEmail(()=> ""); props.setConfirmPassword(()=> "")}} className="strong-to-sign-up">Đăng nhập</strong>
+                    <span className="span-to-sign-up">Đã có tài khoản ? </span> <strong onClick={()=> {props.setConvertSignup(prev=> !prev);props.setAccount(()=> "");props.setPassword(()=> "");props.setEmail(()=> ""); props.setConfirmPassword(()=> "")}} className="strong-to-sign-up" style={{color: color_code}}>Đăng nhập</strong>
                 </>
             }
         </div>

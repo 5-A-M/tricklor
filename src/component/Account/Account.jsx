@@ -30,7 +30,7 @@ const Left = (props) => {
   const array_link_account = [
     { text: "Thông tin cá nhân", icon: <PersonIcon />, link: "/info" },
     {
-      text: "Two-Factor Authentication (2FA)",
+      text: "Oauth2 (2FA)",
       icon: <LockIcon />,
       link: "/2fa",
     },
@@ -220,7 +220,7 @@ export const Title = (props) => {
 const TwoFa = (props) => {
   return (
     <div className="two-fa">
-      <Title info={"Two-Factor Authentication (2FA)"} />
+      <Title info={"Oauth2"} />
       {
         props?.oauth2=== false &&
         <TwoFaAuthentication {...props} />

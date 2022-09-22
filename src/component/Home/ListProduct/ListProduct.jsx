@@ -10,19 +10,29 @@ import { SERVER_URL } from "../../../config/config";
 import Alert from "../../../Admin/Component/Alert/Alert";
 import { SocketContext } from "../../../App";
 import { useEffect } from "react";
+import SellIcon from "@mui/icons-material/Sell";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+
 
 const ListProduct = (props) => {
   return (
     <div className="list-product-container">
       <table className="list-product-table">
+        {/*  */}
         {props.is_new === true ? (
-          <THeadNew array_header={props.array_header} />
-        ) : (
+          <THeadNew array_header={props.array_header} p={props.p} />
+        ) 
+        // 
+        : (
           <THead array_header={props.array_header} />
         )}
+        {/* 
+        
+        */}
         {props.is_new === true ? (
           <TBodyNew
             {...props}
+
             promotion={props.promotion}
             balance={props.balance}
             arr_product={props.arr_product}
@@ -52,13 +62,21 @@ const THead = (props) => {
 };
 
 const THeadNew = (props) => {
+  const { color_code }= useContext(SocketContext)
   return (
     <thead className="thead-container">
       <tr className="thead-container-tr">
         {props.array_header.map((item, key) => (
-          <Th key={key} text={item} />
-        ))}
+          <Th key={key} text={item.name} iconImg={item.icon} is_img={true} />
+          ))
+        }
+        {
+          props?.p &&
+        <Th text={"Giá"} icon={<SellIcon style={{color: color_code}} />} />
+        }
+        <Th text={"Số lượng"} icon={<ShoppingCartIcon style={{color: color_code}} />} />
         <Th />
+
       </tr>
     </thead>
   );
@@ -68,6 +86,10 @@ const Th = (props) => {
   return (
     <th className="th-container">
       <p className="th-container-p">{props.icon}</p>
+      {
+        props.is_img=== true &&
+        <img src={props.iconImg} alt="open" style={{width: 24, height: 24, objectFit: "cover"}} />
+      }
       <span className="th-container-span">{props.text}</span>
       {/* <span className="th-container-span">{props}</span> */}
     </th>
@@ -111,13 +133,17 @@ const TBodyNew = (props) => {
     <tbody className="tbody-container">
       {data &&
         data?.map((item, key) => (
-          <Tr
-            is_new={true}
-            promotion={props.promotion}
-            balance={props.balance}
-            key={key}
-            {...item}
-          />
+          <>
+            <Tr
+              p={props?.price}
+              is_new={true}
+              promotion={props.promotion}
+              balance={props.balance}
+              key={key}
+              {...item}
+            />
+          </>
+          
         ))}
     </tbody>
   );
@@ -143,9 +169,28 @@ const Tr = (props) => {
         }
       })();
     }
-  }, [props.is_new, array_body.title]);
+
+    if (props?.is_new === true) {
+      (async () => {
+        if (array_body) {
+          const res = await axios({
+            url: `${SERVER_URL}/get/amount/product`,
+            method: "get",
+            params: {
+              title: props?.menu?.[0],
+            },
+            responseType: "json",
+          });
+          const result = await res.data;
+          return setAmount(() => result.amount);
+        }
+      })();
+    }
+  }, [props.is_new, array_body.title, props?.menu]);
   return (
     <tr className="tbody-container-tr">
+      {/* 
+       */}
       {!props.is_new === true && (
         <>
           <Td icon={array_body.icon} text={array_body.title} />
@@ -156,6 +201,7 @@ const Tr = (props) => {
             text={!validUrl.isUri(array_body.nation) ? true : false}
           />
           <Td text={array_body.price} />
+         
           <Td text={amount} />
           <WrapTd>
             <Td
@@ -166,24 +212,40 @@ const Tr = (props) => {
               button={parseInt(amount) <= 0 ? "Đã hết" : "Mua"}
               price={parseInt(array_body?.price?.replace("đ", ""))}
               name={array_body?.title}
+              amountX={amount}
             />
           </WrapTd>
         </>
       )}
+      {/*  */}
+      {/*  */}
       {props.is_new === true && (
         <>
           {props?.menu?.map((item, key) => (
-            <Td key={key} text={item} />
+            <>
+              <Td key={key} text={item} />
+               
+            </>
+            
           ))}
-          <Td
-            amount={props.amount}
-            setAmount={setAmount}
-            balance={props?.balance}
-            promotion={props?.promotion}
-            button={parseInt(props.amount) <= 0 ? "Đã hết" : "Mua"}
-            price={parseInt(array_body?.price?.replace("đ", ""))}
-            name={array_body?.title}
-          />
+          {
+            props?.p && <Td text={props.p} />
+          }
+          {
+            <Td text={amount || 0} />
+          }
+          <WrapTd>
+            <Td
+              amount={amount}
+              amountX={amount}
+              setAmount={setAmount}
+              balance={props?.balance}
+              promotion={props?.promotion}
+              button={parseInt(amount) <= 0 ? "Đã hết" : "Mua"}
+              price={parseInt(props?.p)}
+              name={props?.menu?.[0]}
+            />
+          </WrapTd>
         </>
       )}
     </tr>
@@ -196,6 +258,7 @@ const WrapTd = ({ children }) => {
 
 const Td = (props) => {
   const [open, setOpen] = useState(() => false);
+  const { color_code }= useContext(SocketContext)
   return (
     <td className="td-container">
       {props.icon && (
@@ -205,12 +268,15 @@ const Td = (props) => {
       )}
       {props.text && <span className="td-container-span">{props.text}</span>}
       {props.button && (
-        <div className="td-container-button" style={{background: parseInt(props.amount) <= 0 ?"#555" : "#1fa64d", cursor: parseInt(props.amount) <= 0 ?"not-allowed" : "pointer"}}>
+        <div className="td-container-button" style={{background: parseInt(props.amount) <= 0 ?"#555" : color_code, cursor: parseInt(props.amount) <= 0 ?"not-allowed" : "pointer", display: "flex", justifyContent: 'center', alignItems: "center", position: "relative", width: "100%", height: "100%"}}>
           <button
             disabled={parseInt(props.amount) <= 0 ? true : false}
             className="td-container-button-btn"
             onClick={() => {setOpen(() => true)}}
             style={{
+              position: "absolute",
+              top: 0, 
+              left: 0,
               width: "100%",
               height: "100%",
               border: "none",
@@ -218,7 +284,7 @@ const Td = (props) => {
               color: "#fff",
               fontSize: 18,
               background: "transparent",
-              cursor: parseInt(props.amount) <= 0 ?"not-allowed" : "pointer"
+              cursor: parseInt(props.amount) <= 0 ?"not-allowed" : "pointer",
             }}
           >
             {props.button}
@@ -233,6 +299,7 @@ const Td = (props) => {
               price={props.price}
               open={open}
               setOpen={setOpen}
+              amountX={props.amountX}
             />
           )}
           </WrapPopupPurchase>
@@ -277,7 +344,8 @@ const PopupPurchase = (props) => {
         price: parseInt(amount) * parseInt(props.price),
         name: props.name,
         id_user: Cookie.get("uid"),
-        amount: parseInt(amount)
+        amount: parseInt(amount),
+        amountX: parseInt(props.amountX)
       },
     });
     const result = await res.data;

@@ -1,13 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import MailIcon from '@mui/icons-material/Mail';
 import "./Contact.sass"
+import { SocketContext } from '../../../../App';
 
 const Contact = (props) => {
+  const { color_code }= useContext(SocketContext)
   return (
     <div className="contact">
-        <TemplateContact icon={<LocalPhoneIcon style={{color: "#1fa64d"}} />} content={props.hotline} />
-        <TemplateContact icon={<MailIcon style={{color: "#1fa64d"}} />} content={props.email} />
+        <a style={{color: "#000"}} href={`tel:${props.hotline}`}>
+            <TemplateContact icon={<LocalPhoneIcon style={{color: color_code}} />} content={props.hotline} />
+        </a>
+        <TemplateContact icon={<MailIcon style={{color: color_code}} />} content={props.email} />
     </div>
   )
 }

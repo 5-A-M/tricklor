@@ -6,9 +6,10 @@ import { SERVER_URL } from '../../config/config'
 const AddServiceComponent = (props) => {
   const [nameService, setNameService]= useState(()=> "")
   const [continue1, setContinue1]= useState(()=> false)
-  const [functionality, setFunctionality]= useState(()=> false)
+  // const [functionality, setFunctionality]= useState(()=> false)
   const [arrF, setArrF]= useState(()=> [])
   const [name, setName]= useState(()=> "")
+  const [icon, setIcon]= useState(()=> "")
   const [numberArray, setNumberArray]= useState(()=> 1)
   const createNewService= async ()=> {
     const res= await axios({
@@ -16,8 +17,8 @@ const AddServiceComponent = (props) => {
         method: "post",
         responseType: "json",
         data: {
-            title: nameService,
-            menu: arrF
+          title: nameService,
+          menu: arrF
         }
     })
     const result= await res.data
@@ -40,13 +41,20 @@ const AddServiceComponent = (props) => {
             
           }
           {
-            continue1=== true && Array.from(Array(numberArray).keys()).map(key=> <div style={{margin: "16px 0"}}><input placeholder={"Điền menu"} type="text" onChange={(e)=> setName(()=> e.target.value)} style={{height: 50, fontSize: 18}} /></div>)
+            continue1=== true && Array.from(Array(numberArray).keys()).map(key=> <div style={{margin: "16px 0"}}>
+              {
+                <input placeholder={"Điền menu"} type="text" onChange={(e)=> setName(()=> e.target.value)} style={{height: 50, fontSize: 18}} />
+              }
+              {
+                <input placeholder={"Điền icon"} type="text" onChange={(e)=> setIcon(()=> e.target.value)} style={{height: 50, fontSize: 18}} />
+              }
+            </div>)
           }
           {
             continue1=== true && <div style={{display: "flex", justifyContent: 'center', alignItems: "center", gap: 16}}>
-                <Button disabled={name.length > 0 ? false : true} onClick={(e)=> {setNumberArray(prev=> parseInt(prev) + 1); setArrF(prev=> ([...prev, name])); setName(()=> "")}} variant={"contained"}>Thêm</Button>
-                <Button onClick={()=> createNewService()} variant={"outlined"}>Xong</Button>
-                <Button onClick={()=> {setContinue1(()=> false); setNameService(()=> "")}} style={{background: "red"}} variant={"contained"}>Hủy</Button>
+              <Button disabled={name.length > 0 ? false : true} onClick={(e)=> {setNumberArray(prev=> parseInt(prev) + 1); setArrF(prev=> ([...prev, {name: name, icon: icon}])); setName(()=> ""); setIcon(()=> "")}} variant={"contained"}>Thêm</Button>
+              <Button onClick={()=> createNewService()} variant={"outlined"}>Xong</Button>
+              <Button onClick={()=> {setContinue1(()=> false); setNameService(()=> "")}} style={{background: "red"}} variant={"contained"}>Hủy</Button>
             </div>
           }
         </div>

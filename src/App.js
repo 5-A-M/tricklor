@@ -74,11 +74,12 @@ function App() {
         <link rel="icon" type="image/x-icon" href={options?.logo} />
         <title>{options?.title ? options?.title : "Loading...."}</title>
       </Helmet>
-      <SocketContext.Provider value={{socketState, setCallAgain, openLogin, setOpenLogin}}>
+      <SocketContext.Provider value={{socketState, setCallAgain, openLogin, setOpenLogin, color_code: options?.color_code}}>
         <Header {...user} {...options} />
         <Navigation {...options} />
         {
-          options?.notification_admin?.length > 0 && <Suspense fallback={<></>}><NotificationAdmin notification={options.notification_admin} /></Suspense>
+          options?.notification_admin?.length > 0 && <Suspense fallback={<></>}>
+            <NotificationAdmin notification={options.notification_admin} /></Suspense>
         }
         {
           user?.login=== true &&

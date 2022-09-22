@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { SERVER_URL } from '../../config/config'
 import Cookie from "js-cookie"
 import "./History.sass"
@@ -8,6 +8,7 @@ import moment from "moment"
 import { Button } from '@mui/material'
 import { lazy } from 'react'
 import nProgress from 'nprogress'
+import { SocketContext } from '../../App'
 
 const DetailOrder= lazy(()=> import("./DetailOrder"))
 
@@ -42,8 +43,9 @@ const History = (props) => {
 }
 
 const Header= (props)=> {
+    const { color_code }= useContext(SocketContext)
     return (
-        <thead className="wrapper-history-transfer-header">
+        <thead className="wrapper-history-transfer-header" style={{background: color_code}}>
             <tr>
                 <th>mã hóa đơn</th>
                 <th>số tiền</th>
@@ -63,6 +65,7 @@ const Body= (props)=> {
         setOpen(()=> false)
         setCodeReceipt(()=> "")
     }
+    const { color_code }= useContext(SocketContext)
     return (
         <tbody className="wrapper-history-transfer-body">
             {
@@ -83,7 +86,7 @@ const Body= (props)=> {
                 <td className="wrapper-history-transfer-header-td-3"></td>
                 <td></td>
                 <td></td>
-                <td><section style={{width: 32, height: 32, background: "#49b66e", display: "flex", justifyContent: 'center', alignItems: "center", color: "#fff", float: "right"}}>1</section></td>
+                <td><section style={{width: 32, height: 32, background: color_code, display: "flex", justifyContent: 'center', alignItems: "center", color: "#fff", float: "right"}}>1</section></td>
             </tr>
             
         </tbody>

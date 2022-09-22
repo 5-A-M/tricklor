@@ -82,6 +82,23 @@ const EachService= (props)=> {
         return console.log(result)
     }
     const [dX, setDX]= useState(()=> false)
+    const [addPrice, setAddPrice]= useState(()=> false)
+    const [price, setPrice]= useState(()=> 0)
+
+     const addPriceFunction= async ()=> {
+        const res= await axios({
+            url: `${SERVER_URL}/add/price/c/service`,
+            method: "post",
+            data: {
+                price: price,
+                id_service: props.id_service
+            },
+            responseType: "json"
+        })
+        const  result= await res.data
+        window.location.reload()
+        return console.log(result)
+     }
     return (
         <div className={"wrap-load-new-service"}>
                 <div style={{ fontSize: 20, margin: "16px 0" }}>{props?.title}</div>
@@ -98,7 +115,7 @@ const EachService= (props)=> {
                             style={{ border: "1px solid #fff", position: "relative" }}
                         >
                             {
-                                props?.menu?.map((item, key)=> <th key={key}>{item}</th>)
+                                props?.menu?.map((item, key)=> <th key={key}><div style={{display: "flex", justifyContent: "center", alignItems: "center"}}><span>{item.name}</span><img alt={"open"} src={item.icon} style={{width: 24, height: 24, objectFit: "cover"}} /></div></th>)
                             }
                             {
                                 dX=== true && <th><Button onClick={()=> deleteService()} variant={"contained"}>Xóa dịch vụ</Button></th>
@@ -134,6 +151,10 @@ const EachService= (props)=> {
                     </tbody>
                    {/*  */}
                 </table>
+                <br />
+                <div>
+                    <span><strong>Giá</strong>: {props?.price ? props?.price : "Chưa có"}</span>
+                </div>
                 <br />
                 <button
                 onClick={() => setAdd((prev) => !prev)}
@@ -171,6 +192,15 @@ const EachService= (props)=> {
                 >
                     Lưu
                 </button>)}
+                <div style={{margin: "16px 0"}}>
+                    <Button variant={"contained"} onClick={()=> setAddPrice(prev=> !prev)}>{addPrice=== false ? "Thêm giá" : "Hủy bỏ"}</Button>
+                </div>
+                {
+                    addPrice=== true && <div style={{margin: "16px 0"}}><input onChange={(e)=> setPrice(parseInt(e.target.value))} type="number" style={{width: 300, height: 50}} placeholder={"Nhập giá vào đây"} /></div>
+                }
+                {
+                    parseInt(price) > 0 && <Button onClick={()=> addPriceFunction()} variant={"contained"}>Thêm</Button>
+                }
             </div>
     )
 }
@@ -193,7 +223,7 @@ const DetailTr= (props)=> {
     return (
         <tr onMouseEnter={()=> setDeleteS(()=> true)} onMouseLeave={()=> setDeleteS(()=> false)} className="tr-table-add-service">
             {
-                props?.menu?.map((item, key)=> <td key={key}>{item}</td>)
+                props?.menu?.map((item, key)=> <td key={key}><div style={{display: "flex", justifyContent: "center", }}>{item}</div></td>)
             }
             {
                 deleteS=== true && <td><Button onClick={()=> deleteXXX()} variant={"contained"}>Xóa</Button></td>

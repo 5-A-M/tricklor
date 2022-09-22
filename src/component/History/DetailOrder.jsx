@@ -27,9 +27,13 @@ const DetailOrder = (props) => {
 
   const toTextFile= async()=> {
     const element = document.createElement("a");
-    const file = new Blob([`Tài khoản: ${data.account}\nMật khẩu: ${data.password}`], {
-      type: "text/plain"
-    });
+    const file = new Blob(
+      
+      data?.data?.map(item=> `${item.account.replace(",", "")}|${item.password}`.replace(",", "")),
+      {
+        type: "text/plain",
+      }
+    );
     element.href = URL.createObjectURL(file);
     element.download = `${data.code_receipt}.txt`;
     document.body.appendChild(element);
@@ -67,7 +71,7 @@ const DetailOrder = (props) => {
             </DialogContent>
             <DialogActions>
                 {
-                    data?.account &&
+                    data &&
                     <Button variant={"contained"} onClick={()=> {toTextFile();props.handleClose()}}>Tải file text</Button>
                 } 
                 <Button onClick={props.handleClose}>Đóng</Button>

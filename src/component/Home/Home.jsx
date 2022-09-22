@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import Banner from "./Banner/Banner";
 import HeaderHome from "./HeaderHome/HeaderHome";
 import "./Home.sass";
@@ -11,10 +11,12 @@ import SellIcon from "@mui/icons-material/Sell";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import axios from "axios";
 import { SERVER_URL } from "../../config/config";
+import { SocketContext } from "../../App";
 
 const Home = (props) => {
   const [data1, setData1] = useState(() => []);
   const [data2, setData2] = useState(() => []);
+  const { color_code }= useContext(SocketContext)
   useEffect(() => {
     (async () => {
       const res = await axios({
@@ -53,11 +55,11 @@ const Home = (props) => {
               text: "Hotmail + Outlook (Để dễ mở khóa Hotmail Mọi người nên Download full info mail)",
               icon: false,
             },
-            { text: "POP3", icon: <CheckBoxIcon /> },
-            { text: "Live", icon: <HourglassBottomIcon /> },
-            { text: "Quốc gia", icon: <PublicIcon /> },
-            { text: "Giá", icon: <SellIcon /> },
-            { text: "Số lượng", icon: <ShoppingCartIcon /> },
+            { text: "POP3", icon: <CheckBoxIcon style={{color: color_code}} /> },
+            { text: "Live", icon: <HourglassBottomIcon style={{color: color_code}} /> },
+            { text: "Quốc gia", icon: <PublicIcon style={{color: color_code}} /> },
+            { text: "Giá", icon: <SellIcon style={{color: color_code}} /> },
+            { text: "Số lượng", icon: <ShoppingCartIcon style={{color: color_code}} /> },
             { text: "" },
           ]}
           arr_product={data1}
@@ -69,11 +71,11 @@ const Home = (props) => {
           
           array_header={[
             { text: "Gmail", icon: false },
-            { text: "POP3", icon: <CheckBoxIcon /> },
-            { text: "Live", icon: <HourglassBottomIcon /> },
-            { text: "Quốc gia", icon: <PublicIcon /> },
-            { text: "Giá", icon: <SellIcon /> },
-            { text: "Số lượng", icon: <ShoppingCartIcon /> },
+            { text: "POP3", icon: <CheckBoxIcon style={{color: color_code}} /> },
+            { text: "Live", icon: <HourglassBottomIcon style={{color: color_code}} /> },
+            { text: "Quốc gia", icon: <PublicIcon style={{color: color_code}} /> },
+            { text: "Giá", icon: <SellIcon style={{color: color_code}} /> },
+            { text: "Số lượng", icon: <ShoppingCartIcon style={{color: color_code}} /> },
             { text: "" },
           ]}
           arr_product={data2}
@@ -115,6 +117,7 @@ const WrapX= (props)=> {
             balance={props.balance}
             promotion={props.promotion}
             array_header={item.menu}
+            p={item?.price || ""}
             />
             <br />
           </Fragment>)

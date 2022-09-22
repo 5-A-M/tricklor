@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Title } from './Account'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import MailIcon from '@mui/icons-material/Mail';
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
+import { SocketContext } from '../../App';
 
 const ApiDocument = (props) => {
   const array_link= [{text: "Check balance", icon: <AccountBalanceWalletIcon />, link: "/check_balance"},
@@ -22,10 +23,11 @@ const ApiDocument = (props) => {
 }
 
 const WrapLink= (props)=> {
+    const { color_code }= useContext(SocketContext)
     return (
         <div style={{width: "100%", height: 50, display: "flex", alignItems: "center"}} className="wrap-link-api">
             {
-                props.array_link.map((item, key)=> <NavLink to={`/account/api_document${item.link}`} key={key} style={{textDecoration: "none", color: "#49b66e"}} className={({isActive})=> isActive ? "active-link-api link-to-api" : "inactive-link-api link-to-api"}>
+                props.array_link.map((item, key)=> <NavLink to={`/account/api_document${item.link}`} key={key} style={{textDecoration: "none", color: color_code}} className={({isActive})=> isActive ? "active-link-api link-to-api" : "inactive-link-api link-to-api"}>
                     <div className="sub-api-to-link" style={{padding: "0 16px", borderRadius: 10, display: "flex", justifyContent: "center", alignItems: "center", gap: 10, cursor: "pointer", height: 50}}>
                         <div className="icon-sub-api-to-link" style={{display: "flex", justifyContent: "center", alignItems: "center"}}>{item.icon}</div>
                         <div className="text-sub-api-to-link" style={{fontSize: 16}}>{item.text}</div>
