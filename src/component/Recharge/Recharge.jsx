@@ -266,7 +266,7 @@ export const ContactSupport= (props)=> {
 
 const ContactSupport1= (props)=> {
   const { color_code }= useContext(SocketContext)
-  
+    
   return (
     <div className="contact-support-1" style={{color: color_code}}>
       {props.content}

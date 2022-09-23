@@ -2,56 +2,57 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import { SERVER_URL } from "../../../config/config";
-import Alert from "../Alert/Alert";
+// import Alert from "../Alert/Alert";
 
 const UploadProduct = (props) => {
-    const [file, setFile]= useState()
-    const [file2, setFile2]= useState()
-  const [service, setService] = useState(() => "");
-  const [service2, setService2]= useState(()=> "")
-  const [message, setMessage]= useState(()=> "")
-  const [open, setOpen]= useState(()=> false)
-  const handleFile = async (e) => {
-    setFile(e.target.files)
-    const res = await axios({
-      url: `${SERVER_URL}/upload_file/hotmail`,
-      method: "post",
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-      data: { file: Object.values(e.target.files)[0], name: service },
-    });
-    const result = await res.data;
-    setOpen(()=> true)
-    setTimeout(()=> {
-        setOpen(()=> false)
-        setFile(()=> "")
-        window.location.reload()
-    }, 3000)
-    
-    return console.log(result);
-  };
-  
-  const handleFile2 = async (e) => {
-    setFile2(e.target.files)
-    const res = await axios({
-      url: `${SERVER_URL}/upload_file/gmail`,
-      method: "post",
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-      data: { file: Object.values(e.target.files)[0], name: service2 },
-    });
-    const result = await res.data;
-    setOpen(()=> true)
-    setTimeout(()=> {
-        setOpen(()=> false)
-        setFile2(()=> "")
-        window.location.reload()
-    }, 3000)
-    return console.log(result);
-  };
+  const [name1, setName1]= useState(()=> "")
+  const [data1, setData1]= useState(()=> "")
+  const [name2, setName2]= useState(()=> "")
+  const [data2, setData2]= useState(()=> "")
+  const showFile1 = async (e) => {
+    e.preventDefault()
+    const reader = new FileReader()
+    reader.onload = async (e) => { 
+      const text = (e.target.result)
+      setData1(()=> text)
+      const res= await axios({
+        url: `${SERVER_URL}/up/any/service`,
+        method: "post",
+        data: {
+          name: name1,
+          data: text
+        },
+        responseType: "json",
+      })
+      const result= await res.data
+      console.log(result)
+      return window.location.reload()
+    };
+    reader.readAsText(e.target.files[0])
+  }
+  const showFile2 = async (e) => {
+      e.preventDefault()
+      const reader = new FileReader()
+      reader.onload = async (e) => { 
+        const text = (e.target.result)
+        setData2(()=> text)
+        const res = await axios({
+        url: `${SERVER_URL}/upload_file/hotmail`,
+        method: "post",
+        data: {
+          name: name2,
+          data: text
+        },
+      });
+      const result = await res.data;
+      console.log(result)
+      return window.location.reload()
+    };
+    reader.readAsText(e.target.files[0])
+  }
 
+
+  
   return (
     <div className="upload-product" style={{ width: "100%" }}>
       <div>Upload file hotmail</div>
@@ -62,13 +63,13 @@ const UploadProduct = (props) => {
           style={{ width: 300, height: 40, fontSize: 18 }}
           placeholder="Vui lòng nhập đúng tên dịch vụ"
           type="text"
-          onChange={(e) => setService(e.target.value)}
+          onChange={(e) => setName1(e.target.value)}
         />
       </div>
       <br />
       <div style={{ position: "relative" }}>
         <input
-          onChange={(e) => handleFile(e)}
+          onChange={(e) => showFile1(e)}
           type="file"
           title={""}
           style={{
@@ -96,13 +97,13 @@ const UploadProduct = (props) => {
           style={{ width: 300, height: 40, fontSize: 18 }}
           placeholder="Vui lòng nhập đúng tên dịch vụ"
           type="text"
-          onChange={(e) => setService2(e.target.value)}
+          onChange={(e) => setName2(e.target.value)}
         />
       </div>
       <br />
       <div style={{ position: "relative" }}>
         <input
-          onChange={(e) => handleFile2(e)}
+          onChange={(e) => showFile2(e)}
           type="file"
           title={""}
           style={{
@@ -118,7 +119,7 @@ const UploadProduct = (props) => {
         />
         <Button variant={"contained"}>Chọn file(chỉ chọn file text)</Button>
       </div>
-      <Alert open={open} duration={2500} message={"Cập nhật thành công"} />
+      {/* <Alert open={} duration={2500} message={"Cập nhật thành công"} /> */}
       <br />
       <App />
     </div>

@@ -377,7 +377,7 @@ const PopupPurchase = (props) => {
     const element = document.createElement("a");
     const file = new Blob(
       
-      order?.data?.map(item=> `${item.account.replace(",", "")}|${item.password}`.replace(",", "")),
+      order?.data?.map(item=> `${item.account}|${item.password}`),
       {
         type: "text/plain",
       }
