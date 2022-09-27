@@ -3,10 +3,10 @@ import { SocketContext } from '../../../App'
 import "./HeaderHome.sass"
 
 const HeaderHome = (props) => {
-  const { color_code }= useContext(SocketContext)
+  const { color_code, lang }= useContext(SocketContext)
   return (
     <div className="header-home" style={{background: color_code}} >
-      <SubHeaderHome title={"Bảng giá dịch vụ"} color_code={color_code} />
+      <SubHeaderHome title={lang=== "vn" ? "Bảng giá dịch vụ" : "Service price list"} color_code={color_code} />
     </div>
   )
 }

@@ -23,7 +23,7 @@ const WrapQrCode = (props) => {
   const [verify1, setVerify1] = useState(() => false);
   const [token, setToken] = useState(() => "");
   // const [confirmEmail, setConfirmEmail]= useState(()=> false)
-  const { socketState } = useContext(SocketContext);
+  const { socketState, lang } = useContext(SocketContext);
   const id_room = useMemo(() => v4(), []);
   useEffect(() => {
     console.log(socketState);
@@ -81,7 +81,9 @@ const WrapQrCode = (props) => {
       </div>
       <br />
       <div style={{ textAlign: "center" }}>
-        Quét mã QR để tiến hành tạo xác thực 2 bước
+        {
+          lang=== "vn" ? "Quét mã QR để tiến hành tạo xác thực 2 bước" : "Scan QR code to perform create oauth2"
+        }
       </div>
       {verify1 === true && (
         <Navigate

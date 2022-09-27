@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import "./ToolCheck.sass"
 import { Link } from "react-router-dom"
+import { useContext } from 'react'
+import { SocketContext } from '../../../App'
 
 const ToolCheck = (props) => {
   const array_link= [{text: "Check Live UID", icon: "https://res.cloudinary.com/dxkhlwfz3/image/upload/v1661886418/fb-icon_gugp7z.png", review: 5, link: "/check_live_uid", background: "https://res.cloudinary.com/dxkhlwfz3/image/upload/v1661887656/bg1_bw8tkr.png"},
@@ -44,7 +46,7 @@ const IconComponentToolCheck = (props) => {
 }
 
 const NameComponentToolCheck = (props) => {
-    
+    const { lang }= useContext(SocketContext)
     return (
         <div className="tool-check-name-check">
             <div className="tool-check-name-check-text">
@@ -57,7 +59,9 @@ const NameComponentToolCheck = (props) => {
                 props.open &&
                 <Link className="tool-check-name-check-link" to={`${props.link}`}>
                     <div className="tool-check-name-check-link-button">
-                        Sử dụng
+                        {
+                            lang=== "vn" ? "Sử dụng" : "Use"
+                        }
                     </div>
                 </Link>
             }

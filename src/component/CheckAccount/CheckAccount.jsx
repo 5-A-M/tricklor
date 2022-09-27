@@ -16,10 +16,12 @@ export default CheckAccount
 
 const BannerCheckAccount = (props) => {
     return (
-        <div className="banner-check-account-container-wrapper">
-            <div className="banner-check-account-container">
-                <div className="banner-check-account-text">
-                    {props.title}
+        <div className={"w-banner-check-account-container-wrapper"} style={{display: "flex", justifyContent: 'center', alignItems: "center", width: "100%"}}>
+            <div className="banner-check-account-container-wrapper" style={{maxWidth: 1200}}>
+                <div className="banner-check-account-container">
+                    <div className="banner-check-account-text">
+                        {props.title}
+                    </div>
                 </div>
             </div>
         </div>

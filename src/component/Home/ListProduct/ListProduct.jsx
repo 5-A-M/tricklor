@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 import LoginPopup, { CloseLoginComponent } from "../../Login/Login";
 import validUrl from "valid-url";
 import Cookie from "js-cookie";
@@ -12,6 +12,7 @@ import { SocketContext } from "../../../App";
 import { useEffect } from "react";
 import SellIcon from "@mui/icons-material/Sell";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import PublicIcon from "@mui/icons-material/Public";
 
 
 const ListProduct = (props) => {
@@ -20,7 +21,7 @@ const ListProduct = (props) => {
       <table className="list-product-table">
         {/*  */}
         {props.is_new === true ? (
-          <THeadNew array_header={props.array_header} p={props.p} />
+          <THeadNew isNation={props.isNation} isPrice={props.isPrice} array_header={props.array_header} p={props.p} />
         ) 
         // 
         : (
@@ -32,7 +33,6 @@ const ListProduct = (props) => {
         {props.is_new === true ? (
           <TBodyNew
             {...props}
-
             promotion={props.promotion}
             balance={props.balance}
             arr_product={props.arr_product}
@@ -62,7 +62,7 @@ const THead = (props) => {
 };
 
 const THeadNew = (props) => {
-  const { color_code }= useContext(SocketContext)
+  const { color_code, lang }= useContext(SocketContext)
   return (
     <thead className="thead-container">
       <tr className="thead-container-tr">
@@ -71,10 +71,13 @@ const THeadNew = (props) => {
           ))
         }
         {
-          props?.p &&
-        <Th text={"Giá"} icon={<SellIcon style={{color: color_code}} />} />
+          props.isNation=== true && <Th text={lang=== "vn" ?"Quốc gia": "Nation"} icon={<PublicIcon style={{color: color_code}} />} />
         }
-        <Th text={"Số lượng"} icon={<ShoppingCartIcon style={{color: color_code}} />} />
+        {
+          props?.p &&
+        <Th text={lang=== "vn" ?"Giá": "Price"} icon={<SellIcon style={{color: color_code}} />} />
+        }
+        <Th text={lang==="vn" ?"Số lượng": "Amount"} icon={<ShoppingCartIcon style={{color: color_code}} />} />
         <Th />
 
       </tr>
@@ -87,7 +90,7 @@ const Th = (props) => {
     <th className="th-container">
       <p className="th-container-p">{props.icon}</p>
       {
-        props.is_img=== true &&
+        props.is_img=== true && props.iconImg?.length > 0 &&
         <img src={props.iconImg} alt="open" style={{width: 24, height: 24, objectFit: "cover"}} />
       }
       <span className="th-container-span">{props.text}</span>
@@ -126,6 +129,7 @@ const TBodyNew = (props) => {
         },
       });
       const result = await res.data;
+      console.log(result.data)
       return setData(() => result.data);
     })();
   }, [props.id_service]);
@@ -133,16 +137,18 @@ const TBodyNew = (props) => {
     <tbody className="tbody-container">
       {data &&
         data?.map((item, key) => (
-          <>
+          <Fragment key={key}>
             <Tr
-              p={props?.price}
+              setIsNation={props.setIsNation}
+              p={item?.price}
+              nation={item?.nation}
               is_new={true}
               promotion={props.promotion}
               balance={props.balance}
               key={key}
               {...item}
             />
-          </>
+          </Fragment>
           
         ))}
     </tbody>
@@ -187,6 +193,12 @@ const Tr = (props) => {
       })();
     }
   }, [props.is_new, array_body.title, props?.menu]);
+  useEffect(()=> {
+    if(props?.nation?.length > 0) {
+      props.setIsNation(()=> true)
+    }
+  }, [props])
+  const {lang }= useContext(SocketContext)
   return (
     <tr className="tbody-container-tr">
       {/* 
@@ -197,7 +209,7 @@ const Tr = (props) => {
           <Td text={array_body.pop3} />
           <Td text={array_body.live} />
           <Td
-            icon={array_body.nation}
+            icon={array_body.nation?.length > 0 ? array_body.nation : (lang=== "vn" ? "Chưa có" : "Unset")}
             text={!validUrl.isUri(array_body.nation) ? true : false}
           />
           <Td text={array_body.price} />
@@ -209,7 +221,7 @@ const Tr = (props) => {
               setAmount={setAmount}
               balance={props?.balance}
               promotion={props?.promotion}
-              button={parseInt(amount) <= 0 ? "Đã hết" : "Mua"}
+              button={parseInt(amount) <= 0 ? (lang=== "vn" ? "Đã hết" : "Ouf of stock") : (lang=== "vn" ?  "Mua" : "Buy")}
               price={parseInt(array_body?.price?.replace("đ", ""))}
               name={array_body?.title}
               amountX={amount}
@@ -224,10 +236,12 @@ const Tr = (props) => {
           {props?.menu?.map((item, key) => (
             <>
               <Td key={key} text={item} />
-               
             </>
             
           ))}
+          {
+            props?.nation?.length > 0 && <Td icon={props.nation} />
+          }
           {
             props?.p && <Td text={props.p} />
           }
@@ -241,7 +255,7 @@ const Tr = (props) => {
               setAmount={setAmount}
               balance={props?.balance}
               promotion={props?.promotion}
-              button={parseInt(amount) <= 0 ? "Đã hết" : "Mua"}
+              button={parseInt(amount) <= 0 ? (lang=== "vn" ? "Đã hết" : "Ouf of stock") : (lang=== "vn" ?  "Mua" : "Buy")}
               price={parseInt(props?.p)}
               name={props?.menu?.[0]}
             />
@@ -300,6 +314,7 @@ const Td = (props) => {
               open={open}
               setOpen={setOpen}
               amountX={props.amountX}
+              name={props.name}
             />
           )}
           </WrapPopupPurchase>
@@ -330,9 +345,10 @@ const PopupPurchase = (props) => {
   const [successBox, setSuccessBox] = useState(() => false);
   const [order, setOrder] = useState(() => {});
   const [loading, setLoading] = useState(() => false);
-  const { setCallAgain, socketState } = useContext(SocketContext);
+  const { setCallAgain, socketState, lang } = useContext(SocketContext);
   const [disabled, setDisabled] = useState(() => false);
- 
+  const [isBuy, setIsBuy]= useState(()=> undefined)
+  const { user }= useContext(SocketContext)
   const purchaseAccount = async () => {
     setDisabled(() => true);
     const res = await axios({
@@ -345,7 +361,8 @@ const PopupPurchase = (props) => {
         name: props.name,
         id_user: Cookie.get("uid"),
         amount: parseInt(amount),
-        amountX: parseInt(props.amountX)
+        amountX: parseInt(props.amountX),
+        name_account: user?.data?.account
       },
     });
     const result = await res.data;
@@ -353,7 +370,7 @@ const PopupPurchase = (props) => {
       updateAmount();
       setOrder(() => result);
       setOpen(() => true);
-      setMessage(() => "Mua tài khoản thành công");
+      setMessage(() => (lang=== "vn" ?  "Mua tài khoản thành công" : "Buy account successfully"));
       setSuccessBox(() => undefined);
       setCallAgain((prev) => !prev);
       setLoading(() => true);
@@ -362,14 +379,17 @@ const PopupPurchase = (props) => {
         setMessage(() => "");
         setOpen(() => false);
         setSuccessBox(() => true);
-      }, 1500);
+        setIsBuy(()=> true)
+      }, 500);
     } else {
       setOpen(() => true);
-      setMessage(() => "Mua tài khoản thất bại");
+      setMessage(() => (lang=== "vn" ? "Mua tài khoản thất bại" : "Buy account failed."));
+      setSuccessBox(() => true);
       setTimeout(() => {
-        setMessage(() => "");
+        setMessage(() => result.message);
         setOpen(() => false);
-      }, 1500);
+        setIsBuy(()=> false)
+      }, 500);
     }
     return result;
   };
@@ -410,16 +430,16 @@ const PopupPurchase = (props) => {
                 </div>
                 {successBox === false && (
                 <div className="wrapper-purchase-popup" style={{ width: "100%" }}>
-                    <Title title={"Sản phẩm: Hotmail NEW"} />
+                    <Title title={lang==="vn" ? `Sản phẩm: ${props?.name}` : `Product: ${props?.name}`} />
                     <DetailPurchase
-                    left={"Số lượng"}
+                    left={lang==="vn"? "Số lượng": "Amount"}
                     value={amount}
                     onChange={setAmount}
                     readOnly={false}
                     />
-                    <DetailPurchase left={"Giá"} value={props.price} readOnly={true} />
+                    <DetailPurchase left={lang==="vn"? "Giá": "Price"} value={props.price} readOnly={true} />
                     <DetailPurchase
-                    left={"Số tiền"}
+                    left={lang=== "vn"? "Số tiền": "Price"}
                     value={parseInt(amount) * parseInt(props.price)}
                     readOnly={true}
                     />
@@ -433,7 +453,9 @@ const PopupPurchase = (props) => {
                     }}
                     >
                     <Button disabled={disabled} variant="contained">
-                        Mua
+                      {
+                        lang=== "vn" ? "Mua" : "Buy"
+                      }
                     </Button>
                     </div>
                 </div>
@@ -450,7 +472,7 @@ const PopupPurchase = (props) => {
                     <CircularProgress />
                 </div>
                 )}
-                {successBox === true && (
+                {successBox === true && isBuy=== true && (
                 <div className="wrapper-purchase-popup" style={{ width: "100%" }}>
                   <div
                   style={{
@@ -460,23 +482,25 @@ const PopupPurchase = (props) => {
                     fontSize: 18,
                   }}
                   >
-                  Bạn đã mua thành công
+                  {
+                    lang=== "vn" ? "Bạn đã mua thành công" : "You buy sucessfully"
+                  }
                   </div>
                   <br />
                   <div
                   style={{ textAlign: "center", color: "#000", margin: "8px 0" }}
                   >
-                  Mã hóa đơn: {order.code_bill}
+                  {lang=== "vn" ? "Mã hóa đơn" : "Code receipt"}: {order.code_bill}
                   </div>
                   <div
                   style={{ textAlign: "center", color: "#000", margin: "8px 0" }}
                   >
-                  Số lượng: {amount}
+                  {lang=== "vn" ? "Số lượng" : "Amount"}: {amount}
                   </div>
                   <div
                   style={{ textAlign: "center", color: "#000", margin: "8px 0" }}
                   >
-                  Số tiền: {parseInt(amount) * parseInt(props.price)}
+                  {lang=== "vn" ? "Số tiền": "Price"}: {parseInt(amount) * parseInt(props.price)}
                   </div>
                   <br />
                   <div style={{ color: "#000", margin: "8px 0", maxHeight: 200, overflow: "auto"}}>
@@ -487,11 +511,21 @@ const PopupPurchase = (props) => {
                   <br />
                   <div style={{ width: "100%", direction: "rtl" }}>
                   <Button onClick={() => toTextFile()} variant={"contained"}>
-                      Tải file text
+                    {
+                      lang=== "vn" ? "Tải file text" : "Download file"
+                    }
                   </Button>
                   </div>
                 </div>
                 )}
+                {
+                  successBox=== true && isBuy=== false &&
+                  <div style={{padding: 16}}>
+                    <span style={{textAlign: 'center', display: "flex", justifyContent: 'center', alignItems: "center"}}>
+                      {message=== "Tài khoản không đủ tiền, vui lòng nạp thêm tiền vào tài khoản" && (lang=== "vn" ? "Tài khoản không đủ tiền, vui lòng nạp thêm tiền vào tài khoản" : "Your account don't enough money, please add more money to your account")}
+                    </span>
+                  </div>
+                }
             </>
         }
       </div>
@@ -501,7 +535,8 @@ const PopupPurchase = (props) => {
 };
 
 const Title = (props) => {
-  return <div className="title-purchase-popup">{props.title}</div>;
+  const { color_code }= useContext(SocketContext)
+  return <div className="title-purchase-popup" style={{color: color_code}}>{props.title}</div>;
 };
 
 const DetailPurchase = (props) => {

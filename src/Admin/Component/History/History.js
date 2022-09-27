@@ -4,10 +4,11 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { SERVER_URL } from '../../../config/config'
 import { useInView } from "react-intersection-observer"
-import { DetailStats1 } from '../../../component/History/DetailOrder'
+import { DetailStats2 } from '../../../component/History/DetailOrder'
+import Schedule from './Schedule'
+import moment from 'moment'
 
 const History = (props) => {
-
   const [history, setHistory]= useState(()=> [])
   useEffect(()=> {
     (async()=> {
@@ -36,9 +37,44 @@ const History = (props) => {
     const result= await res.data
     return setDataSearch(()=> result.search)
   }
+  const [openSchedule, setOpenSchedule]= useState(()=> false)
+  const [value, setValue]= useState(()=> null)
+  const [timeSchedule, setTimeSchedule]= useState(()=> ({}))
+  const [disabled, setDisabled]= useState(()=> false)
+  useEffect(()=> {
+    (async()=> {
+        const res= await axios({
+            url: `${SERVER_URL}/cron/c/ad`,
+            method: "get",
+            responseType: "json"
+        })
+        const result= await res.data
+        if(result.cron=== true) {
+            setDisabled(()=> true)
+        }
+        return setTimeSchedule(()=> ({hour: result.time.hour, minute: result.time.minute, cron: result.cron}))
+    })()
+  }, [])
+  useEffect(()=> {
+    const intervalId= setInterval(()=> {
+        if(parseInt(new Date().getHours()) === parseInt(timeSchedule?.hour) && parseInt(new Date().getMinutes()) === parseInt(timeSchedule?.minute)) {
+            setTimeSchedule((prev)=> ({...prev, cron: false}))
+        }
+    }, 1000)
+    return ()=> clearInterval(intervalId)
+  }, [timeSchedule])
   return (
     <div>
-        <div style={{margin: "16px 0", fontSize: 20, fontWeight: 600}}>Lịch sử nạp của thành viên</div>
+        <div style={{width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+            <div style={{margin: "16px 0", fontSize: 20, fontWeight: 600}}>Lịch sử nạp của thành viên</div>
+            <div>
+                <Button disabled={disabled} onClick={()=> setOpenSchedule(()=> true)} variant={"contained"}>
+                    {
+                        timeSchedule?.cron=== true ? `Đã lên lịch lúc ${parseInt(timeSchedule?.hour)}:${timeSchedule?.minute}` : "Đặt lịch xóa lịch sử"
+                    }
+                </Button>
+            </div>
+        </div>
         <div>Tìm kiếm đơn hàng bằng mã hóa đơn</div>
         <div style={{margin: "16px 0", display: "flex", alignItems: "center", gap: 16}}>
             <input onChange={(e)=> {
@@ -55,6 +91,7 @@ const History = (props) => {
                     <tr className="th-thead-table-of-history-ad">
                         <th>Mã hóa đơn</th>
                         <th>Tên tài khoản</th>
+                        <th>Tên mặt hàng</th>
                         <th>Số tiền</th>
                         <th>Thời gian</th>
                         <th>Trạng thái</th>
@@ -65,7 +102,8 @@ const History = (props) => {
                     {
                         isSearch=== false && history?.map((item, key)=> <tr key={key} className="tr-tbody-table-of-history-ad">
                         <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.code_stats}</td>
-                        <td style={{textAlign: "center", border: "1px solid #fff"}}><NameAccount id_user={item.id_user} /></td>
+                        <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.name_account ? item.name_account : <NameAccount id_user={item.id_user} />}</td>
+                        <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.name ? item.name : "Unknown"}</td>
                         <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.amount}</td>
                         <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.date}</td>
                         <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.state=== true ? <span style={{color: "green"}}>Thành công</span> : <span style={{color: "red"}}>Thất bại</span>}</td>
@@ -78,8 +116,8 @@ const History = (props) => {
                         isSearch=== true && dataSearch?.map((item, key)=> <tr key={key} className="tr-tbody-table-of-history-ad">
                         <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.code_stats}</td>
                         <td style={{textAlign: "center", border: "1px solid #fff"}}><NameAccount id_user={item.id_user} /></td>
-                        <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.amount}</td>
-                        <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.date}</td>
+                        <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.amount ? item.amount : "Unknown"}</td>
+                        <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.date ? item.date : "Unknown"}</td>
                         <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.state=== true ? <span style={{color: "green"}}>Thành công</span> : <span style={{color: "red"}}>Thất bại</span>}</td>
                         <td style={{textAlign: "center", border: "1px solid #fff"}}>
                             <DetailStats {...item} account={item.info.account} password={item.info.password || item.password} code_stats={item.code_stats} />
@@ -89,7 +127,17 @@ const History = (props) => {
                 
                 </tbody>
             </table>
+            {
+                dataSearch?.length <= 0 && <div style={{textAlign: "center", width: "100%", margin: "16px 0", fontSize: 20, fontWeight: 600}}>
+                    Không có lịch sử 
+                </div>
+            }
         </div>
+        {
+            openSchedule=== true && <div style={{width: "100%", height: "100%", position: "fixed", top: 0, left: 0, background: "rgba(255, 255, 255, 0.7)", display: "flex", justifyContent: 'center', alignItems: "center"}}>
+                <Schedule setDisabled={setDisabled} setTimeSchedule={setTimeSchedule} setOpen={setOpenSchedule} value={value} setValue={setValue} />
+            </div>
+        }
     </div>
   )
 }
@@ -129,7 +177,10 @@ const DetailStats= (props)=> {
     return (
         <>
             <Button onClick={()=> setOpen(()=> true)} variant={"contained"}>Chi tiết</Button>
-            <DetailStats1 {...props} open={open} handleClose={handleClose} />
+            {
+                open=== true &&
+                <DetailStats2 {...props} open={open} handleClose={handleClose} />
+            }
         </>
     )
 }

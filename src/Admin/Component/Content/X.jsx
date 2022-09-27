@@ -575,6 +575,15 @@ const Content1= (props)=> {
         short_name: "COOPBANK",
         logo: "https://api.vietqr.io/img/COOPBANK.16fc2602.png",
         vietqr: 0
+    }, {
+        id: 53,
+        name: "Ngân hàng TMCP Công Thương Việt Nam",
+        code: "Vietinbank",
+        bin: "970445",
+        isTransfer: 1,
+        short_name: "Vietinbank",
+        logo: "https://ipay.vietinbank.vn/logo.png",
+        vietqr: 0
     }], [])
     const findLogo= (e)=> {
         const a= array_bank.filter(item=> item.code === e.target.value)

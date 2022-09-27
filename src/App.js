@@ -74,7 +74,7 @@ function App() {
         <link rel="icon" type="image/x-icon" href={options?.logo} />
         <title>{options?.title ? options?.title : "Loading...."}</title>
       </Helmet>
-      <SocketContext.Provider value={{socketState, setCallAgain, openLogin, setOpenLogin, color_code: options?.color_code}}>
+      <SocketContext.Provider value={{socketState, setCallAgain, openLogin, setOpenLogin, color_code: options?.color_code, user, lang: user?.lang}}>
         <Header {...user} {...options} />
         <Navigation {...options} />
         {

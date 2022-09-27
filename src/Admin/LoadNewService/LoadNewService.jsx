@@ -55,10 +55,12 @@ const EachService= (props)=> {
     // each
     const addService= async()=> {
         const res= await axios({
-            url : `${SERVER_URL}/create/service`,
+            url : `${SERVER_URL}/create/d/service`,
             method: "post",
             data: {
                 menu: addS,
+                price: ePrice,
+                nation,
                 id_service: props.id_service 
             },
             responseType: "json"
@@ -99,6 +101,8 @@ const EachService= (props)=> {
         window.location.reload()
         return console.log(result)
      }
+     const [nation, setNation]= useState(()=> "")
+     const [ePrice, setEPrice]= useState(()=> "")
     return (
         <div className={"wrap-load-new-service"}>
                 <div style={{ fontSize: 20, margin: "16px 0" }}>{props?.title}</div>
@@ -115,11 +119,18 @@ const EachService= (props)=> {
                             style={{ border: "1px solid #fff", position: "relative" }}
                         >
                             {
-                                props?.menu?.map((item, key)=> <th key={key}><div style={{display: "flex", justifyContent: "center", alignItems: "center"}}><span>{item.name}</span><img alt={"open"} src={item.icon} style={{width: 24, height: 24, objectFit: "cover"}} /></div></th>)
+                                props?.menu?.map((item, key)=> <th key={key}><div style={{display: "flex", justifyContent: "center", alignItems: "center"}}><span>{item.name}</span>{item?.icon?.length > 0 && <img alt={"open"} src={item.icon} style={{width: 24, height: 24, objectFit: "cover"}} />}</div></th>)
+                            }
+                            {
+                                add=== true && <>
+                                    <th>Quốc gia</th>
+                                    <th>Giá tiền</th>
+                                </>
                             }
                             {
                                 dX=== true && <th><Button onClick={()=> deleteService()} variant={"contained"}>Xóa dịch vụ</Button></th>
                             }
+                            
                         </tr>
                     </thead>
                     {/*  */}
@@ -146,6 +157,22 @@ const EachService= (props)=> {
                                     />
                                 </td>)
                                 }
+                                {/* Add nation */}
+                                <td>
+                                    <input
+                                    onChange={(e)=> setNation(e.target.value)}
+                                    type="text"
+                                    style={{ fontSize: 16 }}/>
+                                </td>
+                                {/*  */}
+                                {/* Add price */}
+                                <td>
+                                    <input
+                                    onChange={(e)=> setEPrice(e.target.value)}
+                                    type="text"
+                                    style={{ fontSize: 16 }}/>
+                                </td>
+                                {/*  */}
                             </tr>
                         }
                     </tbody>
@@ -225,6 +252,10 @@ const DetailTr= (props)=> {
             {
                 props?.menu?.map((item, key)=> <td key={key}><div style={{display: "flex", justifyContent: "center", }}>{item}</div></td>)
             }
+            {/* If nation exist */}
+            <td style={{display: "flex", alignItems:"center", gap: 16}}><span>Quốc gia: </span>{props?.nation?.length > 0 ? <img src={props.nation} alt="open" style={{width: 32, height: 24}} /> : "Chưa xét"}</td>
+            {/* If price exist */}
+            <td style={{display: "flex", alignItems:"center", gap: 16}}><span>Giá tiền: </span>{parseInt(props?.price?.length) > 0 ? <span>{props?.price}</span> : "Chưa xét"}</td>
             {
                 deleteS=== true && <td><Button onClick={()=> deleteXXX()} variant={"contained"}>Xóa</Button></td>
             }

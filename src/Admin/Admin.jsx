@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { createContext, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { SERVER_URL } from "../config/config";
 import "./Admin.sass";
@@ -8,21 +8,25 @@ import Content from "./Component/Content/Content";
 import Menu from "./Component/Menu/Menu";
 import "./responsive.sass"
 
+
+export const AdminContext= createContext()
 const Admin = (props) => {
   return (
-    <div className="admin-page">
-      <Helmet>
-        <title>Admin</title>
-      </Helmet>
-      {sessionStorage.getItem("ld") === "true" ? (
-        <>
-          <Menu />
-          <Content />
-        </>
-      ) : (
-        <Login />
-      )}
-    </div>
+    <AdminContext.Provider value={{lang: "vn"}}>
+      <div className="admin-page">
+        <Helmet>
+          <title>Admin</title>
+        </Helmet>
+        {sessionStorage.getItem("ld") === "true" ? (
+          <>
+            <Menu />
+            <Content />
+          </>
+        ) : (
+          <Login />
+        )}
+      </div>
+    </AdminContext.Provider>
   );
 };
 

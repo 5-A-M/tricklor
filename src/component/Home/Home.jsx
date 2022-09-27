@@ -1,45 +1,44 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Banner from "./Banner/Banner";
 import HeaderHome from "./HeaderHome/HeaderHome";
 import "./Home.sass";
 import ListProduct from "./ListProduct/ListProduct";
 import ToolCheck from "./ToolCheck/ToolCheck";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
-import PublicIcon from "@mui/icons-material/Public";
-import SellIcon from "@mui/icons-material/Sell";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+// import CheckBoxIcon from "@mui/icons-material/CheckBox";
+// import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
+// import SellIcon from "@mui/icons-material/Sell";
+// import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import axios from "axios";
 import { SERVER_URL } from "../../config/config";
-import { SocketContext } from "../../App";
+// import { SocketContext } from "../../App";
 
 const Home = (props) => {
-  const [data1, setData1] = useState(() => []);
-  const [data2, setData2] = useState(() => []);
-  const { color_code }= useContext(SocketContext)
-  useEffect(() => {
-    (async () => {
-      const res = await axios({
-        url: `${SERVER_URL}/edit/get/hotmail`,
-        method: "get",
-        responseType: "json",
-      });
-      const result = await res.data;
-      return setData1(() => result.data);
-    })();
-  }, []);
+  // const [data1, setData1] = useState(() => []);
+  // const [data2, setData2] = useState(() => []);
+  // const { color_code, lang }= useContext(SocketContext)
+  // useEffect(() => {
+  //   (async () => {
+  //     const res = await axios({
+  //       url: `${SERVER_URL}/edit/get/hotmail`,
+  //       method: "get",
+  //       responseType: "json",
+  //     });
+  //     const result = await res.data;
+  //     return setData1(() => result.data);
+  //   })();
+  // }, []);
 
-  useEffect(() => {
-    (async () => {
-      const res = await axios({
-        url: `${SERVER_URL}/edit/get/gmail`,
-        method: "get",
-        responseType: "json",
-      });
-      const result = await res.data;
-      return setData2(() => result.data);
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     const res = await axios({
+  //       url: `${SERVER_URL}/edit/get/gmail`,
+  //       method: "get",
+  //       responseType: "json",
+  //     });
+  //     const result = await res.data;
+  //     return setData2(() => result.data);
+  //   })();
+  // }, []);
 
   return (
     <div className="wrapper-home-container">
@@ -47,7 +46,7 @@ const Home = (props) => {
       <div className={"home-container"}>
         <ToolCheck />
         <HeaderHome {...props} />
-        <ListProduct
+        {/* <ListProduct
           balance={props.balance}
           promotion={props.promotion}
           array_header={[
@@ -57,9 +56,9 @@ const Home = (props) => {
             },
             { text: "POP3", icon: <CheckBoxIcon style={{color: color_code}} /> },
             { text: "Live", icon: <HourglassBottomIcon style={{color: color_code}} /> },
-            { text: "Quốc gia", icon: <PublicIcon style={{color: color_code}} /> },
-            { text: "Giá", icon: <SellIcon style={{color: color_code}} /> },
-            { text: "Số lượng", icon: <ShoppingCartIcon style={{color: color_code}} /> },
+            { text: lang=== "vn" ? "Quốc gia" : "Nation", icon: <PublicIcon style={{color: color_code}} /> },
+            { text: lang=== "vn" ? "Giá" : "Price", icon: <SellIcon style={{color: color_code}} /> },
+            { text: lang=== "vn" ? "Số lượng" : "Amount", icon: <ShoppingCartIcon style={{color: color_code}} /> },
             { text: "" },
           ]}
           arr_product={data1}
@@ -73,13 +72,13 @@ const Home = (props) => {
             { text: "Gmail", icon: false },
             { text: "POP3", icon: <CheckBoxIcon style={{color: color_code}} /> },
             { text: "Live", icon: <HourglassBottomIcon style={{color: color_code}} /> },
-            { text: "Quốc gia", icon: <PublicIcon style={{color: color_code}} /> },
-            { text: "Giá", icon: <SellIcon style={{color: color_code}} /> },
-            { text: "Số lượng", icon: <ShoppingCartIcon style={{color: color_code}} /> },
+            { text: lang=== "vn" ? "Quốc gia" : "Nation", icon: <PublicIcon style={{color: color_code}} /> },
+            { text: lang=== "vn" ? "Giá" : "Price", icon: <SellIcon style={{color: color_code}} /> },
+            { text: lang=== "vn" ? "Số lượng" : "Amount", icon: <ShoppingCartIcon style={{color: color_code}} /> },
             { text: "" },
           ]}
           arr_product={data2}
-        />
+        /> */}
         <br />
         <WrapX 
           balance={props.balance}
@@ -95,6 +94,8 @@ export default Home;
 
 const WrapX= (props)=> {
   const [data1, setData1]= useState(()=> [])
+  const [isNation, setIsNation]= useState(()=> false)
+  const [isPrice, setIsPrice]= useState(()=> false)
   useEffect(()=> {
     (async()=> {
       const res= await axios({
@@ -112,12 +113,16 @@ const WrapX= (props)=> {
         {
           data1 && data1?.map((item, key)=> <Fragment key={key}>
             <ListProduct
-            {...item}
-            key={key} is_new={true}
-            balance={props.balance}
-            promotion={props.promotion}
-            array_header={item.menu}
-            p={item?.price || ""}
+              {...item}
+              isNation={isNation}
+              isPrice={isPrice}
+              setIsNation={setIsNation}
+              setIsPrice={setIsPrice}
+              key={key} is_new={true}
+              balance={props.balance}
+              promotion={props.promotion}
+              array_header={item.menu}
+              p={item?.price || ""}
             />
             <br />
           </Fragment>)

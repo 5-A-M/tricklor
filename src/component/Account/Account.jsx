@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Account.sass";
 import LockIcon from "@mui/icons-material/Lock";
 import PersonIcon from "@mui/icons-material/Person";
@@ -14,6 +14,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import ApiIcon from '@mui/icons-material/Api';
 import TwoFaAuthentication from "./TwoFa";
 import ApiDocument from "./ApiDocument";
+import { SocketContext } from "../../App";
 
 const Account = (props) => {
   return (
@@ -27,15 +28,16 @@ const Account = (props) => {
 };
 
 const Left = (props) => {
+  const { lang }= useContext(SocketContext)
   const array_link_account = [
-    { text: "Thông tin cá nhân", icon: <PersonIcon />, link: "/info" },
+    { text: lang=== "vn" ? "Thông tin cá nhân" : "Infomation", icon: <PersonIcon />, link: "/info" },
     {
       text: "Oauth2 (2FA)",
       icon: <LockIcon />,
       link: "/2fa",
     },
-    { text: "Đổi mật khẩu", icon: <VpnKeyIcon />, link: "/change_password" },
-    {text: "Tài liệu Api", icon: <ApiIcon />, link: "/api_document"}
+    { text: lang=== "vn" ? "Đổi mật khẩu" : "Change password", icon: <VpnKeyIcon />, link: "/change_password" },
+    {text: lang=== "vn" ? "Tài liệu Api" : "Api documentation", icon: <ApiIcon />, link: "/api_document"}
   ];
   const array_link_recharge = [
     {
@@ -130,9 +132,10 @@ const Right = (props) => {
 };
 
 const Infomation = (props) => {
+  const { lang }= useContext(SocketContext)
   return (
     <div className="infomation-account">
-      <Title info={"Thông tin cá nhân"} />
+      <Title info={lang=== "vn" ? "Thông tin cá nhân" : "Infomation"} />
       <DetailInfo {...props} />
     </div>
   );
@@ -140,12 +143,13 @@ const Infomation = (props) => {
 
 const DetailInfo = (props) => {
   const [openApiKey, setOpenApiKey]= useState(()=> false)
+  const { lang }= useContext(SocketContext)
   const [copy, setCopy]= useState(()=> false)
   return (
     <div className="wrapper-detail-infomation-account">
       <div className="detail-infomation-account">
         <ComponentDetailInfo
-          left={"Tài khoản: "}
+          left={lang=== "vn" ? "Tài khoản: ": "Account: "}
           right={props.data.account}
           placeholder={props.data.account}
           readOnly={true}
@@ -157,13 +161,13 @@ const DetailInfo = (props) => {
           readOnly={true}
         />
         <ComponentDetailInfo
-          left={"Số tiền: "}
+          left={lang=== "vn" ? "Số tiền: " : "Balance: "}
           right={props.data.balance}
           placeholder={props.data.email}
           readOnly={true}
         />
         <ComponentDetailInfo
-          left={"Tiền khuyến mại: "}
+          left={lang=== "vn" ? "Tiền khuyến mại: " : "Promotion: "}
           placeholder={props.data.email}
           right={props.data.promotion}
           readOnly={true}
@@ -175,7 +179,7 @@ const DetailInfo = (props) => {
           readOnly={true}
           openButton={openApiKey=== false ? <div style={{display: "flex", justifyContent: "center", alignItems: "center", marginLeft: 8, cursor: "pointer"}} onClick={()=> setOpenApiKey(()=> true)}><VisibilityIcon /></div> : <div style={{display: "flex", justifyContent: "center", alignItems: "center", marginLeft: 8, cursor: "pointer"}} onClick={()=> setOpenApiKey(()=> false)}><VisibilityOffIcon /></div>}
           copyButton={openApiKey=== true && <CopyToClipboard onCopy={()=> {setCopy(()=> true);setTimeout(()=> setCopy(()=> false), 2500)}} text={props.data.api_key}><div style={{display: "flex", justifyContent: "center", alignItems: "center", cursor: "pointer"}}><ContentCopyIcon /></div></CopyToClipboard>}
-          copySuccessMessage={copy=== true && <span style={{color: "green", fontSize: 14}}>Copy api thành công</span>}
+          copySuccessMessage={copy=== true && <span style={{color: "green", fontSize: 14}}>{lang=== "vn" ? "Copy api thành công" : "Api was copy succesfully"}</span>}
         />
       </div>
     </div>
@@ -218,6 +222,7 @@ export const Title = (props) => {
 };
 
 const TwoFa = (props) => {
+  const  { lang }= useContext(SocketContext)
   return (
     <div className="two-fa">
       <Title info={"Oauth2"} />
@@ -227,7 +232,7 @@ const TwoFa = (props) => {
       }
       {
         props?.oauth2=== true &&
-        <div style={{textAlign: "center", margin: "16px 0"}}>Bạn đã xác thực 2fa</div>
+        <div style={{textAlign: "center", margin: "16px 0"}}>{lang=== "vn" ? "Bạn đã xác thực oauth2" : "You was verified oauth2"}</div>
       }
     </div>
   );
@@ -260,9 +265,10 @@ const ChangePassword = (props) => {
       }
     }, 1000);
   };
+  const { lang }= useContext(SocketContext)
   return (
     <div className="change-password">
-      <Title info={"Đổi mật khẩu"} />
+      <Title info={lang=== "vn" ? "Đổi mật khẩu" : "Change password"} />
       <MainChangePassword
         {...props}
         currentPassword={currentPassword}
@@ -312,7 +318,7 @@ const ChangePassword = (props) => {
                 cursor: "pointer",
               }}
             >
-              Cập nhật
+              {lang=== "vn" ? "Cập nhật" : "Update"}
             </button>
           </div>
         )}
@@ -321,6 +327,8 @@ const ChangePassword = (props) => {
 };
 
 const MainChangePassword = (props) => {
+  const { lang }= useContext(SocketContext)
+
   return (
     <div className="wrapper-main-change-password">
       <div className="main-change-password">
@@ -329,9 +337,9 @@ const MainChangePassword = (props) => {
           type={"password"}
           value={props.currentPassword}
           onChange={props.setCurrentPassword}
-          left={"Mật khẩu hiện tại: "}
+          left={lang=== "vn" ? "Mật khẩu hiện tại: " : "Current password: "}
           right={props.currentPassword}
-          placeholder={"Mật khẩu hiện tại"}
+          placeholder={lang=== "vn" ? "Mật khẩu hiện tại" : "Current password: "}
           readOnly={false}
         />
         <ComponentDetailInfo
@@ -339,9 +347,9 @@ const MainChangePassword = (props) => {
           type={"password"}
           value={props.newPassword}
           onChange={props.setNewPassword}
-          left={"Mật khẩu mới: "}
+          left={lang=== "vn" ? "Mật khẩu mới: " :"New password"}
           right={props.newPassword}
-          placeholder={"Mật khẩu mới"}
+          placeholder={lang=== "vn" ? "Mật khẩu mới" : "New password"}
           readOnly={false}
         />
         <ComponentDetailInfo
@@ -349,9 +357,9 @@ const MainChangePassword = (props) => {
           type={"password"}
           value={props.confirmNewPassword}
           onChange={props.setConfirmNewPassword}
-          left={"Nhập lại mật khẩu mới: "}
+          left={lang=== "vn" ? "Nhập lại mật khẩu mới: " : "Confirm new password"}
           right={props.confirmNewPassword}
-          placeholder={"Nhập lại mật khẩu mới"}
+          placeholder={lang=== "vn" ? "Nhập lại mật khẩu mới: " : "Confirm new password"}
           readOnly={false}
         />
       </div>

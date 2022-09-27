@@ -10,13 +10,15 @@ import { useContext } from "react";
 import { SocketContext } from "../../App";
 
 const Menu = (props) => { 
-  const { color_code }= useContext(SocketContext)
-  const array_link= [{text: "Trang chủ", link: "/", icon: <HomeIcon style={{color: color_code}} />, is_link: true}, {text: "Thông tin cá nhân", link: "/account", icon: <AccountBoxIcon style={{color: color_code}} />, is_link: true}, {text: "Nạp tiền", link: "/recharge", icon: <PaymentIcon style={{color: color_code}} />, is_link: true}, {text: "Lịch sử giao dịch", link: "/history", icon: <HistoryIcon style={{color: color_code}} />, is_link: true}, {text: "Đăng xuất", icon: <LogoutIcon style={{color: color_code}} />}]
+  const { color_code, lang }= useContext(SocketContext)
+  const array_link= [{text: lang=== "vn" ? "Trang chủ" : "Home", link: "/", icon: <HomeIcon style={{color: color_code}} />, is_link: true}, {text: lang=== "vn" ? "Thông tin cá nhân" : "Infomation", link: "/account", icon: <AccountBoxIcon style={{color: color_code}} />, is_link: true}, {text: lang=== "vn" ? "Nạp tiền" : "Recharge", link: "/recharge", icon: <PaymentIcon style={{color: color_code}} />, is_link: true}, {text: lang=== "vn" ? "Lịch sử giao dịch" : "Transaction history", link: "/history", icon: <HistoryIcon style={{color: color_code}} />, is_link: true}, {text: lang=== "vn" ? "Đăng xuất"  :"Logout", icon: <LogoutIcon style={{color: color_code}} />}]
   return (
-    <div className="menu-login">
-        {
-            array_link.map((item, key)=> <ComponentLink {...props} {...item} key={key} />)   
-        }
+      <div className={"menu-login-sub"} style={{width: "100%", display: "flex", justifyContent: 'center', alignItems: "center"}}>
+        <div className="menu-login" style={{maxWidth: 1200}}>
+            {
+                array_link.map((item, key)=> <ComponentLink {...props} {...item} key={key} />)   
+            }
+        </div>
     </div>
   )
 }

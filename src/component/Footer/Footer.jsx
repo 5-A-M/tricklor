@@ -3,8 +3,8 @@ import "./Footer.sass"
 
 const Footer = (props) => {
   return (
-    <div className="wrapper-footer-home__footer" style={{marginTop: 16, background: "transparent"}}>
-      <footer className="footer-home__content" >
+    <div className="wrapper-footer-home__footer" style={{marginTop: 16, background: "transparent", display: "flex", justifyContent: 'center', alignItems: "center "}}>
+      <footer className="footer-home__content" style={{maxWidth: 1200}}>
         <FooterComponent />
       </footer>
     </div>

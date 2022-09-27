@@ -29,9 +29,10 @@ const Name= (props)=> {
 }
 
 const Balance= (props)=> {
+    const { lang }= useContext(SocketContext)
     return (
         <div className="balance-account-menu">
-            <span className="span-balance-account-menu">Số dư: </span>
+            <span className="span-balance-account-menu">{lang=== "vn" ? "Số dư: " : "Account balance: "}</span>
             <strong className="strong-balance-account-menu">{props.price}</strong>
             <span className="span-balance-account-menu">VNĐ</span>
         </div>
@@ -39,9 +40,10 @@ const Balance= (props)=> {
 }
 
 const Promotion= (props)=> {
+    const { lang }= useContext(SocketContext)
     return (
         <div className="promotion-account-menu">
-            <span className="span-balance-account-menu">Khuyến mãi: </span>
+            <span className="span-balance-account-menu">{lang=== "vn" ? "Khuyến mãi: " : "Promotion: "}</span>
             <strong className="strong-balance-account-menu">{props.promotion}</strong>
             <span className="span-balance-account-menu">VNĐ</span>
         </div>
