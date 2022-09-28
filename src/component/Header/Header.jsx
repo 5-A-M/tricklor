@@ -9,7 +9,7 @@ import Left from './Left/Left'
 import Right from './Right/Right'
 
 const Header = (props) => {
-  const { socketState }= useContext(SocketContext)
+  const { socketState, setUser }= useContext(SocketContext)
   useEffect(()=> {
     if(props.api_payment && props?.data?.balance) {
       socketState?.emit("check_payment_from_server", {api_payment: props?.api_payment})
@@ -22,11 +22,15 @@ const Header = (props) => {
           })
           const result= await res.data
           if(result.id !== data?.data?.id) {
+            socketState.emit("payment_success", {data: {account: props?.data?.account, balance: parseInt(props?.data?.balance), recharge: parseInt(data?.data?.amount)}})
+            socketState.on("payment_success_plus_money", (data)=> {
+              setUser(prev=> ({...prev, price: data.newPrice}))
+            })
             axios({
               url: `${SERVER_URL}/recharge/manual`,
               method: "post",
               data: {
-                account: data?.data.description,
+                account: props?.data?.account,
                 balance: parseInt(props?.data?.balance),
                 recharge: parseInt(data?.data?.amount)
               }
@@ -37,6 +41,7 @@ const Header = (props) => {
               method: "post",
               data: {
                 id: data?.data?.id,
+                account: props?.data?.account,
                 time: new Date().getTime()
               },
               responseType: "json"
