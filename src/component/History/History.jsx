@@ -34,7 +34,7 @@ const History = (props) => {
   return (
     <div className="wrapper-history-transfer">
         <div className="history-transfer">
-            <Notifi />
+            {/* <Notifi /> */}
             <table className="history-transfer-table" cellSpacing={0}>
                 <Header />
                 <Body history={history} />
@@ -45,7 +45,7 @@ const History = (props) => {
 }
 //
 
-const Notifi= (props)=> {
+export const Notifi= (props)=> {
     const { lang, color_code }= useContext(SocketContext)
     return (
         <div className={"notify-auto-delete-history"} style={{width: "100%", height: 50, padding: "0 10px", display: "flex", alignItems: "center", gap: 16, background: color_code, borderBottom: "1px solid #e7e7ee", color: "#fff"}}>
@@ -97,16 +97,23 @@ const Body= (props)=> {
             }
             <DetailOrder id_order={codeReceipt} open={open} handleClose={handleClose} />
             {/* footer */}
-            <tr>
-                <td><section style={{float: "left", fontSize: 16, fontWeight: 600}}>{lang=== "vn"? "Tổng" : "Sum"}: {props?.history?.length} {lang=== "vn" ? "Giao dịch" : "Transaction"}</section></td>
-                <td className="wrapper-history-transfer-header-td-2"></td>
-                <td className="wrapper-history-transfer-header-td-3"></td>
-                <td></td>
-                <td></td>
-                <td><section style={{width: 32, height: 32, background: color_code, display: "flex", justifyContent: 'center', alignItems: "center", color: "#fff", float: "right"}}>1</section></td>
-            </tr>
+            <TFootF {...props}/>
             
         </tbody>
+    )
+}
+
+const TFootF= (props)=> {
+    const { color_code, lang}= useContext(SocketContext)
+    return (
+        <tr>
+            <td><section style={{float: "left", fontSize: 16, fontWeight: 600}}>{lang=== "vn"? "Tổng" : "Sum"}: {props?.history?.length} {lang=== "vn" ? "Giao dịch" : "Transaction"}</section></td>
+            <td className="wrapper-history-transfer-header-td-2"></td>
+            <td className="wrapper-history-transfer-header-td-3"></td>
+            <td></td>
+            <td></td>
+            <td><section style={{width: 32, height: 32, background: color_code, display: "flex", justifyContent: 'center', alignItems: "center", color: "#fff", float: "right"}}>1</section></td>
+        </tr>
     )
 }
 

@@ -6,7 +6,6 @@ import { SERVER_URL } from '../../../config/config'
 import { useInView } from "react-intersection-observer"
 import { DetailStats2 } from '../../../component/History/DetailOrder'
 import Schedule from './Schedule'
-import moment from 'moment'
 
 const History = (props) => {
   const [history, setHistory]= useState(()=> [])
@@ -58,7 +57,8 @@ const History = (props) => {
   useEffect(()=> {
     const intervalId= setInterval(()=> {
         if(parseInt(new Date().getHours()) === parseInt(timeSchedule?.hour) && parseInt(new Date().getMinutes()) === parseInt(timeSchedule?.minute)) {
-            setTimeSchedule((prev)=> ({...prev, cron: false}))
+            setDisabled(()=> false)
+            setTimeSchedule((prev)=> ({hour: -1, minute: -1, cron: false}))
         }
     }, 1000)
     return ()=> clearInterval(intervalId)
@@ -67,13 +67,13 @@ const History = (props) => {
     <div>
         <div style={{width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
             <div style={{margin: "16px 0", fontSize: 20, fontWeight: 600}}>Lịch sử nạp của thành viên</div>
-            <div>
+            {/* <div>
                 <Button disabled={disabled} onClick={()=> setOpenSchedule(()=> true)} variant={"contained"}>
                     {
                         timeSchedule?.cron=== true ? `Đã lên lịch lúc ${parseInt(timeSchedule?.hour)}:${timeSchedule?.minute}` : "Đặt lịch xóa lịch sử"
                     }
                 </Button>
-            </div>
+            </div> */}
         </div>
         <div>Tìm kiếm đơn hàng bằng mã hóa đơn</div>
         <div style={{margin: "16px 0", display: "flex", alignItems: "center", gap: 16}}>

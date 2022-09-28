@@ -14,7 +14,7 @@ const Header = (props) => {
     if(props.api_payment && props?.data?.balance) {
       socketState?.emit("check_payment_from_server", {api_payment: props?.api_payment})
       socketState.on("check_payment_to_client",async data=> {
-        if(data.data.description === props?.data?.account) {
+        if(data.data.description.toLowerCase()?.includes(props?.data?.account?.toLowerCase()) === true) {
           const res= await axios({
             url: `${SERVER_URL}/get/c/payment`,
             method: "get",

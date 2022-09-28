@@ -234,9 +234,9 @@ const Tr = (props) => {
       {props.is_new === true && (
         <>
           {props?.menu?.map((item, key) => (
-            <>
-              <Td key={key} text={item} />
-            </>
+            <Fragment key={key}>
+              <Td text={item} />
+            </Fragment>
             
           ))}
           {
