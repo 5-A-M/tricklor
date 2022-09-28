@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { SERVER_URL } from '../../../config/config'
 import { useInView } from "react-intersection-observer"
 import { DetailStats2 } from '../../../component/History/DetailOrder'
-import Schedule from './Schedule'
+// import Schedule from './Schedule'
 
 const History = (props) => {
   const [history, setHistory]= useState(()=> [])
@@ -135,7 +135,7 @@ const History = (props) => {
         </div>
         {
             openSchedule=== true && <div style={{width: "100%", height: "100%", position: "fixed", top: 0, left: 0, background: "rgba(255, 255, 255, 0.7)", display: "flex", justifyContent: 'center', alignItems: "center"}}>
-                <Schedule setDisabled={setDisabled} setTimeSchedule={setTimeSchedule} setOpen={setOpenSchedule} value={value} setValue={setValue} />
+                {/* <Schedule setDisabled={setDisabled} setTimeSchedule={setTimeSchedule} setOpen={setOpenSchedule} value={value} setValue={setValue} /> */}
             </div>
         }
     </div>
