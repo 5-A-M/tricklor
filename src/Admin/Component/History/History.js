@@ -8,7 +8,7 @@ import { DetailStats2 } from '../../../component/History/DetailOrder'
 // import Schedule from './Schedule'
 
 const History = (props) => {
-  const [history, setHistory]= useState(()=> [])
+  const [history, setHistory]= useState(()=> {})
   useEffect(()=> {
     (async()=> {
         const res= await axios({
@@ -37,7 +37,7 @@ const History = (props) => {
     return setDataSearch(()=> result.search)
   }
   const [openSchedule, setOpenSchedule]= useState(()=> false)
-  const [value, setValue]= useState(()=> null)
+//   const [value, setValue]= useState(()=> null)
   const [timeSchedule, setTimeSchedule]= useState(()=> ({}))
   const [disabled, setDisabled]= useState(()=> false)
   useEffect(()=> {
@@ -84,7 +84,7 @@ const History = (props) => {
                 setSearch(e.target.value)
             }} placeholder={"Nhập mã hóa đơn"} type="text" style={{height: 50, borderRadius: 80, outlineColor: "#2e89ff", fontSize: 18, maxWidth: 600, width: "100%", padding: 10}} />
             {search.length > 0 && <Button onClick={()=> searchReceipt()} variant={"contained"} style={{borderRadius: 80, height: 50}}>Tìm kiếm</Button>}
-        </div>
+        </div>  
         <div className="w-table-of-history-ad" style={{width: "100%", overflowX: "auto"}}>
             <table cellSpacing={0} className="table-of-history-ad" style={{width: "100%"}}>
                 <thead className="thead-table-of-history-ad" >
@@ -115,7 +115,8 @@ const History = (props) => {
                     {
                         isSearch=== true && dataSearch?.map((item, key)=> <tr key={key} className="tr-tbody-table-of-history-ad">
                         <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.code_stats}</td>
-                        <td style={{textAlign: "center", border: "1px solid #fff"}}><NameAccount id_user={item.id_user} /></td>
+                        <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.name_account ? item.name_account : <NameAccount id_user={item.id_user} />}</td>
+                        <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.name ? item.name : "Unknown"}</td>
                         <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.amount ? item.amount : "Unknown"}</td>
                         <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.date ? item.date : "Unknown"}</td>
                         <td style={{textAlign: "center", border: "1px solid #fff"}}>{item.state=== true ? <span style={{color: "green"}}>Thành công</span> : <span style={{color: "red"}}>Thất bại</span>}</td>
@@ -124,11 +125,16 @@ const History = (props) => {
                         </td>
                     </tr>)
                     }
+                    {
+                        isSearch=== true && dataSearch?.length <= 0 && <td rowSpan={6} style={{textAlign: "center", width: "100%", margin: "16px 0", fontSize: 20, fontWeight: 600}}>
+                        Không tìm thấy kết quả yêu cầu
+                    </td>
+                    }
                 
                 </tbody>
             </table>
             {
-                dataSearch?.length <= 0 && <div style={{textAlign: "center", width: "100%", margin: "16px 0", fontSize: 20, fontWeight: 600}}>
+                isSearch=== false && history?.length <= 0 && <div style={{textAlign: "center", width: "100%", margin: "16px 0", fontSize: 20, fontWeight: 600}}>
                     Không có lịch sử 
                 </div>
             }

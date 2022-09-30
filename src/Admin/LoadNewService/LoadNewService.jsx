@@ -61,6 +61,7 @@ const EachService= (props)=> {
                 menu: addS,
                 price: ePrice,
                 nation,
+                detail_product: detailProduct,
                 id_service: props.id_service 
             },
             responseType: "json"
@@ -103,6 +104,7 @@ const EachService= (props)=> {
      }
      const [nation, setNation]= useState(()=> "")
      const [ePrice, setEPrice]= useState(()=> "")
+     const [detailProduct, setDetailProduct]= useState(()=> "")
     return (
         <div className={"wrap-load-new-service"}>
                 <div style={{ fontSize: 20, margin: "16px 0" }}>{props?.title}</div>
@@ -125,6 +127,7 @@ const EachService= (props)=> {
                                 add=== true && <>
                                     <th>Quốc gia</th>
                                     <th>Giá tiền</th>
+                                    <th>Chi tiết sản phẩm</th>
                                 </>
                             }
                             {
@@ -173,6 +176,10 @@ const EachService= (props)=> {
                                     style={{ fontSize: 16 }}/>
                                 </td>
                                 {/*  */}
+                                {/* Add detail product */}
+                                <td>
+                                    <input type="text" onChange={(e)=> setDetailProduct(e.target.value)} />
+                                </td>
                             </tr>
                         }
                     </tbody>
@@ -256,6 +263,8 @@ const DetailTr= (props)=> {
             <td style={{display: "flex", alignItems:"center", gap: 16}}><span>Quốc gia: </span>{props?.nation?.length > 0 ? <img src={props.nation} alt="open" style={{width: 32, height: 24}} /> : "Chưa xét"}</td>
             {/* If price exist */}
             <td style={{display: "flex", alignItems:"center", gap: 16}}><span>Giá tiền: </span>{parseInt(props?.price?.length) > 0 ? <span>{props?.price}</span> : "Chưa xét"}</td>
+            {/* Add note of product */}
+            <td style={{display: "flex", alignItems:"center", gap: 16}}><span>Chi tiết về sản phẩm: </span>{props?.detail_product ? props?.detail_product : "Chưa xét"}</td>
             {
                 deleteS=== true && <td><Button onClick={()=> deleteXXX()} variant={"contained"}>Xóa</Button></td>
             }

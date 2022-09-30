@@ -2,7 +2,6 @@ import { Fragment, useContext, useState } from "react";
 import LoginPopup, { CloseLoginComponent } from "../../Login/Login";
 import validUrl from "valid-url";
 import Cookie from "js-cookie";
-
 import "./ListProduct.sass";
 import { Button, CircularProgress } from "@mui/material";
 import axios from "axios";
@@ -13,7 +12,8 @@ import { useEffect } from "react";
 import SellIcon from "@mui/icons-material/Sell";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PublicIcon from "@mui/icons-material/Public";
-
+import CopyToClipboard from "react-copy-to-clipboard";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 const ListProduct = (props) => {
   return (
@@ -86,6 +86,7 @@ const THeadNew = (props) => {
 };
 
 const Th = (props) => {
+  
   return (
     <th className="th-container">
       <p className="th-container-p">{props.icon}</p>
@@ -129,7 +130,7 @@ const TBodyNew = (props) => {
         },
       });
       const result = await res.data;
-      console.log(result.data)
+      // console.log(result.data)
       return setData(() => result.data);
     })();
   }, [props.id_service]);
@@ -205,7 +206,7 @@ const Tr = (props) => {
        */}
       {!props.is_new === true && (
         <>
-          <Td icon={array_body.icon} text={array_body.title} />
+          <Td icon={array_body.icon} text={array_body.title} detail_product={array_body.detail_product} />
           <Td text={array_body.pop3} />
           <Td text={array_body.live} />
           <Td
@@ -235,7 +236,7 @@ const Tr = (props) => {
         <>
           {props?.menu?.map((item, key) => (
             <Fragment key={key}>
-              <Td text={item} />
+              <Td text={item} index={key} detail_product={props.detail_product} />
             </Fragment>
             
           ))}
@@ -272,7 +273,24 @@ const WrapTd = ({ children }) => {
 
 const Td = (props) => {
   const [open, setOpen] = useState(() => false);
-  const { color_code }= useContext(SocketContext)
+  const { color_code, lang }= useContext(SocketContext)
+  const [translate1, setTranslate1]= useState(()=> {})
+  useEffect(()=> {
+    (async()=> {
+      if(lang !== "vn" && props.text && parseInt(props?.index)=== 0 ) {
+        const res= await axios({
+          url: `${SERVER_URL}/api/t/translate`,
+          method: "post",
+          responseType: "json",
+          data: {
+            translate: props?.text
+          }
+        })
+        const result= await res.data
+        setTranslate1(()=> result.result)
+      }
+    })()
+  }, [lang, translate1, props.text, props?.index])
   return (
     <td className="td-container">
       {props.icon && (
@@ -280,9 +298,18 @@ const Td = (props) => {
           <img src={props.icon} alt="Icon" className="td-container-img" />
         </p>
       )}
-      {props.text && <span className="td-container-span">{props.text}</span>}
+      {props.text && parseInt(props?.index) !== 0 && <div className="td-container-span">{props.text}</div>}
+      {
+        parseInt(props.index)===0 && <div style={{whiteSpace: "nowrap", fontWeight: 600}}>
+          <div style={{fontSize: 14, fontWeight: 600}}>{lang==="vn" ? props?.text : translate1}</div>
+          {
+
+            props?.detail_product && <div style={{fontSize: 12, fontWeight: 600, marginTop: 8}}>{props?.detail_product}</div>
+          }
+        </div>
+      }
       {props.button && (
-        <div className="td-container-button" style={{background: parseInt(props.amount) <= 0 ?"#555" : color_code, cursor: parseInt(props.amount) <= 0 ?"not-allowed" : "pointer", display: "flex", justifyContent: 'center', alignItems: "center", position: "relative", width: "100%", height: "100%"}}>
+        <div className="td-container-button" style={{background: parseInt(props.amount) <= 0 ?"#555" : color_code, cursor: parseInt(props.amount) <= 0 ?"not-allowed" : "pointer", display: "flex", justifyContent: 'center', alignItems: "center", position: "relative", width: "100%", height: "100%", minWidth: 40}}>
           <button
             disabled={parseInt(props.amount) <= 0 ? true : false}
             className="td-container-button-btn"
@@ -332,6 +359,7 @@ const WrapPopupPurchase= ({children, setAmount, name})=> {
         setAmount(() => data.amount);
       }
     });
+    // eslint-disable-next-line
   }, [name, setAmount]);
   return (
     <>
@@ -412,6 +440,13 @@ const PopupPurchase = (props) => {
   const updateAmount = () => {
     socketState.emit("update_amount", { amount: props.amount, number: parseInt(amount), name: props.name});
   };
+  const [copy, setCopy]= useState(()=> false)
+    const copyE= ()=> {
+        setCopy(()=> true)
+        setTimeout(()=> {
+            setCopy(()=> false)
+        }, 1500)
+    }
   
   return (
     <div className="purchase-popup">
@@ -512,11 +547,24 @@ const PopupPurchase = (props) => {
                   </div>
                   <br />
                   <div style={{ width: "100%", direction: "rtl" }}>
-                  <Button onClick={() => toTextFile()} variant={"contained"}>
+                  {
+                    order?.data &&
+                    <div style={{display: "flex", justifyContent: 'start', alignItems: "center", gap: 16}}>
+                      <Button variant={"contained"} onClick={()=> {toTextFile()}}>{lang=== "vn" ? "Tải file text" : "Download file"}</Button>
+                      <CopyToClipboard onCopy={()=> copyE()} text={order?.data?.map(item=> `${item.account.replaceAll(",", "")}|${item.password.replaceAll(",", "")}\n`.replaceAll(",", "zzz"))?.toString()?.replaceAll(",", "")}>
+                        <Button variant={"contained"}>
+                          {
+                              copy=== false ? <ContentCopyIcon style={{color: "#fff"}} /> : (lang=== "vn" ? "Copy thành công " : "Copy success")
+                          }
+                        </Button>
+                      </CopyToClipboard>
+                    </div>
+                  } 
+                  {/* <Button onClick={() => toTextFile()} variant={"contained"}>
                     {
                       lang=== "vn" ? "Tải file text" : "Download file"
                     }
-                  </Button>
+                  </Button> */}
                   </div>
                 </div>
                 )}

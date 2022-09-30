@@ -1,15 +1,18 @@
 import axios from 'axios'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { memo } from 'react'
 import { SocketContext } from '../../App'
 import { SERVER_URL } from '../../config/config'
 // import bulk_definition from '../../f/bulk_definition'
 import "./Header.sass"
 import Left from './Left/Left'
+import PaymentSuccessAlert from './Right/PaymentSuccessAlert'
 import Right from './Right/Right'
+import Cookies from "js-cookie"
 
 const Header = (props) => {
-  const { socketState, setUser }= useContext(SocketContext)
+  const { socketState, setUser, dataUser, setCallAgain }= useContext(SocketContext)
+  const [checked, setChecked]= useState(()=> false)
   useEffect(()=> {
     if(props.api_payment && props?.data?.balance) {
       socketState?.emit("check_payment_from_server", {api_payment: props?.api_payment})
@@ -22,9 +25,11 @@ const Header = (props) => {
           })
           const result= await res.data
           if(result.id !== data?.data?.id) {
-            socketState.emit("payment_success", {data: {account: props?.data?.account, balance: parseInt(props?.data?.balance), recharge: parseInt(data?.data?.amount)}})
-            socketState.on("payment_success_plus_money", (data)=> {
-              setUser(prev=> ({...prev, price: data.newPrice}))
+            socketState?.emit("payment_success", {data: {account: props?.data?.account, balance: parseInt(props?.data?.balance), recharge: parseInt(data?.data?.amount)}})
+            socketState?.on("payment_success_plus_money", (data)=> {
+              setUser(prev=> ({...prev, data: {...dataUser, price: data.newPrice}}))
+              setCallAgain(prev=> !prev)
+              setChecked(()=> true)
             })
             axios({
               url: `${SERVER_URL}/recharge/manual`,
@@ -32,7 +37,8 @@ const Header = (props) => {
               data: {
                 account: props?.data?.account,
                 balance: parseInt(props?.data?.balance),
-                recharge: parseInt(data?.data?.amount)
+                recharge: parseInt(data?.data?.amount),
+                id_user: Cookies.get("uid")
               }
             })
             // 
@@ -51,7 +57,7 @@ const Header = (props) => {
         }
       })
     }
-  }, [props.api_payment, props?.data?.balance, props?.data?.account, setUser])
+  }, [socketState, props.api_payment, props?.data?.balance])
   useEffect(()=> {
     // if(props.api_payment) {
     //   bulk_definition(props?.api_payment, props?.bank_account)
@@ -62,6 +68,9 @@ const Header = (props) => {
     <div className="header">
       <Left {...props} />
       <Right {...props} />
+      {
+        checked=== true && <PaymentSuccessAlert checked={checked} setChecked={setChecked} />
+      }
     </div>
   </div>
   )

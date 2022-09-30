@@ -35,7 +35,7 @@ const DetailOrder = (props) => {
     const element = document.createElement("a");
     const file = new Blob(
       
-      data?.data?.map(item=> `${item.account.replace(",", "")}|${item.password}`.replace(",", "")),
+      data?.data?.map(item=> `${item.account.replaceAll(",", "")}|${item.password}`.replaceAll(",", "")),
       {
         type: "text/plain",
       }
@@ -90,7 +90,7 @@ const DetailOrder = (props) => {
                 {
                     data &&
                     <div style={{display: "flex", justifyContent:" center", alignItems:" center", gap: 16}}>
-                        <CopyToClipboard onCopy={()=> copyE()} text={data?.data?.map(item=> `${item.account.replace(",", "")}|${item.password}`.replace(",", ""))}>
+                        <CopyToClipboard onCopy={()=> copyE()} text={data?.data?.map(item=> `${item.account.replaceAll(",", "")}|${item.password}`.replaceAll(",", ""))}>
                             <Button variant={"contained"}>
                                 {
                                     copy=== false ? <ContentCopyIcon style={{color: "#fff"}} /> : (lang=== "vn" ? "Copy thành công " : "Copy success")
@@ -175,7 +175,7 @@ export const DetailStats1= (props)=> {
                   {
                     props?.account &&
                     <div style={{display: "flex", justifyContent: 'center', alignItems: "center"}}>
-                        <CopyToClipboard onCopy={()=> copyE()} text={props?.data?.map(item=> `${item.account.replace(",", "")}|${item.password}`.replace(",", ""))}>
+                        <CopyToClipboard onCopy={()=> copyE()} text={props?.data?.map(item=> `${item.account.replaceAll(",", "")}|${item.password}`.replaceAll(",", ""))?.toString()?.replaceAll(",", "")}>
                                 <Button variant={"contained"}>
                                     {
                                         copy=== false ? <ContentCopyIcon style={{color: "#fff"}} /> : (lang=== "vn" ? "Copy thành công " : "Copy success")
@@ -254,7 +254,7 @@ export const DetailStats2= (props)=> {
                   {
                     props?.info &&
                     <div style={{display: "flex", justifyContent: 'center', alignItems: "center", gap: 16}}>
-                        <CopyToClipboard onCopy={()=> copyE()} text={props?.data?.map(item=> `${item.account.replace(",", "")}|${item.password}`.replace(",", ""))}>
+                        <CopyToClipboard onCopy={()=> copyE()} text={props?.data?.map(item=> `${item.account.replaceAll(",", "")}|${item.password}`.replaceAll(",", ""))?.toString()?.replaceAll(",", "")}>
                                 <Button variant={"contained"}>
                                     {
                                         copy=== false ? <ContentCopyIcon style={{color: "#fff"}} /> : (lang=== "vn" ? "Copy thành công " : "Copy success")

@@ -71,10 +71,10 @@ function App() {
   return (
     <Fragment>
       <Helmet>
-        <link rel="icon" type="image/x-icon" href={options?.logo} />
+        <link rel="icon" type="image/x-icon" href={"https://res.cloudinary.com/cockbook/image/upload/v1664531959/single/308981729_672379257276086_557721228676906754_n_d5xykl.jpg"} />
         <title>{options?.title ? options?.title : "Loading...."}</title>
       </Helmet>
-      <SocketContext.Provider value={{socketState, setCallAgain, openLogin, setOpenLogin, color_code: options?.color_code, user, lang: user?.lang, setUser}}>
+      <SocketContext.Provider value={{socketState, setCallAgain, openLogin, setOpenLogin, color_code: options?.color_code, user, lang: user?.lang, setUser, dataUser: user?.data}}>
         <Header {...user} {...options} />
         <Navigation {...options} />
         {
