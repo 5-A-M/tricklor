@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from 'react'
 import { memo } from 'react'
 import { SocketContext } from '../../App'
 import { SERVER_URL } from '../../config/config'
-import bulk_definition from '../../f/bulk_definition'
+// import bulk_definition from '../../f/bulk_definition'
 import "./Header.sass"
 import Left from './Left/Left'
 import Right from './Right/Right'
@@ -42,7 +42,8 @@ const Header = (props) => {
               data: {
                 id: data?.data?.id,
                 account: props?.data?.account,
-                time: new Date().getTime()
+                time: new Date().getTime(),
+                is_plus: true,
               },
               responseType: "json"
             })
@@ -50,11 +51,11 @@ const Header = (props) => {
         }
       })
     }
-  }, [props.api_payment, props?.data?.balance, props?.data?.account])
+  }, [props.api_payment, props?.data?.balance, props?.data?.account, setUser])
   useEffect(()=> {
-    if(props.api_payment) {
-      bulk_definition(props?.api_payment, props?.bank_account)
-    }
+    // if(props.api_payment) {
+    //   bulk_definition(props?.api_payment, props?.bank_account)
+    // }
   }, [props?.api_payment, props?.bank_account])
   return (
   <div className="wrapper-header">

@@ -324,13 +324,15 @@ const Td = (props) => {
   );
 };
 
-const WrapPopupPurchase= ({children, setAmount})=> {
+const WrapPopupPurchase= ({children, setAmount, name})=> {
   const { socketState } = useContext(SocketContext);
   useEffect(() => {
     socketState.on("update_amount_from_server", (data) => {
-    setAmount(() => data.amount);
+      if(data.name === name) {
+        setAmount(() => data.amount);
+      }
     });
-  }, []);
+  }, [name, setAmount]);
   return (
     <>
       {children}
@@ -408,7 +410,7 @@ const PopupPurchase = (props) => {
     element.click();
   };
   const updateAmount = () => {
-    socketState.emit("update_amount", { amount: props.amount, number: parseInt(amount)});
+    socketState.emit("update_amount", { amount: props.amount, number: parseInt(amount), name: props.name});
   };
   
   return (
