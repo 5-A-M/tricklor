@@ -21,6 +21,7 @@ import LoginOauth2 from "./LoginOauth2/LoginOauth2"
 import nProgress from "nprogress"
 import CheckBalance from "./Api/CheckBalance"
 import BuyService from "./Api/BuyService"
+import ChatMessengerApp from "./ChatComponent/ChatMessengerApp"
 const CheckAccount= lazy(()=> import("./component/CheckAccount/CheckAccount"))
 const NotificationAdmin= lazy(()=> import("./NotificationAdmin/NotificationAdmin"))
 const Account= lazy(()=> import("./component/Account/Account"))
@@ -71,7 +72,7 @@ function App() {
   return (
     <Fragment>
       <Helmet>
-        <link rel="icon" type="image/x-icon" href={"https://res.cloudinary.com/cockbook/image/upload/v1664531959/single/308981729_672379257276086_557721228676906754_n_d5xykl.jpg"} />
+        <link rel="icon" type="image/x-icon" href={"https://res.cloudinary.com/cockbook/image/upload/v1664608366/single/favicon-removebg-preview_z2ar7g.png"} />
         <title>{options?.title ? options?.title : "Loading...."}</title>
       </Helmet>
       <SocketContext.Provider value={{socketState, setCallAgain, openLogin, setOpenLogin, color_code: options?.color_code, user, lang: user?.lang, setUser, dataUser: user?.data}}>
@@ -107,6 +108,7 @@ function App() {
           }
         </Routes>
         <Footer />
+        {/* <ChatMessengerApp /> */}
       </SocketContext.Provider>
     </Fragment>
   )

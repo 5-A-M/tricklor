@@ -1,10 +1,12 @@
 import { Slide } from '@mui/material'
 import DoneIcon from '@mui/icons-material/Done';
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useContext } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { memo } from 'react';
+import { SocketContext } from '../../../App';
 
 const PaymentSuccessAlert = memo((props) => {
+  const { lang }= useContext(SocketContext)
   const ref= useRef()
   const clickOutside= useCallback((e)=> {
     if(ref.current && !ref.current.contains(e.target)) {
@@ -30,7 +32,7 @@ const PaymentSuccessAlert = memo((props) => {
               <CloseIcon onClick={()=> props?.setChecked(()=> false) } style={{width: 36, height: 36, borderRadius: "50%", backgroundColor: "#f2f0f5", display: "flex", justifyContent: 'center', alignItems: "center", cursor: "pointer"}} />
             </div>
             <div className={"wrap-icon-success-payment-done"}>{<DoneIcon style={{width: 24, height: 24, color: "green"}} />}</div>
-            <div style={{display: "flex", fontSize: 18, fontWeight: 600}}>Nạp tiền thành công</div>
+            <div style={{display: "flex", fontSize: 18, fontWeight: 600}}>{lang=== "vn" ? "Nạp tiền thành công" : "Payment success"}</div>
           </div>
         </div>
       </Slide>

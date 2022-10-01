@@ -15,7 +15,7 @@ const Admin = (props) => {
     <AdminContext.Provider value={{lang: "vn"}}>
       <div className="admin-page">
         <Helmet>
-          <link rel="icon" type="image/x-icon" href={"https://res.cloudinary.com/cockbook/image/upload/v1664531959/single/308981729_672379257276086_557721228676906754_n_d5xykl.jpg"} />
+          <link rel="icon" type="image/x-icon" href={"https://res.cloudinary.com/cockbook/image/upload/v1664608366/single/favicon-removebg-preview_z2ar7g.png"} />
           <title>Admin</title>
         </Helmet>
         {sessionStorage.getItem("ld") === "true" ? (

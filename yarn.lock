@@ -7755,6 +7755,11 @@ react-is@^18.0.0, react-is@^18.2.0:
   resolved "https://registry.npmjs.org/react-is/-/react-is-18.2.0.tgz"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
+react-messenger-chat-plugin@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/react-messenger-chat-plugin/-/react-messenger-chat-plugin-3.0.5.tgz#65bc53919e1bbc489e4ac3d65b25e5774addaee3"
+  integrity sha512-393uI68xyWLElbIYZknOb+zeb8onxIi6ZxmyhsJT76ct6yu/S2Jv7H1eKeB6BqG+vLHST3PrUlTL8gauZdoYIg==
+
 react-number-format@^4.9.3:
   version "4.9.3"
   resolved "https://registry.npmjs.org/react-number-format/-/react-number-format-4.9.3.tgz"

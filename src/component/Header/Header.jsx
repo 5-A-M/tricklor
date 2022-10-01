@@ -69,10 +69,10 @@ const Header = (props) => {
     <div className="header">
       <Left {...props} />
       <Right {...props} />
-      {
-        <PaymentSuccessAlert checked={checked} setChecked={setChecked} />
-      }
     </div>
+    {
+      <PaymentSuccessAlert checked={checked} setChecked={setChecked} />
+    }
   </div>
   )
 }
