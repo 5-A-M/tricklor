@@ -29,7 +29,7 @@ const Menu = (props) => {
 
 const ComponentMenu= (props)=> {
     return (
-      <NavLink to={"/admin"+ props.link} className={({isActive})=> isActive ? "component-menu-admin-active component-menu-link" : "component-menu-admin-inactive component-menu-link"}>
+      <NavLink to={"/theta18"+ props.link} className={({isActive})=> isActive ? "component-menu-admin-active component-menu-link" : "component-menu-admin-inactive component-menu-link"}>
         <div className="component-menu-admin" style={{display: "flex", alignItems: "center", gap: 10}}>
           <div className="component-menu-admin-icon" style={{display: "flex", justifyContent: "center", alignItems: "center"}}>{props.icon}</div>
           <div className="component-menu-admin-text">{props.text}</div>

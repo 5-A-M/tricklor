@@ -5,10 +5,15 @@ import { SERVER_URL } from "../../../config/config";
 // import Alert from "../Alert/Alert";
 
 const UploadProduct = (props) => {
+  // eslint-disable-next-line
   const [name1, setName1]= useState(()=> "")
+  // eslint-disable-next-line
   const [data1, setData1]= useState(()=> "")
+  // eslint-disable-next-line
   const [name2, setName2]= useState(()=> "")
+  // eslint-disable-next-line
   const [data2, setData2]= useState(()=> "")
+  // eslint-disable-next-line
   const showFile1 = async (e) => {
     e.preventDefault()
     const reader = new FileReader()
@@ -30,6 +35,7 @@ const UploadProduct = (props) => {
     };
     reader.readAsText(e.target.files[0])
   }
+  // eslint-disable-next-line
   const showFile2 = async (e) => {
       e.preventDefault()
       const reader = new FileReader()
@@ -55,72 +61,6 @@ const UploadProduct = (props) => {
   
   return (
     <div className="upload-product" style={{ width: "100%" }}>
-      <div>Upload file hotmail</div>
-      <br />
-      <div>
-        Nhập tên dịch vụ{" "}
-        <input
-          style={{ width: 300, height: 40, fontSize: 18 }}
-          placeholder="Vui lòng nhập đúng tên dịch vụ"
-          type="text"
-          onChange={(e) => setName1(e.target.value)}
-        />
-      </div>
-      <br />
-      <div style={{ position: "relative" }}>
-        <input
-          onChange={(e) => showFile1(e)}
-          type="file"
-          title={""}
-          style={{
-            width: "100%",
-            height: "100%",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            opacity: 0,
-            cursor: "pointer",
-            zIndex: 3,
-          }}
-        />
-        <Button variant={"contained"}>Chọn file(chỉ chọn file text)</Button>
-      </div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <div>Upload file gmail</div>
-      <br />
-      <div>
-        Nhập tên dịch vụ{" "}
-        <input
-          style={{ width: 300, height: 40, fontSize: 18 }}
-          placeholder="Vui lòng nhập đúng tên dịch vụ"
-          type="text"
-          onChange={(e) => setName2(e.target.value)}
-        />
-      </div>
-      <br />
-      <div style={{ position: "relative" }}>
-        <input
-          onChange={(e) => showFile2(e)}
-          type="file"
-          title={""}
-          style={{
-            width: "100%",
-            height: "100%",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            opacity: 0,
-            cursor: "pointer",
-            zIndex: 3,
-          }}
-        />
-        <Button variant={"contained"}>Chọn file(chỉ chọn file text)</Button>
-      </div>
-      {/* <Alert open={} duration={2500} message={"Cập nhật thành công"} /> */}
-      <br />
       <App />
     </div>
   );
@@ -128,6 +68,7 @@ const UploadProduct = (props) => {
 
 function App() {
   const [name, setName]= useState(()=> "")
+  // eslint-disable-next-line
   const [data, setData]= useState(()=> "")
   const showFile = async (e) => {
     e.preventDefault()

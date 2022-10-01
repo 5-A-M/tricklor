@@ -21,7 +21,7 @@ import LoginOauth2 from "./LoginOauth2/LoginOauth2"
 import nProgress from "nprogress"
 import CheckBalance from "./Api/CheckBalance"
 import BuyService from "./Api/BuyService"
-import ChatMessengerApp from "./ChatComponent/ChatMessengerApp"
+// import ChatMessengerApp from "./ChatComponent/ChatMessengerApp"
 const CheckAccount= lazy(()=> import("./component/CheckAccount/CheckAccount"))
 const NotificationAdmin= lazy(()=> import("./NotificationAdmin/NotificationAdmin"))
 const Account= lazy(()=> import("./component/Account/Account"))

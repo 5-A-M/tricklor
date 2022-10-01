@@ -19,7 +19,7 @@ root.render(
     <Router>
       <Routes>
         <Route path="/*" element={<Suspense fallback={<Box sx={{ width: '100%' }}><LinearProgress /></Box>}><App /></Suspense>} />
-        <Route path="/admin/*" element={<Suspense fallback={<Box sx={{ width: '100%' }}><LinearProgress /></Box>}><Admin /></Suspense>} />
+        <Route path="/theta18/*" element={<Suspense fallback={<Box sx={{ width: '100%' }}><LinearProgress /></Box>}><Admin /></Suspense>} />
       </Routes>
     </Router>
   </HelmetProvider>
