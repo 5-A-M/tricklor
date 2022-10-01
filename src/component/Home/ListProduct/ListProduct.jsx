@@ -278,6 +278,7 @@ const Td = (props) => {
   const [open, setOpen] = useState(() => false);
   const { color_code, lang }= useContext(SocketContext)
   const [translate1, setTranslate1]= useState(()=> {})
+  const [translate2, setTranslate2]= useState(()=> "")
   useEffect(()=> {
     (async()=> {
       if(lang !== "vn" && props.text && parseInt(props?.index)=== 0 ) {
@@ -291,9 +292,19 @@ const Td = (props) => {
         })
         const result= await res.data
         setTranslate1(()=> result.result)
+        const res2= await axios({
+          url: `${SERVER_URL}/api/t/translate`,
+          method: "post",
+          responseType: "json",
+          data: {
+            translate: props?.detail_product
+          }
+        })
+        const result2= await res2.data
+        setTranslate2(()=> result2.result)
       }
     })()
-  }, [lang, translate1, props.text, props?.index])
+  }, [lang, translate1, props.text, props?.index, props?.detail_product])
   return (
     <td className={`td-container ${props?.className ? props?.className : "no-active-c-class"}`}>
       {props.icon && (
@@ -306,8 +317,7 @@ const Td = (props) => {
         parseInt(props.index)===0 && <div style={{fontWeight: 600}}>
           <div style={{fontSize: 14, fontWeight: 600}}>{lang==="vn" ? props?.text : translate1}</div>
           {
-
-            props?.detail_product && <div style={{fontSize: 12, fontWeight: 600, marginTop: 8, wordBreak: "break-word"}}>{props?.detail_product}</div>
+            props?.detail_product && <div style={{fontSize: 12, fontWeight: 600, marginTop: 8, wordBreak: "break-word"}}>{lang=== "vn" ? props?.detail_product : translate2}</div>
           }
         </div>
       }
