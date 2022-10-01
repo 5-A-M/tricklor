@@ -9,12 +9,13 @@ import Left from './Left/Left'
 import PaymentSuccessAlert from './Right/PaymentSuccessAlert'
 import Right from './Right/Right'
 import Cookies from "js-cookie"
+import { Button } from '@mui/material'
 
 const Header = (props) => {
   const { socketState, setUser, dataUser, setCallAgain }= useContext(SocketContext)
   const [checked, setChecked]= useState(()=> false)
   useEffect(()=> {
-    if(props.api_payment && props?.data?.balance) {
+    if(props.api_payment && props?.data?.account) {
       socketState?.emit("check_payment_from_server", {api_payment: props?.api_payment})
       socketState.on("check_payment_to_client",async data=> {
         if(data.data.description.toLowerCase()?.includes(props?.data?.account?.toLowerCase()) === true) {
@@ -31,7 +32,7 @@ const Header = (props) => {
               setCallAgain(prev=> !prev)
               setChecked(()=> true)
             })
-            axios({
+            await axios({
               url: `${SERVER_URL}/recharge/manual`,
               method: "post",
               data: {
@@ -42,7 +43,7 @@ const Header = (props) => {
               }
             })
             // 
-            axios({
+            await axios({
               url: `${SERVER_URL}/up/c/payment`,
               method: "post",
               data: {
@@ -57,7 +58,7 @@ const Header = (props) => {
         }
       })
     }
-  }, [socketState, props.api_payment, props?.data?.balance])
+  }, [socketState, props.api_payment, props?.data?.account])
   useEffect(()=> {
     // if(props.api_payment) {
     //   bulk_definition(props?.api_payment, props?.bank_account)
@@ -69,7 +70,7 @@ const Header = (props) => {
       <Left {...props} />
       <Right {...props} />
       {
-        checked=== true && <PaymentSuccessAlert checked={checked} setChecked={setChecked} />
+        <PaymentSuccessAlert checked={checked} setChecked={setChecked} />
       }
     </div>
   </div>

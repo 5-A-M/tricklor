@@ -11,6 +11,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { SERVER_URL } from '../../config/config'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import { AdminContext } from '../../Admin/Admin'
+import { browserName, CustomView } from 'react-device-detect';
 
 const DetailOrder = (props) => {
   const [data, setData]= useState(()=> {})
@@ -93,7 +94,16 @@ const DetailOrder = (props) => {
                         <CopyToClipboard onCopy={()=> copyE()} text={data?.data?.map(item=> `${item.account.replaceAll(",", "")}|${item.password}`.replaceAll(",", ""))}>
                             <Button variant={"contained"}>
                                 {
-                                    copy=== false ? <ContentCopyIcon style={{color: "#fff"}} /> : (lang=== "vn" ? "Copy thành công " : "Copy success")
+                                    copy=== false ? 
+                                    <>
+                                        <CustomView condition={browserName === "Safari"}>
+                                            <img src={"https://res.cloudinary.com/cockbook/image/upload/v1664597750/single/308263838_636175607858385_7958392603720330332_n_eqcb1h.png"} alt={""} style={{width: 24, height: 24, }} />
+                                        </CustomView>
+                                        <CustomView className={"custom-view-wrap-copy-icon"} style={{display: "flex", justifyContent: 'center', alignItems: "center"}} condition={browserName !== "Safari"}>
+                                            <ContentCopyIcon style={{color: "#fff"}} />
+                                        </CustomView>
+                                    </>
+                                    : (lang=== "vn" ? "Copy thành công " : "Copy success")
                                 }
                             </Button>
                         </CopyToClipboard>
@@ -176,12 +186,22 @@ export const DetailStats1= (props)=> {
                     props?.account &&
                     <div style={{display: "flex", justifyContent: 'center', alignItems: "center"}}>
                         <CopyToClipboard onCopy={()=> copyE()} text={props?.data?.map(item=> `${item.account.replaceAll(",", "")}|${item.password}`.replaceAll(",", ""))?.toString()?.replaceAll(",", "")}>
-                                <Button variant={"contained"}>
-                                    {
-                                        copy=== false ? <ContentCopyIcon style={{color: "#fff"}} /> : (lang=== "vn" ? "Copy thành công " : "Copy success")
-                                    }
-                                </Button>
-                            </CopyToClipboard>
+                            <Button variant={"contained"}>
+                                {
+                                    copy=== false ? 
+                                        <>
+                                            <CustomView condition={browserName === "Safari"}>
+                                                <img src={"https://res.cloudinary.com/cockbook/image/upload/v1664597750/single/308263838_636175607858385_7958392603720330332_n_eqcb1h.png"} alt={""} style={{width: 24, height: 24, }} />
+                                            </CustomView>
+                                            <CustomView className={"custom-view-wrap-copy-icon"} style={{display: "flex", justifyContent: 'center', alignItems: "center"}} condition={browserName !== "Safari"}>
+                                                <ContentCopyIcon style={{color: "#fff"}} />
+                                            </CustomView>
+                                        </>
+                                    : 
+                                    (lang=== "vn" ? "Copy thành công " : "Copy success")
+                                }
+                            </Button>
+                        </CopyToClipboard>
                         <Button variant={"contained"} onClick={()=> {toTextFile();props.handleClose()}}>{lang=== "vn" ? "Tải file text" : "Download file"}</Button>
                     </div>
                   } 
@@ -255,12 +275,22 @@ export const DetailStats2= (props)=> {
                     props?.info &&
                     <div style={{display: "flex", justifyContent: 'center', alignItems: "center", gap: 16}}>
                         <CopyToClipboard onCopy={()=> copyE()} text={props?.data?.map(item=> `${item.account.replaceAll(",", "")}|${item.password}`.replaceAll(",", ""))?.toString()?.replaceAll(",", "")}>
-                                <Button variant={"contained"}>
-                                    {
-                                        copy=== false ? <ContentCopyIcon style={{color: "#fff"}} /> : (lang=== "vn" ? "Copy thành công " : "Copy success")
-                                    }
-                                </Button>
-                            </CopyToClipboard>
+                            <Button variant={"contained"}>
+                                {
+                                    copy=== false ? 
+                                        <>
+                                            <CustomView condition={browserName === "Safari"}>
+                                                <img src={"https://res.cloudinary.com/cockbook/image/upload/v1664597750/single/308263838_636175607858385_7958392603720330332_n_eqcb1h.png"} alt={""} style={{width: 24, height: 24, }} />
+                                            </CustomView>
+                                            <CustomView className={"custom-view-wrap-copy-icon"} style={{display: "flex", justifyContent: 'center', alignItems: "center"}} condition={browserName !== "Safari"}>
+                                                <ContentCopyIcon style={{color: "#fff"}} />
+                                            </CustomView>
+                                        </>
+                                        : 
+                                        (lang=== "vn" ? "Copy thành công " : "Copy success")
+                                }
+                            </Button>
+                        </CopyToClipboard>
                         <Button variant={"contained"} onClick={()=> {toTextFile();props.handleClose()}}>{lang=== "vn" ? "Tải file text" : "Download file"}</Button>
                     </div>
                   } 

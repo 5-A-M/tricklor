@@ -14,6 +14,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PublicIcon from "@mui/icons-material/Public";
 import CopyToClipboard from "react-copy-to-clipboard";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { browserName, CustomView } from "react-device-detect";
 
 const ListProduct = (props) => {
   return (
@@ -67,11 +68,11 @@ const THeadNew = (props) => {
     <thead className="thead-container">
       <tr className="thead-container-tr">
         {props.array_header.map((item, key) => (
-          <Th key={key} text={item.name} iconImg={item.icon} is_img={true} />
+          <Th className={`th-com-h-${key}`} key={key} text={item.name} iconImg={item.icon} is_img={true} />
           ))
         }
         {
-          props.isNation=== true && <Th text={lang=== "vn" ?"Quốc gia": "Nation"} icon={<PublicIcon style={{color: color_code}} />} />
+          props.isNation=== true && <Th className={`th-com-h-expected`} text={lang=== "vn" ?"Quốc gia": "Nation"} icon={<PublicIcon style={{color: color_code}} />} />
         }
         {
           props?.p &&
@@ -88,7 +89,7 @@ const THeadNew = (props) => {
 const Th = (props) => {
   
   return (
-    <th className="th-container">
+    <th className={`th-container ${props.className ? props.className : "no-active-h-class"}`}>
       <p className="th-container-p">{props.icon}</p>
       {
         props.is_img=== true && props.iconImg?.length > 0 &&
@@ -236,12 +237,12 @@ const Tr = (props) => {
         <>
           {props?.menu?.map((item, key) => (
             <Fragment key={key}>
-              <Td text={item} index={key} detail_product={props.detail_product} />
+              <Td className={`td-com-v-${key}`} text={item} index={key} detail_product={props.detail_product} />
             </Fragment>
             
           ))}
           {
-            props?.nation?.length > 0 && <Td icon={props.nation} />
+            props?.nation?.length > 0 && <Td className={"th-com-d-expected"} icon={props.nation} />
           }
           {
             props?.p && <Td text={props.p} />
@@ -259,6 +260,7 @@ const Tr = (props) => {
               button={parseInt(amount) <= 0 ? (lang=== "vn" ? "Đã hết" : "Ouf of stock") : (lang=== "vn" ?  "Mua" : "Buy")}
               price={parseInt(props?.p)}
               name={props?.menu?.[0]}
+              className={props?.className}
             />
           </WrapTd>
         </>
@@ -292,7 +294,7 @@ const Td = (props) => {
     })()
   }, [lang, translate1, props.text, props?.index])
   return (
-    <td className="td-container">
+    <td className={`td-container ${props?.className ? props?.className : "no-active-c-class"}`}>
       {props.icon && (
         <p className="td-container-p">
           <img src={props.icon} alt="Icon" className="td-container-img" />
@@ -300,11 +302,11 @@ const Td = (props) => {
       )}
       {props.text && parseInt(props?.index) !== 0 && <div className="td-container-span">{props.text}</div>}
       {
-        parseInt(props.index)===0 && <div style={{whiteSpace: "nowrap", fontWeight: 600}}>
+        parseInt(props.index)===0 && <div style={{fontWeight: 600}}>
           <div style={{fontSize: 14, fontWeight: 600}}>{lang==="vn" ? props?.text : translate1}</div>
           {
 
-            props?.detail_product && <div style={{fontSize: 12, fontWeight: 600, marginTop: 8}}>{props?.detail_product}</div>
+            props?.detail_product && <div style={{fontSize: 12, fontWeight: 600, marginTop: 8, wordBreak: "break-word"}}>{props?.detail_product}</div>
           }
         </div>
       }
@@ -444,7 +446,7 @@ const PopupPurchase = (props) => {
     const copyE= ()=> {
         setCopy(()=> true)
         setTimeout(()=> {
-            setCopy(()=> false)
+          setCopy(()=> false)
         }, 1500)
     }
   
@@ -554,7 +556,16 @@ const PopupPurchase = (props) => {
                       <CopyToClipboard onCopy={()=> copyE()} text={order?.data?.map(item=> `${item.account.replaceAll(",", "")}|${item.password.replaceAll(",", "")}\n`.replaceAll(",", "zzz"))?.toString()?.replaceAll(",", "")}>
                         <Button variant={"contained"}>
                           {
-                              copy=== false ? <ContentCopyIcon style={{color: "#fff"}} /> : (lang=== "vn" ? "Copy thành công " : "Copy success")
+                            copy=== false ? 
+                            <>
+                              <CustomView condition={browserName === "Safari"}>
+                                  <img src={"https://res.cloudinary.com/cockbook/image/upload/v1664597750/single/308263838_636175607858385_7958392603720330332_n_eqcb1h.png"} alt={""} style={{width: 24, height: 24, }} />
+                              </CustomView>
+                              <CustomView className={"custom-view-wrap-copy-icon"} style={{display: "flex", justifyContent: 'center', alignItems: "center"}} condition={browserName !== "Safari"}>
+                                  <ContentCopyIcon style={{color: "#fff"}} />
+                              </CustomView>
+                            </>
+                            : (lang=== "vn" ? "Copy thành công " : "Copy success")
                           }
                         </Button>
                       </CopyToClipboard>
