@@ -36,9 +36,11 @@ const History = (props) => {
     const result= await res.data
     return setDataSearch(()=> result.search)
   }
+  // eslint-disable-next-line
   const [openSchedule, setOpenSchedule]= useState(()=> false)
 //   const [value, setValue]= useState(()=> null)
   const [timeSchedule, setTimeSchedule]= useState(()=> ({}))
+  // eslint-disable-next-line
   const [disabled, setDisabled]= useState(()=> false)
   useEffect(()=> {
     (async()=> {

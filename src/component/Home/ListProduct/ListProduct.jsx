@@ -194,6 +194,7 @@ const Tr = (props) => {
         }
       })();
     }
+  // eslint-disable-next-line
   }, [props.is_new, array_body.title, props?.menu]);
   useEffect(()=> {
     if(props?.nation?.length > 0) {

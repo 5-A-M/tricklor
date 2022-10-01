@@ -9,7 +9,6 @@ import Left from './Left/Left'
 import PaymentSuccessAlert from './Right/PaymentSuccessAlert'
 import Right from './Right/Right'
 import Cookies from "js-cookie"
-import { Button } from '@mui/material'
 
 const Header = (props) => {
   const { socketState, setUser, dataUser, setCallAgain }= useContext(SocketContext)
@@ -58,6 +57,7 @@ const Header = (props) => {
         }
       })
     }
+    // eslint-disable-next-line
   }, [socketState, props.api_payment, props?.data?.account])
   useEffect(()=> {
     // if(props.api_payment) {

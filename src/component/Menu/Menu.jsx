@@ -23,6 +23,7 @@ const Menu = (props) => {
             setAlertLogout(()=> true)
         }
     })
+  // eslint-disable-next-line
   }, [])
   const array_link= [{text: lang=== "vn" ? "Trang chủ" : "Home", link: "/", icon: <HomeIcon style={{color: color_code}} />, is_link: true}, {text: lang=== "vn" ? "Thông tin cá nhân" : "Infomation", link: "/account", icon: <AccountBoxIcon style={{color: color_code}} />, is_link: true}, {text: lang=== "vn" ? "Nạp tiền" : "Recharge", link: "/recharge", icon: <PaymentIcon style={{color: color_code}} />, is_link: true}, {text: lang=== "vn" ? "Lịch sử giao dịch" : "Transaction history", link: "/history", icon: <HistoryIcon style={{color: color_code}} />, is_link: true}, {text: lang=== "vn" ? "Đăng xuất"  :"Logout", icon: <LogoutIcon style={{color: color_code}} />}]
   return (
