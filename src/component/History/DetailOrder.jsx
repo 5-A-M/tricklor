@@ -36,7 +36,7 @@ const DetailOrder = (props) => {
     const element = document.createElement("a");
     const file = new Blob(
       
-      data?.data?.map(item=> `${item.account.replaceAll(",", "")}|${item.password}`.replaceAll(",", "")),
+      data?.data?.map(item=> `${item?.full_account || ""}`),
       {
         type: "text/plain",
       }
@@ -82,7 +82,7 @@ const DetailOrder = (props) => {
                     }
                     <div style={{ color: "#000", margin: "8px 0", maxHeight: 300, overflow: "auto"}}>
                         {
-                        data?.data?.map((item, key)=> <div className={"list-account-password"} key={key}>{item.account}|{item.password}</div>)
+                        data?.data?.map((item, key)=> <div className={"list-account-password"} key={key}>{item.is_not_mail=== true ? item?.full_account : `${item.account}|${item.password}`}</div>)
                         }
                     </div>
                 </DialogContentText>
@@ -91,7 +91,7 @@ const DetailOrder = (props) => {
                 {
                     data &&
                     <div style={{display: "flex", justifyContent:" center", alignItems:" center", gap: 16}}>
-                        <CopyToClipboard onCopy={()=> copyE()} text={data?.data?.map(item=> `${item.account.replaceAll(",", "")}|${item.password}`.replaceAll(",", ""))}>
+                        <CopyToClipboard onCopy={()=> copyE()} text={data?.data?.map(item=> `${item?.full_account.replaceAll(",", "")}`.replaceAll(",", ""))?.toString()?.replaceAll(",", "\n")}>
                             <Button variant={"contained"}>
                                 {
                                     copy=== false ? 
@@ -128,8 +128,10 @@ export const DetailStats1= (props)=> {
     const { lang }= useContext(SocketContext)
     const toTextFile= async()=> {
       const element = document.createElement("a");
-      const file = new Blob([`Tài khoản: ${props.account}\nMật khẩu: ${props.password}`], {
-        type: "text/plain"
+      const file = new Blob(
+        props?.info?.map(item=> `${item?.full_account || ""}`),
+      {
+        type: "text/plain",
       });
       element.href = URL.createObjectURL(file);
       element.download = `${props.code_stats}.txt`;
@@ -176,7 +178,7 @@ export const DetailStats1= (props)=> {
                     }
                     <div style={{ color: "#000", margin: "8px 0", maxHeight: 300, overflow: "auto"}}>
                         {
-                        props?.info&& Array.isArray(props?.info) && props?.info?.map((item, key)=> <div className={"list-account-password"} key={key}>{item.account}|{item.password}</div>)
+                        props?.info&& Array.isArray(props?.info) && props?.info?.map((item, key)=> <div className={"list-account-password"} key={key}>{item.is_not_mail=== true ? item?.full_account : `${item.account}|${item.password}`}</div>)
                         }
                     </div>
                   </DialogContentText>
@@ -185,7 +187,7 @@ export const DetailStats1= (props)=> {
                   {
                     props?.account &&
                     <div style={{display: "flex", justifyContent: 'center', alignItems: "center"}}>
-                        <CopyToClipboard onCopy={()=> copyE()} text={props?.data?.map(item=> `${item.account.replaceAll(",", "")}|${item.password}`.replaceAll(",", ""))?.toString()?.replaceAll(",", "")}>
+                        <CopyToClipboard onCopy={()=> copyE()} text={props?.data?.map(item=> `${item?.full_account.replaceAll(",", "")}`.replaceAll(",", ""))?.toString()?.replaceAll(",", "\n")}>
                             <Button variant={"contained"}>
                                 {
                                     copy=== false ? 
@@ -217,8 +219,9 @@ export const DetailStats2= (props)=> {
     const { lang }= useContext(AdminContext)
     const toTextFile= async()=> {
       const element = document.createElement("a");
-      const file = new Blob([`Tài khoản: ${props.account}\nMật khẩu: ${props.password}`], {
-        type: "text/plain"
+      const file = new Blob(props?.info?.map(item=> `${item?.full_account || ""}`),
+      {
+        type: "text/plain",
       });
       element.href = URL.createObjectURL(file);
       element.download = `${props.code_stats}.txt`;
@@ -265,7 +268,7 @@ export const DetailStats2= (props)=> {
                     }
                     <div style={{ color: "#000", margin: "8px 0", maxHeight: 300, overflow: "auto"}}>
                         {
-                        props?.info&& Array.isArray(props?.info) && props?.info?.map((item, key)=> <div className={"list-account-password"} key={key}>{item.account}|{item.password}</div>)
+                        props?.info&& Array.isArray(props?.info) && props?.info?.map((item, key)=> <div className={"list-account-password"} key={key}>{item.is_not_mail=== true ? item.full_account : `${item.account}|${item.password}`}</div>)
                         }
                     </div>
                   </DialogContentText>
@@ -274,7 +277,7 @@ export const DetailStats2= (props)=> {
                   {
                     props?.info &&
                     <div style={{display: "flex", justifyContent: 'center', alignItems: "center", gap: 16}}>
-                        <CopyToClipboard onCopy={()=> copyE()} text={props?.data?.map(item=> `${item.account.replaceAll(",", "")}|${item.password}`.replaceAll(",", ""))?.toString()?.replaceAll(",", "")}>
+                        <CopyToClipboard onCopy={()=> copyE()} text={props?.data?.map(item=> `${item?.full_account.replaceAll(",", "")}`.replaceAll(",", ""))?.toString()?.replaceAll(",", "\n")}>
                             <Button variant={"contained"}>
                                 {
                                     copy=== false ? 

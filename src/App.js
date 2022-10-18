@@ -21,6 +21,8 @@ import LoginOauth2 from "./LoginOauth2/LoginOauth2"
 import nProgress from "nprogress"
 import CheckBalance from "./Api/CheckBalance"
 import BuyService from "./Api/BuyService"
+import WrapperCatchError from "./WrapCatchError/WrapperCatchError"
+import React from "react"
 // import ChatMessengerApp from "./ChatComponent/ChatMessengerApp"
 const CheckAccount= lazy(()=> import("./component/CheckAccount/CheckAccount"))
 const NotificationAdmin= lazy(()=> import("./NotificationAdmin/NotificationAdmin"))
@@ -70,47 +72,50 @@ function App() {
     })()
   }, [])
   return (
-    <Fragment>
-      <Helmet>
-        <link rel="icon" type="image/x-icon" href={"https://res.cloudinary.com/cockbook/image/upload/v1664608366/single/favicon-removebg-preview_z2ar7g.png"} />
-        <title>{options?.title ? options?.title : "Loading...."}</title>
-      </Helmet>
-      <SocketContext.Provider value={{socketState, setCallAgain, openLogin, setOpenLogin, color_code: options?.color_code, user, lang: user?.lang, setUser, dataUser: user?.data}}>
-        <Header {...user} {...options} />
-        <Navigation {...options} />
-        {
-          options?.notification_admin?.length > 0 && <Suspense fallback={<></>}>
-            <NotificationAdmin notification={options.notification_admin} /></Suspense>
-        }
-        {
-          user?.login=== true &&
-          <Menu />
-        }
-        <BackgroundSide background={options?.background_web} />
-        <Routes>
-          <Route path="/" element={<Home {...options} {...user?.data} />} />
-          <Route path="/check_live_uid" element={<Suspense fallback={<></>}><CheckAccount title={"Check Live Uid"} is_fb={true} /></Suspense>} />
-          <Route path="/check_mail" element={<Suspense fallback={<></>}><CheckAccount title={"Check Live HotMail - Gmail"} is_gmail={true} /></Suspense>} />
-          <Route path="/get_code_mail" element={<Suspense fallback={<></>}><CheckAccount title={"Get Code Email"} is_get_mail={true} /></Suspense>} />
-          <Route path="/*" element={<Suspense fallback={<></>}><NotFound /></Suspense>} />
-          <Route path="/auth" element={<Auth socketState={socketState} {...user} />} />
-          <Route path={"/2fa/login/auth"} element={<LoginOauth2 />} />
-          <Route path={"/api/user/buy"} element={<BuyService />} />
-          <Route path={"/api/user/balance"} element={<CheckBalance />} />
+    <WrapperCatchError>
+
+      <Fragment>
+        <Helmet>
+          <link rel="icon" type="image/x-icon" href={"https://res.cloudinary.com/cockbook/image/upload/v1664608366/single/favicon-removebg-preview_z2ar7g.png"} />
+          <title>{options?.title ? options?.title : "Loading...."}</title>
+        </Helmet>
+        <SocketContext.Provider value={{socketState, setCallAgain, openLogin, setOpenLogin, color_code: options?.color_code, user, lang: user?.lang, setUser, dataUser: user?.data}}>
+          <Header {...user} {...options} />
+          <Navigation {...options} />
+          {
+            options?.notification_admin?.length > 0 && <Suspense fallback={<></>}>
+              <NotificationAdmin notification={options.notification_admin} /></Suspense>
+          }
           {
             user?.login=== true &&
-            <>
-              <Route path="/account/*" element={<Suspense fallback={<></>}><Account is_account={true} {...user} /></Suspense>} />
-              <Route path="/recharge/*" element={<Suspense fallback={<></>}><Account is_recharge={true} {...user} {...options} /></Suspense>} />
-              <Route path="/history" element={<Suspense fallback={<></>}><History {...user} /></Suspense>} />
-              <Route path="/authentication/auth/verify" element={<VerifyEmail />} />
-            </>
+            <Menu />
           }
-        </Routes>
-        <Footer />
-        {/* <ChatMessengerApp /> */}
-      </SocketContext.Provider>
-    </Fragment>
+          <BackgroundSide background={options?.background_web} />
+          <Routes>
+            <Route path="/" element={<Home {...options} {...user?.data} />} />
+            <Route path="/check_live_uid" element={<Suspense fallback={<></>}><CheckAccount title={"Check Live Uid"} is_fb={true} /></Suspense>} />
+            <Route path="/check_mail" element={<Suspense fallback={<></>}><CheckAccount title={"Check Live HotMail - Gmail"} is_gmail={true} /></Suspense>} />
+            <Route path="/get_code_mail" element={<Suspense fallback={<></>}><CheckAccount title={"Get Code Email"} is_get_mail={true} /></Suspense>} />
+            <Route path="/*" element={<Suspense fallback={<></>}><NotFound /></Suspense>} />
+            <Route path="/auth" element={<Auth socketState={socketState} {...user} />} />
+            <Route path={"/2fa/login/auth"} element={<LoginOauth2 />} />
+            <Route path={"/api/user/buy"} element={<BuyService />} />
+            <Route path={"/api/user/balance"} element={<CheckBalance />} />
+            {
+              user?.login=== true &&
+              <>
+                <Route path="/account/*" element={<Suspense fallback={<></>}><Account is_account={true} {...user} /></Suspense>} />
+                <Route path="/recharge/*" element={<Suspense fallback={<></>}><Account is_recharge={true} {...user} {...options} /></Suspense>} />
+                <Route path="/history" element={<Suspense fallback={<></>}><History {...user} /></Suspense>} />
+                <Route path="/authentication/auth/verify" element={<VerifyEmail />} />
+              </>
+            }
+          </Routes>
+          <Footer />
+          {/* <ChatMessengerApp /> */}
+        </SocketContext.Provider>
+      </Fragment>
+    </WrapperCatchError>
   )
 }
 

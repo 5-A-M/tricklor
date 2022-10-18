@@ -440,7 +440,7 @@ const PopupPurchase = (props) => {
     const element = document.createElement("a");
     const file = new Blob(
       
-      order?.data?.map(item=> `${item.account}|${item.password}`),
+      order?.data?.map(item=> `${item?.full_account || ""}`),
       {
         type: "text/plain",
       }
@@ -482,25 +482,25 @@ const PopupPurchase = (props) => {
                 <div className="wrapper-purchase-popup" style={{ width: "100%" }}>
                     <Title title={lang==="vn" ? `Sản phẩm: ${props?.name}` : `Product: ${props?.name}`} />
                     <DetailPurchase
-                    left={lang==="vn"? "Số lượng": "Amount"}
-                    value={amount}
-                    onChange={setAmount}
-                    readOnly={false}
+                      left={lang==="vn"? "Số lượng": "Amount"}
+                      value={amount}
+                      onChange={setAmount}
+                      readOnly={false}
                     />
                     <DetailPurchase left={lang==="vn"? "Giá": "Price"} value={props.price} readOnly={true} />
                     <DetailPurchase
-                    left={lang=== "vn"? "Số tiền": "Price"}
-                    value={parseInt(amount) * parseInt(props.price)}
-                    readOnly={true}
+                      left={lang=== "vn"? "Số tiền": "Price"}
+                      value={parseInt(amount) * parseInt(props.price)}
+                      readOnly={true}
                     />
                     <br />
                     <div
-                    onClick={() => purchaseAccount()}
-                    style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        width: "100%",
-                    }}
+                      onClick={() => purchaseAccount()}
+                      style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          width: "100%",
+                      }}
                     >
                     <Button disabled={disabled} variant="contained">
                       {
@@ -538,24 +538,24 @@ const PopupPurchase = (props) => {
                   </div>
                   <br />
                   <div
-                  style={{ textAlign: "center", color: "#000", margin: "8px 0" }}
+                    style={{ textAlign: "center", color: "#000", margin: "8px 0" }}
                   >
-                  {lang=== "vn" ? "Mã hóa đơn" : "Code receipt"}: {order.code_bill}
+                    {lang=== "vn" ? "Mã hóa đơn" : "Code receipt"}: {order.code_bill}
                   </div>
                   <div
-                  style={{ textAlign: "center", color: "#000", margin: "8px 0" }}
+                    style={{ textAlign: "center", color: "#000", margin: "8px 0" }}
                   >
-                  {lang=== "vn" ? "Số lượng" : "Amount"}: {amount}
+                    {lang=== "vn" ? "Số lượng" : "Amount"}: {amount}
                   </div>
                   <div
-                  style={{ textAlign: "center", color: "#000", margin: "8px 0" }}
+                    style={{ textAlign: "center", color: "#000", margin: "8px 0" }}
                   >
-                  {lang=== "vn" ? "Số tiền": "Price"}: {parseInt(amount) * parseInt(props.price)}
+                    {lang=== "vn" ? "Số tiền": "Price"}: {parseInt(amount) * parseInt(props.price)}
                   </div>
                   <br />
                   <div style={{ color: "#000", margin: "8px 0", maxHeight: 200, overflow: "auto"}}>
                     {
-                      order?.data?.map((item, key)=> <div className={"list-account-password"} key={key}>{item.account}|{item.password}</div>)
+                      order?.data?.map((item, key)=> <div className={"list-account-password"} key={key}>{item.is_not_mail=== true ? item.full_account : `${item.account}|${item.password}`}</div>)
                     }
                   </div>
                   <br />
@@ -564,7 +564,7 @@ const PopupPurchase = (props) => {
                     order?.data &&
                     <div style={{display: "flex", justifyContent: 'start', alignItems: "center", gap: 16}}>
                       <Button variant={"contained"} onClick={()=> {toTextFile()}}>{lang=== "vn" ? "Tải file text" : "Download file"}</Button>
-                      <CopyToClipboard onCopy={()=> copyE()} text={order?.data?.map(item=> `${item.account.replaceAll(",", "")}|${item.password.replaceAll(",", "")}\n`.replaceAll(",", "zzz"))?.toString()?.replaceAll(",", "")}>
+                      <CopyToClipboard onCopy={()=> copyE()} text={order?.data?.map(item=> `${item?.full_account.replaceAll(",", "")}`.replaceAll(",", ""))?.toString()?.replaceAll(",", "\n")}>
                         <Button variant={"contained"}>
                           {
                             copy=== false ? 

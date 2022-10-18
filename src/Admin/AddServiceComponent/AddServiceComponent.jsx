@@ -38,7 +38,6 @@ const AddServiceComponent = (props) => {
           }
           {
             continue1=== true && <div>Điền các thông số trên menu</div>
-            
           }
           {
             continue1=== true && Array.from(Array(numberArray).keys()).map(key=> <div style={{margin: "16px 0"}}>
